@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix ./vendor/mirror-and-mountain/tools-and-components run dev",
+    "build-blocks": "npm --prefix ./vendor/mirror-and-mountain/tools-and-components run build-blocks",
+    "build-block-mods": "npm --prefix ./vendor/mirror-and-mountain/tools-and-components run build-block-mods",
+    "build-assets": "npm --prefix ./vendor/mirror-and-mountain/tools-and-components run build-assets",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.9.0"
+  }
+}
