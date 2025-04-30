@@ -10,7 +10,8 @@
             "email": "toby@mirrorandmountain.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "MM\\Meros\\App\\": "app"
@@ -28,6 +29,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/mirror-and-mountain/meros-framework"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/mirror-and-mountain/meros-dynamic-page"
         }
     ],
     "require": {
