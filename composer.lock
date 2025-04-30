@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11c29f16e79ecfc6b6cdec9b524c3c76",
+    "content-hash": "e2181dae1f4518881304e9911d3cab11",
     "packages": [
         {
             "name": "brick/math",
@@ -3078,12 +3078,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mirror-and-mountain/meros-dynamic-header.git",
-                "reference": "1fc1e309c19a2cf1b6fd87a357a2b38403b1a1ff"
+                "reference": "59671cb287d18d01250950c00847aab0dde60a42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-dynamic-header/zipball/1fc1e309c19a2cf1b6fd87a357a2b38403b1a1ff",
-                "reference": "1fc1e309c19a2cf1b6fd87a357a2b38403b1a1ff",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-dynamic-header/zipball/59671cb287d18d01250950c00847aab0dde60a42",
+                "reference": "59671cb287d18d01250950c00847aab0dde60a42",
                 "shasum": ""
             },
             "default-branch": true,
@@ -3102,7 +3102,7 @@
                 "source": "https://github.com/mirror-and-mountain/meros-dynamic-header/tree/main",
                 "issues": "https://github.com/mirror-and-mountain/meros-dynamic-header/issues"
             },
-            "time": "2025-04-29T16:39:45+00:00"
+            "time": "2025-04-30T09:53:53+00:00"
         },
         {
             "name": "mirror-and-mountain/meros-framework",
@@ -3110,22 +3110,32 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mirror-and-mountain/meros-framework.git",
-                "reference": "9d19bc707f20a6094f233ae3a236de905dc67ce3"
+                "reference": "532b7eafeb0afb6907f2233fabda8e03d09c0921"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-framework/zipball/9d19bc707f20a6094f233ae3a236de905dc67ce3",
-                "reference": "9d19bc707f20a6094f233ae3a236de905dc67ce3",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-framework/zipball/532b7eafeb0afb6907f2233fabda8e03d09c0921",
+                "reference": "532b7eafeb0afb6907f2233fabda8e03d09c0921",
                 "shasum": ""
+            },
+            "require": {
+                "joserick/laravel-livewire-discover": "^1.3",
+                "livewire/livewire": "^3.6",
+                "roots/acorn": "^5.0"
             },
             "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "MM\\Meros\\Providers\\": "src/Providers",
+                    "MM\\Meros\\CoreFeatures\\": "src/CoreFeatures",
                     "MM\\Meros\\Contracts\\": "src/Contracts",
                     "MM\\Meros\\Traits\\": "src/Traits",
                     "MM\\Meros\\Helpers\\": "src/Helpers"
-                }
+                },
+                "files": [
+                    "src/bootstrap.php"
+                ]
             },
             "license": [
                 "MIT"
@@ -3141,7 +3151,7 @@
                 "source": "https://github.com/mirror-and-mountain/meros-framework/tree/main",
                 "issues": "https://github.com/mirror-and-mountain/meros-framework/issues"
             },
-            "time": "2025-04-29T16:40:09+00:00"
+            "time": "2025-04-30T13:14:20+00:00"
         },
         {
             "name": "monolog/monolog",

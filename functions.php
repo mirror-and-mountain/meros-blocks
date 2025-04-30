@@ -1,6 +1,6 @@
 <?php
-// Autoloader.
 require_once( __DIR__ . '/vendor/autoload.php' );
+require_once(__DIR__ . '/includes/bootstrap.php');
 
 // Theme Constants.
 define('MM_THEME_ROOT', get_stylesheet_directory() . '/');
