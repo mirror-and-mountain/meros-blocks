@@ -1,4 +1,5 @@
-/vendor
-/node_modules
-/plugins
-.DS_Store
+/vendor/
+/node_modules/
+/plugins/
+/.DS_Store
+.env

@@ -3110,12 +3110,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:mirror-and-mountain/meros-framework.git",
-                "reference": "532b7eafeb0afb6907f2233fabda8e03d09c0921"
+                "reference": "1fa46b6d6e04957da5f2106b15465ff7927c556b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-framework/zipball/532b7eafeb0afb6907f2233fabda8e03d09c0921",
-                "reference": "532b7eafeb0afb6907f2233fabda8e03d09c0921",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-framework/zipball/1fa46b6d6e04957da5f2106b15465ff7927c556b",
+                "reference": "1fa46b6d6e04957da5f2106b15465ff7927c556b",
                 "shasum": ""
             },
             "require": {
@@ -3132,10 +3132,7 @@
                     "MM\\Meros\\Contracts\\": "src/Contracts",
                     "MM\\Meros\\Traits\\": "src/Traits",
                     "MM\\Meros\\Helpers\\": "src/Helpers"
-                },
-                "files": [
-                    "src/bootstrap.php"
-                ]
+                }
             },
             "license": [
                 "MIT"
@@ -3151,7 +3148,7 @@
                 "source": "https://github.com/mirror-and-mountain/meros-framework/tree/main",
                 "issues": "https://github.com/mirror-and-mountain/meros-framework/issues"
             },
-            "time": "2025-04-30T13:14:20+00:00"
+            "time": "2025-04-30T13:21:54+00:00"
         },
         {
             "name": "monolog/monolog",
