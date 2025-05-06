@@ -2,7 +2,6 @@
     "name": "mirror-and-mountain/meros",
     "description": "A starter theme for Wordpress using the Meros Framework",
     "type": "project",
-    "version": "dev-main",
     "license": "MIT",
     "authors": [
         {
@@ -14,7 +13,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "MM\\Meros\\App\\": "app"
+            "App\\": "app"
         }
     },
     "repositories": [
@@ -36,27 +35,20 @@
         }
     ],
     "require": {
-        "mirror-and-mountain/meros-framework": "dev-main",
-        "mirror-and-mountain/meros-carousel": "dev-main",
-        "mirror-and-mountain/meros-dynamic-header": "dev-main",
-        "composer/installers": "^2.3"
+        "composer/installers": "^2.3",
+        "mirror-and-mountain/meros-framework": "^0.0.16",
+        "mirror-and-mountain/meros-carousel": "^0.0.4",
+        "mirror-and-mountain/meros-dynamic-header": "^0.0.6"
     },
     "scripts": {
         "post-autoload-dump": [
-            "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
-        ],
-        "post-update-cmd": [
+            "Roots\\Acorn\\ComposerScripts::postAutoloadDump",
             "MM\\Meros\\Helpers\\Composer::afterPluginInstall"
         ]
     },
     "config": {
         "allow-plugins": {
             "composer/installers": true
-        },
-        "preferred-install": {
-            "mirror-and-mountain/meros-framework": "source",
-            "mirror-and-mountain/meros-carousel": "source",
-            "mirror-and-mountain/meros-dynamic-header": "source"
         }
     },
     "extra": {

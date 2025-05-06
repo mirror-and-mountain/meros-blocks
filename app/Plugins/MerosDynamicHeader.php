@@ -1,10 +1,10 @@
 <?php
 
-namespace MM\Meros\App\Features;
+namespace App\Plugins;
 
 use MM\Meros\Contracts\Plugin;
 
-class MerosCarousel extends Plugin
+class MerosDynamicHeader extends Plugin
 {
     protected function configure(): void
     {
