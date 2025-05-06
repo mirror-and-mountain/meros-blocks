@@ -1,4 +1,5 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "mirror-and-mountain/meros",
     "description": "A starter theme for Wordpress using the Meros Framework",
     "type": "project",
@@ -9,13 +10,6 @@
             "email": "toby@mirrorandmountain.com"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "App\\": "app"
-        }
-    },
     "repositories": [
         {
             "type": "vcs",
@@ -40,16 +34,16 @@
         "mirror-and-mountain/meros-dynamic-header": "^0.0.6",
         "mirror-and-mountain/meros-carousel": "^0.0.5"
     },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app"
+        }
+    },
     "scripts": {
         "post-autoload-dump": [
             "Roots\\Acorn\\ComposerScripts::postAutoloadDump",
             "MM\\Meros\\Helpers\\Composer::afterPluginInstall"
         ]
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true
-        }
     },
     "extra": {
         "installer-paths": {
@@ -57,5 +51,12 @@
                 "type:wordpress-plugin"
             ]
         }
-    }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
