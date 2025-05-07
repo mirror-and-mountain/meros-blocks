@@ -38,7 +38,7 @@
     ],
     "require": {
         "composer/installers": "^2.3",
-        "mirror-and-mountain/meros-framework": "^0.0.27",
+        "mirror-and-mountain/meros-framework": "^0.0.28",
         "mirror-and-mountain/meros-carousel": "^0.0.6",
         "mirror-and-mountain/meros-dynamic-header": "^0.0.7"
     },
