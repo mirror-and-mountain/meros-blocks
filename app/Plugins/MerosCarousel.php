@@ -8,6 +8,13 @@ class MerosCarousel extends Plugin
 {
     protected function configure(): void
     {
-        $this->usePluginConfig = true;
+        $this->author = [
+            'name'    => 'MIRROR AND MOUNTAIN',
+            'link'    => 'https://mirrorandmountain.com',
+            'support' => 'https://mirrorandmountain.com/support'
+        ];
+        
+        $this->category = 'blocks';
+        $this->enabled  = true;
     }
 }
