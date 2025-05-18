@@ -1,9 +1,16 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "mirror-and-mountain/meros",
-    "description": "A starter theme for Wordpress using the Meros Framework",
+    "name": "mirror-and-mountain/meros-blocks",
+    "description": "A blocks-based starter theme for Wordpress using the Meros Framework",
     "type": "project",
     "license": "MIT",
+     "keywords": [
+        "meros",
+        "wordpress",
+        "acorn",
+        "laravel",
+        "livewire"
+    ],
     "authors": [
         {
             "name": "tmw-mm",
@@ -18,22 +25,6 @@
                 "wpackagist-plugin/*",
                 "wpackagist-theme/*"
             ]
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/mirror-and-mountain/meros-carousel"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/mirror-and-mountain/meros-dynamic-header"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/mirror-and-mountain/meros-framework"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/mirror-and-mountain/meros-dynamic-page"
         }
     ],
     "require": {
@@ -51,7 +42,7 @@
     "scripts": {
         "post-autoload-dump": [
             "Roots\\Acorn\\ComposerScripts::postAutoloadDump",
-            "MM\\Meros\\Scripts\\Composer::handleExtensions"
+            "MM\\Meros\\Scripts\\Composer::installPluginsAndExtensions"
         ],
         "post-install-cmd": [
             "MM\\Meros\\Scripts\\Composer::makeCreateScriptExecutable"

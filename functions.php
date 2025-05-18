@@ -1,9 +1,5 @@
 <?php
 
-/**
- * 
- */
-
 $theme_path = get_theme_file_path();
 $autoloader = wp_normalize_path( $theme_path . '/vendor/autoload.php' );
 
