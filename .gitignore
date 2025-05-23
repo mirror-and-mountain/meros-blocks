@@ -4,3 +4,4 @@
 .DS_Store*
 .env
 composer.dev.json
+composer.dev.lock
