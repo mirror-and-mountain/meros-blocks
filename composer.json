@@ -42,7 +42,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Roots\\Acorn\\ComposerScripts::postAutoloadDump",
-            "MM\\Meros\\Scripts\\Composer::installPluginsAndExtensions"
+            "MM\\Meros\\Scripts\\Composer::installPluginsAndExtensions",
+            "MM\\Meros\\Scripts\\Composer::publishLivewireAssets"
         ],
         "post-install-cmd": [
             "MM\\Meros\\Scripts\\Composer::makeCreateScriptExecutable"
