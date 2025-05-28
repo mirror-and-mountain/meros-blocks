@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c57a2e4b9aa8fc36d9cec429650f606",
+    "content-hash": "838d1cf4ca83870fbe61ce24762aa81a",
     "packages": [
         {
             "name": "brick/math",
@@ -1127,7 +1127,7 @@
         },
         {
             "name": "illuminate/bus",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/bus.git",
@@ -1180,16 +1180,16 @@
         },
         {
             "name": "illuminate/cache",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
-                "reference": "bcfb1b8a81bbb61910ca0cf85112c11dce2929e7"
+                "reference": "5db65c84897b73f6bfb2e68cebcb96b4381ced5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/cache/zipball/bcfb1b8a81bbb61910ca0cf85112c11dce2929e7",
-                "reference": "bcfb1b8a81bbb61910ca0cf85112c11dce2929e7",
+                "url": "https://api.github.com/repos/illuminate/cache/zipball/5db65c84897b73f6bfb2e68cebcb96b4381ced5b",
+                "reference": "5db65c84897b73f6bfb2e68cebcb96b4381ced5b",
                 "shasum": ""
             },
             "require": {
@@ -1238,20 +1238,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-12T01:56:23+00:00"
+            "time": "2025-05-26T17:21:08+00:00"
         },
         {
             "name": "illuminate/collections",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
-                "reference": "954b7154723f51ef105fbfa6999eb424febbdb5c"
+                "reference": "d5ea498fd4de52341eced75eced74b7f076bb35f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/collections/zipball/954b7154723f51ef105fbfa6999eb424febbdb5c",
-                "reference": "954b7154723f51ef105fbfa6999eb424febbdb5c",
+                "url": "https://api.github.com/repos/illuminate/collections/zipball/d5ea498fd4de52341eced75eced74b7f076bb35f",
+                "reference": "d5ea498fd4de52341eced75eced74b7f076bb35f",
                 "shasum": ""
             },
             "require": {
@@ -1295,11 +1295,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-13T15:08:45+00:00"
+            "time": "2025-05-26T17:22:35+00:00"
         },
         {
             "name": "illuminate/conditionable",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
@@ -1345,7 +1345,7 @@
         },
         {
             "name": "illuminate/config",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -1393,16 +1393,16 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
-                "reference": "b2634e67c7d856c516cbcca3bdc7115decb6bac0"
+                "reference": "f360ca18c582e7f71d8943c190ce4f4d74368138"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/console/zipball/b2634e67c7d856c516cbcca3bdc7115decb6bac0",
-                "reference": "b2634e67c7d856c516cbcca3bdc7115decb6bac0",
+                "url": "https://api.github.com/repos/illuminate/console/zipball/f360ca18c582e7f71d8943c190ce4f4d74368138",
+                "reference": "f360ca18c582e7f71d8943c190ce4f4d74368138",
                 "shasum": ""
             },
             "require": {
@@ -1455,20 +1455,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-13T15:08:45+00:00"
+            "time": "2025-05-20T15:02:03+00:00"
         },
         {
             "name": "illuminate/container",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "f93a0e410eaf0839d0b6da23454abc37a28968f2"
+                "reference": "a3c80c986a421a5c550f89e80daa0d7ac817e6cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/f93a0e410eaf0839d0b6da23454abc37a28968f2",
-                "reference": "f93a0e410eaf0839d0b6da23454abc37a28968f2",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/a3c80c986a421a5c550f89e80daa0d7ac817e6cf",
+                "reference": "a3c80c986a421a5c550f89e80daa0d7ac817e6cf",
                 "shasum": ""
             },
             "require": {
@@ -1506,11 +1506,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-13T15:08:45+00:00"
+            "time": "2025-05-21T13:18:18+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -1558,7 +1558,7 @@
         },
         {
             "name": "illuminate/cookie",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cookie.git",
@@ -1611,16 +1611,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "1d3a8caca51aaadaefe622fd21efe66030a754dc"
+                "reference": "6a920097dbc242a6f4da396d135df24f61a340a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/1d3a8caca51aaadaefe622fd21efe66030a754dc",
-                "reference": "1d3a8caca51aaadaefe622fd21efe66030a754dc",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/6a920097dbc242a6f4da396d135df24f61a340a1",
+                "reference": "6a920097dbc242a6f4da396d135df24f61a340a1",
                 "shasum": ""
             },
             "require": {
@@ -1677,11 +1677,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-19T17:08:35+00:00"
+            "time": "2025-05-26T17:24:46+00:00"
         },
         {
             "name": "illuminate/encryption",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/encryption.git",
@@ -1732,7 +1732,7 @@
         },
         {
             "name": "illuminate/events",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -1787,7 +1787,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -1854,7 +1854,7 @@
         },
         {
             "name": "illuminate/hashing",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/hashing.git",
@@ -1902,7 +1902,7 @@
         },
         {
             "name": "illuminate/http",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
@@ -1963,7 +1963,7 @@
         },
         {
             "name": "illuminate/log",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/log.git",
@@ -2016,7 +2016,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -2062,7 +2062,7 @@
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
@@ -2110,16 +2110,16 @@
         },
         {
             "name": "illuminate/queue",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/queue.git",
-                "reference": "149abce3677e3d6336d8ce89117ce066a1056b9c"
+                "reference": "6a212fb80732c612a3205dd4fc56cffc793bd397"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/queue/zipball/149abce3677e3d6336d8ce89117ce066a1056b9c",
-                "reference": "149abce3677e3d6336d8ce89117ce066a1056b9c",
+                "url": "https://api.github.com/repos/illuminate/queue/zipball/6a212fb80732c612a3205dd4fc56cffc793bd397",
+                "reference": "6a212fb80732c612a3205dd4fc56cffc793bd397",
                 "shasum": ""
             },
             "require": {
@@ -2173,20 +2173,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-13T15:08:45+00:00"
+            "time": "2025-05-20T23:58:21+00:00"
         },
         {
             "name": "illuminate/routing",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/routing.git",
-                "reference": "b3ef31e438a856e8540e7ae83a122197f9d9340a"
+                "reference": "305c4df807212c4eb62902e5a6fbfffef3a4de6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/routing/zipball/b3ef31e438a856e8540e7ae83a122197f9d9340a",
-                "reference": "b3ef31e438a856e8540e7ae83a122197f9d9340a",
+                "url": "https://api.github.com/repos/illuminate/routing/zipball/305c4df807212c4eb62902e5a6fbfffef3a4de6d",
+                "reference": "305c4df807212c4eb62902e5a6fbfffef3a4de6d",
                 "shasum": ""
             },
             "require": {
@@ -2237,11 +2237,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-20T13:53:37+00:00"
+            "time": "2025-05-23T14:32:55+00:00"
         },
         {
             "name": "illuminate/session",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
@@ -2298,16 +2298,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "885b8c80aaaa0e088a65ca7580f904d9a1a8a579"
+                "reference": "ca7535d97755d36dd0afcb3627e5f0623dae5000"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/885b8c80aaaa0e088a65ca7580f904d9a1a8a579",
-                "reference": "885b8c80aaaa0e088a65ca7580f904d9a1a8a579",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/ca7535d97755d36dd0afcb3627e5f0623dae5000",
+                "reference": "ca7535d97755d36dd0afcb3627e5f0623dae5000",
                 "shasum": ""
             },
             "require": {
@@ -2371,20 +2371,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-19T12:58:43+00:00"
+            "time": "2025-05-26T17:21:08+00:00"
         },
         {
             "name": "illuminate/testing",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/testing.git",
-                "reference": "1c089a1699fc778a2620a066f831b3ff34e6fe16"
+                "reference": "223e07c543e98ec03bbcb1e151db0100555c6347"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/testing/zipball/1c089a1699fc778a2620a066f831b3ff34e6fe16",
-                "reference": "1c089a1699fc778a2620a066f831b3ff34e6fe16",
+                "url": "https://api.github.com/repos/illuminate/testing/zipball/223e07c543e98ec03bbcb1e151db0100555c6347",
+                "reference": "223e07c543e98ec03bbcb1e151db0100555c6347",
                 "shasum": ""
             },
             "require": {
@@ -2430,20 +2430,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-19T13:11:02+00:00"
+            "time": "2025-05-21T13:11:04+00:00"
         },
         {
             "name": "illuminate/translation",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/translation.git",
-                "reference": "832e1a00f0a4cbefeaab0430c036d2f37152fc4d"
+                "reference": "705bdc5e8616ac76d247302831d05ac5ba352b44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/translation/zipball/832e1a00f0a4cbefeaab0430c036d2f37152fc4d",
-                "reference": "832e1a00f0a4cbefeaab0430c036d2f37152fc4d",
+                "url": "https://api.github.com/repos/illuminate/translation/zipball/705bdc5e8616ac76d247302831d05ac5ba352b44",
+                "reference": "705bdc5e8616ac76d247302831d05ac5ba352b44",
                 "shasum": ""
             },
             "require": {
@@ -2481,20 +2481,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-04-11T15:28:09+00:00"
+            "time": "2025-05-26T17:31:37+00:00"
         },
         {
             "name": "illuminate/validation",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/validation.git",
-                "reference": "e43b4a1749e2ea7e4a1f59346aedebc33ba5d5a7"
+                "reference": "b2d79f14539c5d27141f3fea5e0f4f4d59030d37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/validation/zipball/e43b4a1749e2ea7e4a1f59346aedebc33ba5d5a7",
-                "reference": "e43b4a1749e2ea7e4a1f59346aedebc33ba5d5a7",
+                "url": "https://api.github.com/repos/illuminate/validation/zipball/b2d79f14539c5d27141f3fea5e0f4f4d59030d37",
+                "reference": "b2d79f14539c5d27141f3fea5e0f4f4d59030d37",
                 "shasum": ""
             },
             "require": {
@@ -2543,11 +2543,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-05-13T15:08:45+00:00"
+            "time": "2025-05-26T17:33:13+00:00"
         },
         {
             "name": "illuminate/view",
-            "version": "v12.15.0",
+            "version": "v12.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
@@ -3093,20 +3093,21 @@
         },
         {
             "name": "mirror-and-mountain/meros-framework",
-            "version": "v1.0.5",
+            "version": "v1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mirror-and-mountain/meros-framework.git",
-                "reference": "ea3e0d596f274334c7c91bf2dac415239a6e4344"
+                "reference": "011a1bfcec19c0d1d2fef27ac94ff267f50ac543"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-framework/zipball/ea3e0d596f274334c7c91bf2dac415239a6e4344",
-                "reference": "ea3e0d596f274334c7c91bf2dac415239a6e4344",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-framework/zipball/011a1bfcec19c0d1d2fef27ac94ff267f50ac543",
+                "reference": "011a1bfcec19c0d1d2fef27ac94ff267f50ac543",
                 "shasum": ""
             },
             "require": {
                 "livewire/livewire": "^3.6.3",
+                "nette/forms": "^3.2",
                 "roots/acorn": "^5.0.2"
             },
             "type": "library",
@@ -3132,9 +3133,9 @@
             "description": "A developer-friendly package for creating advanced Wordpress themes.",
             "support": {
                 "issues": "https://github.com/mirror-and-mountain/meros-framework/issues",
-                "source": "https://github.com/mirror-and-mountain/meros-framework/tree/v1.0.5"
+                "source": "https://github.com/mirror-and-mountain/meros-framework/tree/v1.0.7"
             },
-            "time": "2025-05-27T15:07:41+00:00"
+            "time": "2025-05-28T08:05:42+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3344,6 +3345,312 @@
                 }
             ],
             "time": "2025-05-01T19:51:51+00:00"
+        },
+        {
+            "name": "nette/component-model",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/component-model.git",
+                "reference": "fb7608fd5f1c378ef9ef8ddc459c6ef0b63e9d77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/component-model/zipball/fb7608fd5f1c378ef9ef8ddc459c6ef0b63e9d77",
+                "reference": "fb7608fd5f1c378ef9ef8ddc459c6ef0b63e9d77",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^4.0",
+                "php": "8.1 - 8.4"
+            },
+            "require-dev": {
+                "nette/tester": "^2.5",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "⚛ Nette Component Model",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "components",
+                "nette"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/component-model/issues",
+                "source": "https://github.com/nette/component-model/tree/v3.1.1"
+            },
+            "time": "2024-08-07T00:35:59+00:00"
+        },
+        {
+            "name": "nette/forms",
+            "version": "v3.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/forms.git",
+                "reference": "de4ba5ad4635ceb9aeef248f21f8b821e78d84e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/forms/zipball/de4ba5ad4635ceb9aeef248f21f8b821e78d84e0",
+                "reference": "de4ba5ad4635ceb9aeef248f21f8b821e78d84e0",
+                "shasum": ""
+            },
+            "require": {
+                "nette/component-model": "^3.1",
+                "nette/http": "^3.3",
+                "nette/utils": "^4.0.4",
+                "php": "8.1 - 8.4"
+            },
+            "conflict": {
+                "latte/latte": ">=3.0.0 <3.0.12 || >=3.1"
+            },
+            "require-dev": {
+                "latte/latte": "^2.10.2 || ^3.0.12",
+                "nette/application": "^3.0",
+                "nette/di": "^3.0",
+                "nette/tester": "^2.5.2",
+                "phpstan/phpstan-nette": "^1",
+                "tracy/tracy": "^2.9"
+            },
+            "suggest": {
+                "ext-intl": "to use date/time controls"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "📝 Nette Forms: generating, validating and processing secure forms in PHP. Handy API, fully customizable, server & client side validation and mature design.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "Forms",
+                "bootstrap",
+                "csrf",
+                "javascript",
+                "nette",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/forms/issues",
+                "source": "https://github.com/nette/forms/tree/v3.2.6"
+            },
+            "time": "2025-03-31T01:06:54+00:00"
+        },
+        {
+            "name": "nette/http",
+            "version": "v3.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/http.git",
+                "reference": "3e2587b34beb66f238f119b12fbb4f0b9ab2d6d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/http/zipball/3e2587b34beb66f238f119b12fbb4f0b9ab2d6d1",
+                "reference": "3e2587b34beb66f238f119b12fbb4f0b9ab2d6d1",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^4.0.4",
+                "php": "8.1 - 8.4"
+            },
+            "conflict": {
+                "nette/di": "<3.0.3",
+                "nette/schema": "<1.2"
+            },
+            "require-dev": {
+                "nette/di": "^3.0",
+                "nette/security": "^3.0",
+                "nette/tester": "^2.4",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.8"
+            },
+            "suggest": {
+                "ext-fileinfo": "to detect MIME type of uploaded files by Nette\\Http\\FileUpload",
+                "ext-gd": "to use image function in Nette\\Http\\FileUpload",
+                "ext-intl": "to support punycode by Nette\\Http\\Url",
+                "ext-session": "to use Nette\\Http\\Session"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🌐 Nette Http: abstraction for HTTP request, response and session. Provides careful data sanitization and utility for URL and cookies manipulation.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "cookies",
+                "http",
+                "nette",
+                "proxy",
+                "request",
+                "response",
+                "security",
+                "session",
+                "url"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/http/issues",
+                "source": "https://github.com/nette/http/tree/v3.3.2"
+            },
+            "time": "2025-01-12T16:27:57+00:00"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v4.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "ce708655043c7050eb050df361c5e313cf708309"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/ce708655043c7050eb050df361c5e313cf708309",
+                "reference": "ce708655043c7050eb050df361c5e313cf708309",
+                "shasum": ""
+            },
+            "require": {
+                "php": "8.0 - 8.4"
+            },
+            "conflict": {
+                "nette/finder": "<3",
+                "nette/schema": "<1.2.2"
+            },
+            "require-dev": {
+                "jetbrains/phpstorm-attributes": "dev-master",
+                "nette/tester": "^2.5",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.9"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/utils/issues",
+                "source": "https://github.com/nette/utils/tree/v4.0.6"
+            },
+            "time": "2025-03-30T21:06:30+00:00"
         },
         {
             "name": "nunomaduro/termwind",
@@ -4133,16 +4440,16 @@
         },
         {
             "name": "roots/acorn",
-            "version": "v5.0.3",
+            "version": "v5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roots/acorn.git",
-                "reference": "95254dbef7f1c6c26ec2b4b14c0c3372763b89bd"
+                "reference": "90779d10930d3cc478f02f9fee1c3bab23d6bad0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/roots/acorn/zipball/95254dbef7f1c6c26ec2b4b14c0c3372763b89bd",
-                "reference": "95254dbef7f1c6c26ec2b4b14c0c3372763b89bd",
+                "url": "https://api.github.com/repos/roots/acorn/zipball/90779d10930d3cc478f02f9fee1c3bab23d6bad0",
+                "reference": "90779d10930d3cc478f02f9fee1c3bab23d6bad0",
                 "shasum": ""
             },
             "require": {
@@ -4234,7 +4541,7 @@
             "support": {
                 "forum": "https://discourse.roots.io/",
                 "issues": "https://github.com/roots/acorn/issues",
-                "source": "https://github.com/roots/acorn/tree/v5.0.3"
+                "source": "https://github.com/roots/acorn/tree/v5.0.4"
             },
             "funding": [
                 {
@@ -4242,7 +4549,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-06T18:30:43+00:00"
+            "time": "2025-05-28T00:15:05+00:00"
         },
         {
             "name": "roots/support",
