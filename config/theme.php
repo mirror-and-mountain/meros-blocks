@@ -24,8 +24,7 @@ return [
      */
 
     // Installed features
-    'features' => [
-    ],
+    'features' => [],
 
     // Installed extensions
     'extensions' => [
