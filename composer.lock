@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "144023a21e1d8fedcf08618d3b9b67a1",
+    "content-hash": "a287e031559705f57b7c23d09471e290",
     "packages": [
         {
             "name": "brick/math",
@@ -3157,16 +3157,16 @@
         },
         {
             "name": "mirror-and-mountain/meros-dynamic-header",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mirror-and-mountain/meros-dynamic-header.git",
-                "reference": "1bdc5d8ef93c10943d7440a2216dff86fd1508c2"
+                "reference": "74f707eb63c5953ce3c3cf753ed29547fe7852c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-dynamic-header/zipball/1bdc5d8ef93c10943d7440a2216dff86fd1508c2",
-                "reference": "1bdc5d8ef93c10943d7440a2216dff86fd1508c2",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-dynamic-header/zipball/74f707eb63c5953ce3c3cf753ed29547fe7852c0",
+                "reference": "74f707eb63c5953ce3c3cf753ed29547fe7852c0",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
@@ -3183,9 +3183,9 @@
             "description": "A dynamic header block for Wordpress",
             "support": {
                 "issues": "https://github.com/mirror-and-mountain/meros-dynamic-header/issues",
-                "source": "https://github.com/mirror-and-mountain/meros-dynamic-header/tree/v1.0.2"
+                "source": "https://github.com/mirror-and-mountain/meros-dynamic-header/tree/v1.0.3"
             },
-            "time": "2025-06-08T17:46:41+00:00"
+            "time": "2025-06-08T18:13:17+00:00"
         },
         {
             "name": "mirror-and-mountain/meros-dynamic-page",
