@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d6b09a11dd32e53dc89196a288a11d0",
+    "content-hash": "5c7ad554db7f926be21c097a31b5e6ca",
     "packages": [
         {
             "name": "brick/math",
@@ -3189,16 +3189,16 @@
         },
         {
             "name": "mirror-and-mountain/meros-dynamic-page",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mirror-and-mountain/meros-dynamic-page.git",
-                "reference": "c7f70280eb1805b0c262e8fe49d661a7abe5e57b"
+                "reference": "3bcc619c02b4f14042843f761840df23c6f13a08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-dynamic-page/zipball/c7f70280eb1805b0c262e8fe49d661a7abe5e57b",
-                "reference": "c7f70280eb1805b0c262e8fe49d661a7abe5e57b",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-dynamic-page/zipball/3bcc619c02b4f14042843f761840df23c6f13a08",
+                "reference": "3bcc619c02b4f14042843f761840df23c6f13a08",
                 "shasum": ""
             },
             "type": "library",
@@ -3227,9 +3227,9 @@
             "description": "SPA loading for Meros powered Wordpress themes.",
             "support": {
                 "issues": "https://github.com/mirror-and-mountain/meros-dynamic-page/issues",
-                "source": "https://github.com/mirror-and-mountain/meros-dynamic-page/tree/v1.0.2"
+                "source": "https://github.com/mirror-and-mountain/meros-dynamic-page/tree/v1.0.3"
             },
-            "time": "2025-06-08T17:47:10+00:00"
+            "time": "2025-06-09T14:18:38+00:00"
         },
         {
             "name": "mirror-and-mountain/meros-framework",
