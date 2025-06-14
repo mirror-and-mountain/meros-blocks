@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1391377c199d0b2d6e4122d40fd1ec4",
+    "content-hash": "d413ddcb2c607ae25bed841f43a8f7c3",
     "packages": [
         {
             "name": "brick/math",
@@ -3125,16 +3125,16 @@
         },
         {
             "name": "mirror-and-mountain/meros-carousel",
-            "version": "v1.1.4",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mirror-and-mountain/meros-carousel.git",
-                "reference": "eada4d20549e8f5af67694e0ab99ca44fa8586a2"
+                "reference": "cbeaaacb046f7dbba7263785d87ab747d0f68794"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mirror-and-mountain/meros-carousel/zipball/eada4d20549e8f5af67694e0ab99ca44fa8586a2",
-                "reference": "eada4d20549e8f5af67694e0ab99ca44fa8586a2",
+                "url": "https://api.github.com/repos/mirror-and-mountain/meros-carousel/zipball/cbeaaacb046f7dbba7263785d87ab747d0f68794",
+                "reference": "cbeaaacb046f7dbba7263785d87ab747d0f68794",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
@@ -3151,9 +3151,9 @@
             "description": "A dynamic carousel block for Wordpress",
             "support": {
                 "issues": "https://github.com/mirror-and-mountain/meros-carousel/issues",
-                "source": "https://github.com/mirror-and-mountain/meros-carousel/tree/v1.1.4"
+                "source": "https://github.com/mirror-and-mountain/meros-carousel/tree/v1.1.5"
             },
-            "time": "2025-06-14T11:42:13+00:00"
+            "time": "2025-06-14T12:39:39+00:00"
         },
         {
             "name": "mirror-and-mountain/meros-dynamic-header",
