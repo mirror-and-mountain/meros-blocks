@@ -13,13 +13,13 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "MM\\Meros\\MerosBlocks\\": "src/"
+            "MM\\Meros\\Blocks\\": "src/"
         }
     },
     "extra": {
         "meros": {
             "loader": "MerosBlocks",
-            "namespace": "MM\\Meros\\MerosBlocks"
+            "namespace": "MM\\Meros\\Blocks"
         }
     },
     "minimum-stability": "stable",

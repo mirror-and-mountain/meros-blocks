@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Features\MerosBlocks;
+namespace MM\Meros\Blocks;
 
-use MM\Meros\Contracts\Feature;
+use MM\Meros\Contracts\Extension;
 
-class MerosBlocks extends Feature
+class MerosBlocks extends Extension
 {
     protected string $authorName = "Meros";
     protected string $authorUrl = "https://merosblocks.com";
