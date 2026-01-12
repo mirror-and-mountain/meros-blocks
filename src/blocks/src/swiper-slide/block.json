@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "meros/swiper-slide",
+    "version": "0.1.0",
+    "title": "Swiper Slide",
+    "category": "widgets",
+    "icon": "format-gallery",
+    "description": "A slide block for the Swiper block",
+    "textdomain": "meros-swiper",
+    "example": {},
+    "supports": {
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": true,
+            "link": true
+        },
+        "background": {
+            "backgroundImage": true,
+            "backgroundSize": true
+        },
+        "spacing": {
+            "padding":true,
+            "margin": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./index.css",
+    "parent": ["meros/swiper"],
+    "usesContext": ["meros-swiper/height", "meros-swiper/fixHeight"],
+    "attributes": {
+        "height": {
+            "type": "string",
+            "default": ""
+        }
+    }
+}

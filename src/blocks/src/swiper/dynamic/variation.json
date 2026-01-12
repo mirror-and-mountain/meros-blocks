@@ -1,0 +1,22 @@
+{
+    "name": "meros/swiper-dynamic-slide",
+    "title": "Meros Swiper Dynamic Slide",
+    "description": "A dynamic slide block for the Meros Swiper Block",
+    "attributes": {
+        "className": "meros-swiper-dynamic-query",
+        "layout": {
+            "type": "default",
+            "inherit": false
+        },
+        "query": {
+            "postType": "post",
+            "perPage": 5,
+            "order": "desc",
+            "orderBy": "date"
+        }
+    },
+    "scope": ["inserter", "transform"],
+    "icon": "format-image",
+    "isDefault": false,
+    "isActive": ["className"]
+}

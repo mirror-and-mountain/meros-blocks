@@ -1,0 +1,194 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "meros/swiper",
+    "version": "0.1.0",
+    "title": "Swiper",
+    "category": "widgets",
+    "icon": "format-gallery",
+    "description": "A customizable block for creating carousels, sliders and banners built with Swiper.js.",
+    "textdomain": "meros-theme",
+    "example": {},
+    "supports": {
+        "color": {
+            "background": true,
+            "gradients": true,
+            "link": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./view.js",
+    "editorStyle": "file:./index.css",
+    "viewStyle": "file:./view.css",
+    "providesContext": {
+        "meros-swiper/height": "height",
+        "meros-swiper/fixHeight": "fixHeight"
+    },
+    "attributes": {
+        "dynamic": {
+            "type": "boolean",
+            "default": false
+        },
+        "fixHeight": {
+            "type": "boolean",
+            "default": false
+        },
+        "height": {
+            "type": "number",
+            "default": 400
+        },
+        "slidesPerView": {
+            "type": "number",
+            "default": 1
+        },
+        "spaceBetween": {
+            "type": "string",
+            "default": "0"
+        },
+        "speed": {
+            "type": "number",
+            "default": 800
+        },
+        "centeredSlides": {
+            "type": "boolean",
+            "default": false
+        },
+        "initialSlide": {
+            "type": "number",
+            "default": 0
+        },
+        "autoplayDelay": {
+            "type": "number",
+            "default": 3000
+        },
+        "autoplay": {
+            "type": "boolean",
+            "default": false
+        },
+        "loop": {
+            "type": "boolean",
+            "default": true
+        },
+        "freeMode": {
+            "type": "object",
+            "default": {
+                "enabled": false,
+                "sticky": true
+            }
+        },
+        "mousewheel": {
+            "type": "object",
+            "default": {
+                "enabled": false
+            }
+        },
+        "showNavigation": {
+            "type": "boolean",
+            "default": true
+        },
+        "showPagination": {
+            "type": "boolean",
+            "default": true
+        },
+        "navigation": {
+            "type": "object",
+            "default": {
+                "enabled": true,
+                "prevEl": ".swiper-button-prev",
+                "nextEl": ".swiper-button-next",
+                "addIcons": false
+            }
+        },
+        "pagination": {
+            "type": "object",
+            "default": {
+                "enabled": true,
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+            }
+        },
+        "navigationStyle": {
+            "type": "object",
+            "default": {
+                "icon": "default",
+                "color": "#000000",
+                "size": 44
+            }
+        },
+        "paginationStyle": {
+            "type": "object",
+            "default": {
+                "activeColor": "#000000",
+                "inactiveColor": "#888888"
+            }
+        },
+        "enableBreakPoints": {
+            "type": "boolean",
+            "default": false
+        },
+        "breakPointDesktopWidth": {
+            "type": "number",
+            "default": 1024
+        },
+        "breakPointTabletWidth": {
+            "type": "number",
+            "default": 780
+        },
+        "breakPointMobileWidth": {
+            "type": "number",
+            "default": 360
+        },
+        "breakpoints": {
+            "type": "object",
+            "default": {}
+        }
+    },
+    "variations": [
+        {
+            "name": "meros/static-swiper",
+            "title": "Swiper",
+            "description": "A customizable block for creating carousels, sliders and banners. Built with Swiper.js.",
+            "attributes": {
+                "dynamic": false,
+                "fixHeight": true,
+                "height": 400
+            },
+            "isDefault": true,
+            "isActive": [
+                "dynamic"
+            ],
+            "scope": [
+                "inserter"
+            ],
+            "icon": "format-gallery",
+            "innerBlocks": [
+                [
+                    "meros/swiper-slide"
+                ],
+                [
+                    "meros/swiper-slide"
+                ],
+                [
+                    "meros/swiper-slide"
+                ]
+            ]
+        },
+        {
+            "name": "meros/dynamic-swiper",
+            "title": "Post Swiper",
+            "description": "A customizable block for creating carousels, sliders and banners using post queries. Built with Swiper.js.",
+            "attributes": {
+                "dynamic": true
+            },
+            "isDefault": false,
+            "isActive": [
+                "dynamic"
+            ],
+            "scope": [
+                "inserter"
+            ],
+            "icon": "format-gallery"
+        }
+    ]
+}

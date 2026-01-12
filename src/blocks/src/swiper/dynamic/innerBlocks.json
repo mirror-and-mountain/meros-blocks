@@ -1,0 +1,80 @@
+[
+    {
+        "name": "core/post-template",
+        "attributes": {
+            "className": "meros-swiper-dynamic-template",
+            "layout": {
+                "type": "default",
+                "inherit": false
+            },
+            "style": {
+                "spacing": {
+                    "blockGap": "0px"
+                }
+            }
+        },
+        "innerBlocks": [
+            {
+                "name": "core/cover",
+                "attributes": {
+                    "layout": {
+                        "type": "constrained",
+                        "justifyContent": "center"
+                    },
+                    "tagName": "div",
+                    "backgroundType": "image",
+                    "useFeaturedImage": true,
+                    "isUserOverlayColor": true,
+                    "customOverlayColor": "#323232",
+                    "hasParallax": false,
+                    "minHeight": 500,
+                    "minHeightUnit": "px",
+                    "isRepeated": false,
+                    "isDark": true,
+                    "dimRatio": 50,
+                    "style": {
+                        "spacing": {
+                            "blockGap": "var:preset|spacing|40"
+                        }
+                    }
+
+                },
+                "innerBlocks": [
+                    {
+                        "name": "core/post-title",
+                        "attributes": {
+                            "level": 2,
+                            "isLink": true,
+                            "rel": "",
+                            "linkTarget": "_self"
+                        }
+                    },
+                    {
+                        "name": "core/post-date",
+                        "attributes": {
+                            "fontSize": "small",
+                            "isLink": false,
+                            "metadata": {
+                                "bindings": {
+                                    "datetime": {
+                                        "args": {
+                                            "field": "date"
+                                        },
+                                        "source": "core/post-data"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "core/post-excerpt",
+                        "attributes": {
+                            "showMoreOnNewLine": true,
+                            "excerptLength": 55
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,8 @@
+@use './styles/scrollFx';
+@use './styles/hoverFx';
+@use './styles/headerFx';
+@use './styles/sticky';
+
+.meros-has-block-animation {
+    transform: none;
+}

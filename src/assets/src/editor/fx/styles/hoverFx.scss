@@ -1,0 +1,21 @@
+/* Base styles */
+.meros-has-hover-animation:not(.meros-animating) {
+    transition:
+        transform
+            var(--meros-hover-transform-duration, 0.8s)
+            ease
+            var(--meros-hover-transform-delay, 0s),
+}
+
+/* Animating states */
+.editor-styles-wrapper .meros-has-hover-animation.meros-preview-hover-fx:not(.meros-animating):hover,
+.meros-has-hover-animation:not(.meros-animating):hover {
+    transform:
+        translateX(var(--meros-hover-animate-x, 0px))
+        translateY(var(--meros-hover-animate-y, 0px))
+        scale(
+            var(--meros-hover-animate-scale-x, 1),
+            var(--meros-hover-animate-scale-y, 1)
+        );
+    cursor: default !important;
+}

@@ -1,0 +1,60 @@
+/* Base styles */
+.meros-has-scroll-animation {
+    opacity: 1;
+    background-color: unset;
+    color: unset;
+
+    transition:
+        transform
+            var(--meros-scroll-transform-duration, 0.8s)
+            ease
+            var(--meros-scroll-transform-delay, 0s),
+
+        opacity
+            var(--meros-scroll-opacity-duration, 0.8s)
+            ease
+            var(--meros-scroll-opacity-delay, 0s),
+
+        background-color
+            var(--meros-scroll-color-duration, 0.8s)
+            ease
+            var(--meros-scroll-color-delay, 0s),
+
+        color
+            var(--meros-scroll-color-duration, 0.8s)
+            ease
+            var(--meros-scroll-color-delay, 0s);
+}
+
+/* Animating states */
+.meros-animation-wrapper .meros-has-scroll-animation:not(.meros-animated),
+.editor-styles-wrapper .meros-has-scroll-animation.meros-animating:not(.meros-animated) {
+    transform:
+        translateX(var(--meros-scroll-animate-x, 0%))
+        translateY(var(--meros-scroll-animate-y, 0%))
+        scale(
+            var(--meros-scroll-animate-scale-x, 1),
+            var(--meros-scroll-animate-scale-y, 1)
+        );
+
+    opacity: var(--meros-scroll-animate-opacity, 1);
+}
+
+.editor-styles-wrapper .meros-has-scroll-animation.meros-animating:not(.meros-animated) {
+    transition: none;
+}
+
+/* Colour states */
+.meros-animation-wrapper .meros-has-scroll-animation:not(.meros-animated).meros-has-animated-bg-color,
+.editor-styles-wrapper .meros-has-scroll-animation.meros-animating:not(.meros-animated).meros-has-animated-bg-color {
+    background-color: var(--meros-scroll-animate-bg-color, initial) !important;
+}
+
+.meros-animation-wrapper .meros-has-scroll-animation:not(.meros-animated).meros-has-animated-text-color,
+.editor-styles-wrapper .meros-has-scroll-animation.meros-animating:not(.meros-animated).meros-has-animated-text-color {
+    color: var(--meros-scroll-animate-text-color, inherit) !important;
+
+    a {
+        color: var(--meros-scroll-animate-link-color, inherit) !important;
+    }
+}
