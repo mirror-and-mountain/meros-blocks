@@ -1,4 +1,4 @@
-export function merosSetHeaderHeight(doc, win, selector) {
+export function merosSetHeaderHeight({ doc, win, selector }) {
     const header = doc.querySelector(selector);
     if (!header) return;
 

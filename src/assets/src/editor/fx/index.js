@@ -8,6 +8,7 @@ import { addStickyElementEditorStyle } from './block-mods/add-sticky-element-wra
 import { applyMerosFxStyles } from './block-mods/apply-meros-fx-styles.js';
 import { applyMerosStickyStyles } from './block-mods/apply-meros-sticky-styles.js';
 import { merosSetHeaderHeight, merosResolveLogoWidths, merosUpdateHeaderFxOnScroll } from '../../shared/merosFx.js';
+import { initEditorScripts } from '../editorUtils.js';
 
 import './style.scss';
 
@@ -21,21 +22,9 @@ wp.domReady(() => {
     // Add classes to saved content for block types
     addFilter('blocks.getSaveContent.extraProps', 'meros/block-classes', applyMerosFxStyles);
     addFilter('blocks.getSaveContent.extraProps', 'meros/block-sticky-classes', applyMerosStickyStyles);
-});
 
-wp.domReady(() => {
     // Process fx in the editor
-    const getIframe = () => document.querySelector('iframe');
-
-    const isIframeReady = () => {
-        const iframe = getIframe();
-        const doc = iframe?.contentDocument;
-        const editorBody = doc?.querySelector('.editor-styles-wrapper');
-
-        return editorBody !== undefined && editorBody !== null;
-    };
-
-    const processFxAnimations = (iframe) => {
+    function processFxAnimations({ iframe }) {
         const doc = iframe.contentDocument;
         const win = iframe.contentWindow;
 
@@ -167,33 +156,10 @@ wp.domReady(() => {
                 update();
             }
         });
-    };
-
-    const init = () => {
-        const iframe = getIframe();
-        const doc = iframe?.contentDocument;
-        const win = iframe?.contentWindow;
-        if (!iframe || !doc || !win) return;
-
-        merosSetHeaderHeight(doc, win, 'header');
-        processFxAnimations(iframe);
-    };
-
-    if (!isIframeReady()) {
-        const observer = new MutationObserver(() => {
-            if (!isIframeReady()) return;
-
-            init();
-            observer.disconnect();
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    } else {
-        init();
     }
+
+    initEditorScripts(processFxAnimations);
+    initEditorScripts(merosSetHeaderHeight, { selector: 'header'});
 });
 
 
