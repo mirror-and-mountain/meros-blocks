@@ -12,12 +12,12 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        gap: var(--meros-mobile-menu-items-gap, 0px);
+        gap: var(--meros-nav-mobile-items-gap, 0px);
 
         padding-top: 29px;
         padding-left: 30px;
 
-        background: var(--meros-mobile-menu-bg-color, #FFFFFF) !important;
+        background: var(--meros-nav-mobile-bg-color, #FFFFFF) !important;
         z-index: 199 !important;
 
         overflow-y: scroll !important;
@@ -29,78 +29,87 @@
         transition: none !important;
         will-change: transform;
 
-        .meros-submenu-wrapper {
-            width: 100%;
+        // Editor Only
+        .block-list-appender {
+            display: none !important;
         }
 
-        .wp-block-navigation-item {
-            background: var(--meros-mobile-menu-item-bg-color, #ffffff00) !important;
-            color: var(--meros-mobile-menu-text-color, #000000) !important;
+        .meros-top-level-item, 
+        .meros-submenu-wrapper .wp-block-navigation-submenu {
+            background: var(--meros-nav-mobile-item-bg-color, #ffffff00) !important;
+            color: var(--meros-nav-mobile-item-text-color, #000000) !important;
+            
             width: 100% !important;
             width: -webkit-fill-available !important;
-            padding: var(--meros-mobile-menu-item-padding-y, 10px) var(--meros-mobile-menu-item-padding-x, 15px) !important;
+            
+            padding: var(--meros-nav-mobile-item-padding-y, 10px) var(--meros-nav-mobile-item-padding-x, 30px) !important;
             margin-left: -30px !important;
-            justify-content: var(--meros-mobile-menu-item-alignment, flex-start) !important;
+            justify-content: var(--meros-nav-mobile-item-alignment, flex-start) !important;
 
             a {
                 padding: unset !important;
             }
 
             &:hover {
-                background: var(--meros-mobile-menu-item-hover-bg-color, #ffffff00) !important;
-                color: var(--meros-mobile-menu-text-hover-color, #000000) !important;
+                background: var(--meros-nav-mobile-item-hover-bg-color, #ffffff00) !important;
+                color: var(--meros-nav-mobile-item-text-hover-color, #000000) !important;
             }
 
+        }
+
+        .meros-submenu-wrapper {
+            width: 100%;
         }
 
         .meros-submenu-wrapper:not(.meros-mega-menu-wrapper) .wp-block-navigation-submenu {
             display: flex;
             flex-direction: column;
-            align-items: var(--meros-mobile-menu-item-alignment, flex-start) !important;
+            align-items: var(--meros-nav-mobile-item-alignment, flex-start) !important;
             gap: 5px;
             padding-bottom: 0 !important;
 
             a,
             button {
                 padding: unset !important;
-                padding-bottom: calc(var(--meros-mobile-menu-item-padding-y, 10px) / 2) !important;
+                padding-bottom: calc(var(--meros-nav-mobile-item-padding-y, 10px) / 2) !important;
             }
 
             .wp-block-navigation__submenu-container {
                 position: relative !important;
-                display: grid !important;
-                grid-template-columns: 1fr;
-                gap: var(--meros-mobile-menu-items-gap, 0px) !important;
-                align-items: var(--meros-mobile-menu-item-alignment, flex-start) !important;
+                display: flex !important;
+                gap: var(--meros-nav-mobile-items-gap, 0px) !important;
                 inset: 0 !important;
 
                 padding: unset !important;
-                margin-left: calc(-1 * var(--meros-mobile-menu-item-padding-x, 15px));
-                margin-right: calc(-1 * var(--meros-mobile-menu-item-padding-x, 15px));
+                margin-left: calc(-1 * var(--meros-nav-mobile-item-padding-x, 30px));
+                margin-right: calc(-1 * var(--meros-nav-mobile-item-padding-x, 30px));
+                
                 width: 100% !important;
                 width: -webkit-fill-available !important;
 
-                background: var(--meros-mobile-menu-submenu-bg-color, #ffffff00) !important;
+                background: var(--meros-nav-mobile-submenu-bg-color, #ffffff00) !important;
 
-                .wp-block-navigation-item {
-                    background: var(--meros-mobile-menu-submenu-item-bg-color, #ffffff00) !important;
-                    color: var(--meros-mobile-menu-submenu-text-color, #000000) !important;
+                .meros-submenu-item {
+                    justify-content: var(--meros-nav-mobile-item-alignment, flex-start) !important;
+
+                    padding: var(--meros-nav-mobile-item-padding-y, 10px) calc(5px + var(--meros-nav-mobile-item-padding-x, 30px)) !important;
                     margin-left: unset !important;
+                    
+                    width: 100% !important;
+                    width: -webkit-fill-available !important;
+
+                    background: var(--meros-nav-mobile-submenu-item-bg-color, #ffffff00) !important;
+                    color: var(--meros-nav-mobile-submenu-item-text-color, #000000) !important;
 
                     &:hover {
-                        background: var(--meros-mobile-submenu-hover-bg-color, #ffffff00) !important;
-                        color: var(--meros-mobile-submenu-text-hover-color, #222222) !important;
+                        background: var(--meros-nav-mobile-submenu-item-hover-bg-color, #ffffff00) !important;
+                        color: var(--meros-nav-mobile-submenu-item-text-hover-color, #222222) !important;
                     }
 
                     a {
                         padding: 0 !important;
                         flex-grow: 0 !important;
                     }
-                }
-
-                // Editor Only
-                .block-list-appender {
-                    display: none !important;
                 }
             }
         }

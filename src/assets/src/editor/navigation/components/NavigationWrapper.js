@@ -64,26 +64,32 @@ export const NavigationWrapper = createHigherOrderComponent(
                     }}
                 >
                     {mobileSettings?.enabled && (
-                        <div className="meros-navigation-mobile-icon">
+                        <div 
+                            className="meros-navigation-mobile-toggle"
+                            role="button"
+                            tabIndex={0}
+                            aria-label="Toggle mobile menu"
+                            title="Toggle mobile menu"
+                        >
                             <svg
-                                className="meros-navigation-mobile-icon-svg"
+                                className="meros-navigation-mobile-toggle-svg"
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg"
                                 role="img"
-                                aria-label="Menu Icon"
+                                aria-label="Menu Toggle"
                             >
                                 <path
-                                    className="meros-navigation-mobile-icon-bar top"
+                                    className="meros-navigation-mobile-toggle-bar top"
                                     d="M5 5v1.5h14V5H5z"
                                 />
                                 <path
-                                    className="meros-navigation-mobile-icon-bar middle"
+                                    className="meros-navigation-mobile-toggle-bar middle"
                                     d="M5 12.8h14v-1.5H5v1.5z"
                                 />
                                 <path
-                                    className="meros-navigation-mobile-icon-bar bottom"
+                                    className="meros-navigation-mobile-toggle-bar bottom"
                                     d="M5 19h14v-1.5H5V19z"
                                 />
                             </svg>

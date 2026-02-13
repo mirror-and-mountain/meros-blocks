@@ -20,10 +20,12 @@
     @include mobile.meros-navigation-right-animation-styles;
     @include mobile.meros-navigation-mobile-open-styles;
     @include mobile.meros-navigation-mobile-closed-styles;
+    @include mega-menu.meros-navigation-mega-menu-styles;
 }
 
 // Mega menu styles
 .is-root-container:not(.is-mobile-preview) {
+    @include mobile-icon.meros-navigation-icon-styles;
     @include mega-menu.meros-navigation-mega-menu-styles;
 }
 

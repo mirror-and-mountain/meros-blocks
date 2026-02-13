@@ -15,15 +15,16 @@ export function getNavigationAttributes() {
                 "titleColor": "#5B5B5B",
                 "titleSize": '0.875rem',
                 "titlePaddingX": '16px',
-                "titlePaddingY": '8px',
+                "titlePaddingY": '16px',
                 "itemColor": "#000000",
                 "itemHoverColor": "#222222",
                 "itemSize": '1rem',
                 "itemPaddingX": '0px',
                 "itemPaddingY": '0px',
-                "megaMenuColumnGap": '50px',
+                "megaMenuColumnGap": '80px',
                 "megaMenuColumnAlignment": "start",
-                "megaMenuFillSpace": false
+                "megaMenuFillSpace": false,
+                "megaMenuItemGap": '0px'
             }
         },
         "mobileSettings": {
@@ -33,23 +34,23 @@ export function getNavigationAttributes() {
             "underHeader": false,
             "icon": "hamburger-1",
             "styles": {
-                "itemsGap": '10px',
+                "itemsGap": '0px',
                 "iconColor": "#000000",
                 "iconColorOpen": "#000000",
                 "showLogo": true,
                 "bgColor": "#FFFFFF",
-                "textColor": "#000000",
-                "textHoverColor": "#222222",
-                "itemPaddingX": '10px',
-                "itemPaddingY": '15px',
+                "submenuBgColor": "#FFFFFF00",
+                "itemPaddingX": '30px',
+                "itemPaddingY": '10px',
                 "itemAlignment": "start",
                 "itemBgColor": "#FFFFFF00",
                 "itemHoverBgColor": "#e9e9e9",
-                "submenuBgColor": "#FFFFFF00",
+                "itemTextColor": "#000000",
+                "itemTextHoverColor": "#222222",
                 "submenuItemBgColor": "#FFFFFF00",
-                "submenuHoverBgColor": "#e9e9e9",
-                "submenuTextColor": "#000000",
-                "submenuTextHoverColor": "#222222"
+                "submenuItemHoverBgColor": "#e9e9e9",
+                "submenuItemTextColor": "#000000",
+                "submenuItemTextHoverColor": "#222222"
             }
         },
         "desktopSettings": {
@@ -81,16 +82,6 @@ export function addNavigationAttributes(settings, name) {
                         type: 'default-item'
                     }
                 }
-            },
-            supports: {
-                ...settings.supports,
-                color: {
-                    text: true,
-                    background: false
-                },
-                spacing: {
-                    padding: true
-                }
             }
         };
     }
@@ -109,7 +100,8 @@ export function addNavigationAttributes(settings, name) {
                         }
                     }
                 }
-            }
+            },
+            supports: {}
         };
     }
 

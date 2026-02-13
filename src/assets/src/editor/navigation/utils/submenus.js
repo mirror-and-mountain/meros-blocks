@@ -1,5 +1,7 @@
-import { subscribe, select, dispatch } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
+import { subscribe, select } from '@wordpress/data';
+import { initMegaMenu, cleanUpMegaMenu } from './mega-menu.js';
+import { initMobileMenu } from './mobile-menu.js';
+
 
 function initSubmenus(doc, type, navBlock, submenus) {
     submenus.forEach(submenu => {
@@ -9,15 +11,13 @@ function initSubmenus(doc, type, navBlock, submenus) {
 
         if (type === 'default') {
             initDefaultSubmenu(doc, innerBlocks, clientId);
-            return;
         }
 
         if (type === 'mega-menu') {
             initMegaMenu(doc, innerBlocks, clientId);
-            return;
         }
 
-        initSubmenuBehaviour(doc, submenu, clickBehaviour);
+        initSubmenuBehaviour(doc, clientId, clickBehaviour);
     });
 }
 
@@ -39,99 +39,108 @@ function initDefaultSubmenu(doc, innerBlocks, clientId) {
 
 }
 
-function initMegaMenu(doc, innerBlocks, clientId) {
-    const blockElement = doc.getElementById(`block-${clientId}`);
-    const wrapper = blockElement?.closest('.meros-mega-menu-wrapper');
-    const initialised = wrapper?.dataset?.merosInitialised === 'true';
-    
-    let merosItemsContainer = wrapper?.querySelector('.meros-mega-menu-items-container') || null;
-    if (!wrapper || (initialised && merosItemsContainer !== null)) return;
+function initSubmenuBehaviour(doc, clientId, openOnClick, forceOpenOnClick = false) {
+    const navigateOnClick = (e) => {
+        const button = e.currentTarget;
+        if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
+            const parent = button.parentElement;
+            if (parent && parent.classList.contains('meros-submenu-wrapper')) {
+                parent.classList.remove('meros-submenu-open');
 
-    const wpItemsContainer = blockElement.querySelector('.wp-block-navigation__submenu-container');
-    if (!wpItemsContainer) return;
+                const wrapper = parent.closest('.meros-navigation-wrapper');
+                if (wrapper) {
+                    wrapper.classList.remove('meros-submenu-open');
+                }
 
-    merosItemsContainer = document.createElement('div');
-    merosItemsContainer.classList.add('meros-mega-menu-items-container');
-
-    merosItemsContainer.appendChild(wpItemsContainer);
-    blockElement.appendChild(merosItemsContainer);
-
-    createMegaMenuColumns(innerBlocks, clientId);
-    wrapper.dataset.merosInitialised = 'true';
-}
-
-function createMegaMenuColumns(innerBlocks, clientId) {
-    const { moveBlockToPosition, insertBlock } = dispatch('core/block-editor');
-
-    const existingColumns = innerBlocks.filter(block => block.name === 'meros/mega-menu-column');
-    if (existingColumns?.length || 0 > 0) return;
-
-    const innerLinksToMove = innerBlocks && innerBlocks.length > 0
-        ? innerBlocks.filter(block => block.name === 'core/navigation-link')
-        : [];
-
-    const column = createBlock('meros/mega-menu-column',{});
-    insertBlock(column, -1, clientId);
-
-    requestAnimationFrame(() => {
-        innerLinksToMove.forEach(link => {
-            moveBlockToPosition(link.clientId, clientId, column.clientId, -1);
-        });
-    });
-}
-
-function cleanUpMegaMenu(doc, innerBlocks, clientId) {
-    const { moveBlockToPosition, removeBlock } = dispatch('core/block-editor');
-
-    const blockElement = doc.getElementById(`block-${clientId}`);
-    const wrapper = blockElement?.closest('.meros-submenu-wrapper');
-
-    if (!wrapper) return;
-    
-    const merosItemsContainer = wrapper.querySelector('.meros-mega-menu-items-container');
-    if (!merosItemsContainer) return;
-
-    const originalWrapper = wrapper.querySelector('.wp-block-navigation__submenu-container');
-    if (!originalWrapper) return;
-
-    if (!innerBlocks?.length ) return;
-
-    const megaMenuColumns = innerBlocks.filter(block => block?.name === 'meros/mega-menu-column');
-    if (!megaMenuColumns || !megaMenuColumns?.length) return;
-
-    megaMenuColumns.forEach(column => {
-        if (!column || typeof column !== 'object') return;
-        
-        const innerLinks = column.innerBlocks || [];
-        if (!innerLinks?.length) return; 
-
-        if (column?.clientId) {
-            requestAnimationFrame(() => {
-                innerLinks.forEach(link => {
-                    moveBlockToPosition(link.clientId, column.clientId, clientId, -1);
-                });
-
-                removeBlock(column.clientId);
-            });
+                const action = button.getAttribute('data-action');
+                if (action) {
+                    eval(action);
+                }
+            }
         }
-    });
+    };
 
-    blockElement.appendChild(originalWrapper);
-    merosItemsContainer.remove();
+    const openSubmenuOnClick = (e) => {
+        const submenu = e.currentTarget;
+        const wrapper = submenu.closest('.meros-navigation-wrapper');
+        if (!wrapper) return;
+
+        if (!submenu.classList.contains('meros-submenu-open')) {
+            const button = submenu.querySelector('button');
+            if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
+                button.addEventListener('click', navigateOnClick);
+            }
+
+            submenu.classList.add('meros-submenu-open');
+            wrapper.classList.add('meros-submenu-open');
+        }
+    };
+
+    const closeSubmenu = (e) => {
+        if (!submenu.contains(e.target)) {
+            const button = submenu.querySelector('button');
+            if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
+                button.removeEventListener('click', navigateOnClick);
+            }
+
+            submenu.classList.remove('meros-submenu-open');
+
+            const wrapper = submenu.closest('.meros-navigation-wrapper');
+            if (wrapper) {
+                wrapper.classList.remove('meros-submenu-open');
+            }
+        }
+    };
+
+    const enableOpenOnClick = (wrapper) => {
+        if (!wrapper.classList.contains('meros-open-submenus-on-click') &&
+            (forceOpenOnClick)
+        ) {
+            wrapper.classList.add('meros-open-submenus-on-click');
+            wrapper.dataset.forcedOpenOnClick = 'true';
+        }
+
+        if (wrapper.classList.contains('meros-open-submenus-on-click')) {
+            submenu.addEventListener('click', openSubmenuOnClick);
+            doc.addEventListener('click', closeSubmenu);
+        }
+    };
+
+    const disableOpenOnClick = (wrapper) => {
+        if (wrapper.dataset.forcedOpenOnClick === 'true') {
+            wrapper.classList.remove('meros-open-submenus-on-click');
+            delete wrapper.dataset.forcedOpenOnClick;
+        }
+
+        submenu.removeEventListener('click', openSubmenuOnClick);
+        doc.removeEventListener('click', closeSubmenu);
+    };
+
+    const blockElement = doc.getElementById(`block-${clientId}`);
+    const submenu = blockElement?.closest('.meros-submenu-wrapper');
+    if (!submenu) return;
+
+    const wrapper = submenu.closest('.meros-navigation-wrapper');
+    if (!wrapper) return;
+
+    if (openOnClick || forceOpenOnClick) {
+        enableOpenOnClick(wrapper);
+    } else {
+        disableOpenOnClick(wrapper);
+    }
 }
 
-function initSubmenuBehaviour(doc, submenu, openOnClick) {
-    
-}
-
-export function subscribeToSubmenuChanges({doc}) {
+export function subscribeToSubmenuChanges({ iframe, doc }) {
     let merosNavUpdating = false;
     if (merosNavUpdating) return;
 
     const blockEditor = select('core/block-editor');
+    
+    const rootContainer = doc.querySelector('.is-root-container');
+    if (!rootContainer) return;
 
     // Run on initial load to set up any existing submenus
-    const navBlocks = doc.querySelectorAll('.meros-navigation-wrapper');
+    const navBlocks = rootContainer.querySelectorAll('.meros-navigation-wrapper');
     navBlocks.forEach(navBlock => {
         const id = navBlock.id.replace('block-', '');
         const block = blockEditor.getBlock(id);
@@ -142,7 +151,9 @@ export function subscribeToSubmenuChanges({doc}) {
         const submenus = block.innerBlocks.filter(block => block.name === 'core/navigation-submenu') || [];
         initSubmenus(doc, submenuType, submenus);
     });
-    
+
+    initMobileMenu(iframe, rootContainer);
+
     // Subscribe to changes in the editor
     subscribe(() => {
         const selectedBlock = blockEditor.getSelectedBlock();
@@ -159,7 +170,7 @@ export function subscribeToSubmenuChanges({doc}) {
                 .filter(block => block.name === 'core/navigation-submenu') || [];
 
             initSubmenus(doc, submenuType, selectedBlock, submenus);
-            
+
             merosNavUpdating = false;
         }
     });
