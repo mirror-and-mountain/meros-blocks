@@ -7,8 +7,8 @@ import { addEditorAnimationWrapper } from './block-mods/add-editor-animation-wra
 import { addStickyElementEditorStyle } from './block-mods/add-sticky-element-wrapper.js';
 import { applyMerosFxStyles } from './block-mods/apply-meros-fx-styles.js';
 import { applyMerosStickyStyles } from './block-mods/apply-meros-sticky-styles.js';
-import { merosSetHeaderHeight, merosResolveLogoWidths, merosUpdateHeaderFxOnScroll } from '../../shared/merosFx.js';
-import { initEditorScripts } from '../editorUtils.js';
+import { merosSetHeaderHeight, merosResolveLogoWidths, merosUpdateHeaderFxOnScroll } from '../../editor/shared/merosFx.js';
+import { initEditorScripts } from '../shared/utils.js';
 
 import './style.scss';
 

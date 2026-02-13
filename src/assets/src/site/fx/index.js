@@ -2,7 +2,7 @@ import {
     merosSetHeaderHeight, 
     merosResolveLogoWidths, 
     merosUpdateHeaderFxOnScroll 
-} from '../../shared/merosFx';
+} from '../../editor/shared/merosFx.js';
 
 import './style.scss';
 

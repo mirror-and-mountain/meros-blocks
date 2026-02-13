@@ -1,0 +1,86 @@
+@mixin meros-navigation-icon-styles {
+    .meros-navigation-wrapper>.meros-navigation-mobile-icon {
+        display: none;
+
+        position: relative;
+        margin-top: 10px;
+        justify-content: var(--meros-mobile-menu-item-alignment, flex-start);
+        z-index: 100;
+
+        cursor: pointer;
+
+        .meros-navigation-mobile-icon-svg {
+            fill: var(--meros-nav-mobile-icon-color, #000000);
+        }
+
+        .meros-navigation-mobile-icon-bar {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform-origin: center center;
+        }
+    }
+
+    .meros-navigation-wrapper.meros-mobile-menu-active>.meros-navigation-mobile-icon {
+        display: flex;
+    }
+
+    .meros-navigation-wrapper.meros-mobile-menu-active.meros-mobile-menu-open>.meros-navigation-mobile-icon {
+        .meros-navigation-mobile-icon-bar.top {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .meros-navigation-mobile-icon-bar.middle {
+            opacity: 0;
+        }
+
+        .meros-navigation-mobile-icon-bar.bottom {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+    }
+
+    .meros-navigation-wrapper .wp-block-navigation__container .meros-navigation-icons {
+        display: none;
+    }
+
+
+    .meros-navigation-wrapper.meros-mobile-menu-active {
+        .wp-block-navigation__container {
+            .meros-navigation-icons {
+                display: flex;
+                justify-content: space-between;
+
+                margin-left: -30px;
+                padding: 0 15px;
+                width: 100%;
+                width: -webkit-fill-available;
+
+                z-index: 500;
+
+                .meros-navigation-back-icon {
+                    visibility: hidden;
+                }
+
+                .meros-navigation-mobile-icon {
+                    display: flex;
+                    cursor: pointer;
+
+                    svg {
+                        fill: var(--meros-nav-mobile-icon-color-open, #000000);
+                    }
+                }
+            }
+        }
+
+        &.meros-submenu-open {
+            .wp-block-navigation__container 
+            .meros-navigation-icons 
+            .meros-navigation-back-icon {
+                visibility: visible;
+                cursor: pointer;
+
+                svg {
+                    fill: var(--meros-nav-mobile-icon-color-open, #000000);
+                }
+            }
+        }
+    }
+}

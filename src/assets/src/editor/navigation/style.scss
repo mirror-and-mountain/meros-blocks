@@ -1,205 +1,29 @@
-// .components-tools-panel:has(div[aria-label="Configure overlay menu"]) {
-//     display: none !important;
-// }
+@use '../../site/navigation/styles/mobile-icon' as mobile-icon;
+@use '../../site/navigation/styles/mega-menu' as mega-menu;
+@use '../../site/navigation/styles/mobile.scss' as mobile;
 
-.is-root-container:not(.is-mobile-preview)
-.meros-navigation-wrapper
-.meros-navigation-mobile-icon {
-    display: none;
+// Hide default overlay menu panel
+.components-tools-panel:has(div[aria-label="Configure overlay menu"]) {
+    display: none !important;
 }
 
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper
-.meros-navigation-mobile-icon {
-    position: relative;
-    display: flex;
-    margin-top: 10px;
-    cursor: pointer;
-    justify-content: var(--meros-mobile-menu-justification, flex-start);
-    z-index: 1000;
-
-    .meros-navigation-mobile-icon-svg {
-        fill: var(--meros-mobile-menu-icon-color, #000000);
-    }
-
-    .meros-navigation-mobile-icon-bar {
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        transform-origin: center center;
-    }
+// Hide submenu & overlay background panel
+.components-tools-panel:has(div[title="Submenu & overlay background"]) {
+    display: none !important;
 }
 
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-mobile-menu-open {
-    .meros-navigation-mobile-icon-bar.top {
-        transform: translate(-5px, 5px) rotate(45deg);
-    }
-
-    .meros-navigation-mobile-icon-bar.middle {
-        opacity: 0;
-    }
-
-    .meros-navigation-mobile-icon-bar.bottom {
-        transform: translate(-5px, -4px) rotate(-45deg);
-    }
+// Mobile menu styles
+.is-root-container.is-mobile-preview {
+    @include mobile-icon.meros-navigation-icon-styles;
+    @include mobile.meros-navigation-base-styles;
+    @include mobile.meros-navigation-left-animation-styles;
+    @include mobile.meros-navigation-right-animation-styles;
+    @include mobile.meros-navigation-mobile-open-styles;
+    @include mobile.meros-navigation-mobile-closed-styles;
 }
 
-
-.meros-mobile-menu-icon-bar {
-    background-color: #000;
-}
-
-
-/* -----------------------------------------------------------------
-   Mobile menu active
------------------------------------------------------------------- */
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-has-mobile-menu
-.wp-block-navigation__container {
-    position: fixed !important;
-    top: 0;
-    right: 0;
-    width: 80vw;
-    max-width: 320px;
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: var(--meros-mobile-menu-items-gap, 0px);
-
-    padding-top: 50px;
-    padding-left: 30px;
-
-    background: var(--meros-mobile-menu-bg-color, #ffffff) !important;
-    z-index: 999 !important;
-
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-
-    opacity: 0;
-    pointer-events: none;
-
-    transition: none !important;
-    will-change: transform;
-
-    .wp-block-navigation-item {
-        background: var(--meros-mobile-menu-item-bg-color, #ffffff) !important;
-        color: var(--meros-mobile-menu-text-color, #000000) !important;
-        width: 100% !important;
-        width: -webkit-fill-available !important;
-        padding: var(--meros-mobile-menu-item-padding-y, 10px) var(--meros-mobile-menu-item-padding-x, 10px) !important;
-        margin-left: -30px !important;
-
-        &:hover {
-            background: var(--meros-mobile-menu-item-hover-bg-color, rgba(0, 0, 0, 0.05)) !important;
-            color: var(--meros-mobile-menu-text-hover-color, #000000) !important;
-        }
-
-        &.wp-block-navigation-submenu {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            gap: var(--meros-mobile-menu-items-gap, 0px);
-            padding-bottom: 0 !important;
-
-            a {
-                padding-bottom: calc(var(--meros-mobile-menu-item-padding-y, 10px) / 2) !important;
-            }
-        
-            .wp-block-navigation__submenu-container {
-                position: relative !important;
-                inset: 0 !important;
-                padding: unset !important;
-                width: 100% !important;
-                width: -webkit-fill-available !important;
-                background: var(--meros-mobile-submenu-bg-color, #F9F9F9) !important;
-                margin-left: calc(-1 * var(--meros-mobile-menu-item-padding-x, -10px));
-                margin-right: calc(-1 * var(--meros-mobile-menu-item-padding-x, -10px));
-
-                .wp-block-navigation-item {
-                    padding: var(--meros-mobile-menu-item-padding-y, 10px) var(--meros-mobile-menu-item-padding-x, 10px) !important;
-                    background: var(--meros-mobile-submenu-item-bg-color, #FFFFFF) !important;
-                    color: var(--meros-mobile-submenu-text-color, #000000) !important;
-
-                    &:hover {
-                        background: var(--meros-mobile-submenu-hover-bg-color, rgba(0, 0, 0, 0.05)) !important;
-                        color: var(--meros-mobile-submenu-text-hover-color, #000000) !important;
-                    }
-
-                    a {
-                        margin-left: 40px !important;
-                        padding: unset !important;
-                    }
-                }
-            }
-        }
-    }
-}
-/* -----------------------------------------------------------------
-   Direction: left
------------------------------------------------------------------- */
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-has-mobile-menu.meros-mobile-menu-direction-left
-.wp-block-navigation__container {
-    right: 0 !important;
-    left: auto !important;
-    transform: translateX(100%);
-    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.12) !important;
-}
-
-/* -----------------------------------------------------------------
-   Direction: right
------------------------------------------------------------------- */
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-has-mobile-menu.meros-mobile-menu-direction-right
-.wp-block-navigation__container {
-    right: auto !important;
-    left: 0 !important;
-    transform: translateX(-100%);
-    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.12) !important;
-}
-
-/* -----------------------------------------------------------------
-   OPEN STATE
------------------------------------------------------------------- */
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-mobile-menu-open
-.wp-block-navigation__container {
-    transform: translateX(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-
-    transition: transform 0.4s cubic-bezier(.77, 0, .18, 1),
-                opacity 0.2s ease !important;
-}
-
-/* -----------------------------------------------------------------
-   CLOSING STATE
------------------------------------------------------------------- */
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-mobile-menu-closing
-.wp-block-navigation__container {
-    opacity: 0 !important;
-    pointer-events: none !important;
-
-    transition: opacity 0.2s ease !important;
-}
-
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-mobile-menu-closing.meros-mobile-menu-direction-left
-.wp-block-navigation__container {
-    transform: translateX(100%) !important;
-    transition: transform 0.4s cubic-bezier(.77, 0, .18, 1),
-                opacity 0.2s ease !important;
-}
-
-.is-root-container.is-mobile-preview
-.meros-navigation-wrapper.meros-mobile-menu-closing.meros-mobile-menu-direction-right
-.wp-block-navigation__container {
-    transform: translateX(-100%) !important;
-    transition: transform 0.4s cubic-bezier(.77, 0, .18, 1),
-                opacity 0.2s ease !important;
+// Mega menu styles
+.is-root-container:not(.is-mobile-preview) {
+    @include mega-menu.meros-navigation-mega-menu-styles;
 }
 

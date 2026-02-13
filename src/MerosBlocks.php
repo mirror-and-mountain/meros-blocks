@@ -20,6 +20,7 @@ class MerosBlocks extends Extension
 
     private function includeHooks(): void
     {
-        include dirname(__FILE__) . '/hooks/filters.php';
+        include dirname(__FILE__) . '/includes/fx.php';
+        include dirname(__FILE__) . '/includes/nav.php';
     }
 }
