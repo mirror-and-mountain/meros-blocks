@@ -39,18 +39,13 @@ export function getNavigationAttributes() {
                 "iconColorOpen": "#000000",
                 "showLogo": true,
                 "bgColor": "#FFFFFF",
-                "submenuBgColor": "#FFFFFF00",
                 "itemPaddingX": '30px',
                 "itemPaddingY": '10px',
                 "itemAlignment": "start",
-                "itemBgColor": "#FFFFFF00",
-                "itemHoverBgColor": "#e9e9e9",
                 "itemTextColor": "#000000",
                 "itemTextHoverColor": "#222222",
-                "submenuItemBgColor": "#FFFFFF00",
-                "submenuItemHoverBgColor": "#e9e9e9",
-                "submenuItemTextColor": "#000000",
-                "submenuItemTextHoverColor": "#222222"
+                "itemHighlightType": "none",
+                "itemHighlightColor": "#0693E3",
             }
         },
         "desktopSettings": {

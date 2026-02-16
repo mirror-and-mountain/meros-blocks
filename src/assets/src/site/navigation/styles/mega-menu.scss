@@ -57,7 +57,9 @@
         .wp-block-navigation__submenu-container,
         .wp-block-navigation__submenu-container .meros-mega-menu-item,
         .wp-block-navigation__submenu-container .meros-mega-menu-column-title {
+            display: flex;
             opacity: 0;
+            
             transition: opacity 0.4s ease;
             transition-delay: 0s;
             will-change: opacity;
@@ -205,7 +207,6 @@
             
             flex-direction: column !important;
             gap: 10px !important;
-            align-items: var(--meros-nav-mobile-item-alignment, flex-start) !important;
             
             width: 100% !important;
 

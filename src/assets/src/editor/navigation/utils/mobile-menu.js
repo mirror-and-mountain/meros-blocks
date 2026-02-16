@@ -1,7 +1,75 @@
-export function initMobileMenu(iframe, rootContainer) {
-    const navWrappers = rootContainer.querySelectorAll('.meros-navigation-wrapper');
+import { enableSubmenuOpenOnClick, disableSubmenuOpenOnClick } from "./meros-nav";
 
+let merosNavWrapperObservers = {};
+
+function setMobileMenu(doc, wrapper, isMobile, forceOpen = false) {
+    if (!isMobile) {
+        const forcedOpenSubmenusOnClick = wrapper.dataset.forcedSubmenuOpenOnClick === 'true';
+
+        if (forcedOpenSubmenusOnClick) {
+            disableSubmenuOpenOnClick(doc, wrapper);
+        }
+
+        wrapper.classList.remove('meros-mobile-menu-open');
+        wrapper.classList.remove('meros-mobile-menu-active');
+
+    } else {
+        const openSubmenusOnClick = wrapper.classList.contains('meros-open-submenus-on-click');
+
+        if (!openSubmenusOnClick) {
+            enableSubmenuOpenOnClick(doc, wrapper, true);
+        }
+
+        wrapper.classList.add('meros-mobile-menu-active');
+        
+        if (forceOpen) {
+            wrapper.classList.add('meros-mobile-menu-open');
+        }
+    }
+}
+
+function enableRootObserver(doc, rootContainer) {
+    if (rootContainer.dataset.merosRootObserverInitialised === 'true') return;
+
+    const rootObserver = new ResizeObserver(() => {
+        const isMobile = rootContainer.classList.contains('is-mobile-preview');
+        const wrappers = rootContainer.querySelectorAll('.meros-navigation-wrapper.meros-has-mobile-menu');
+        wrappers.forEach(wrapper => {
+            setMobileMenu(doc, wrapper, isMobile);
+        });
+    });
+
+    rootObserver.observe(rootContainer);
+    rootContainer.dataset.merosRootObserverInitialised = 'true';
+}
+
+function enableWrapperObserver(doc, rootContainer, wrapper) {
+    const wrapperObserver = new MutationObserver(() => {
+        const isMobile = rootContainer.classList.contains('is-mobile-preview');
+        const mobileActive = wrapper.classList.contains('meros-mobile-menu-active');
+
+        if (!mobileActive && isMobile) {
+            setMobileMenu(doc, wrapper, isMobile, true);
+        }
+    });
+
+    wrapperObserver.observe(wrapper, { 
+        attributes: true, 
+        attributeFilter: ['class']
+    });
+
+    wrapper.dataset.merosWrapperObserverId = Math.random().toString(36).substring(2, 11);
+    merosNavWrapperObservers[wrapper.dataset.merosWrapperObserverId] = wrapperObserver;
+
+    return wrapperObserver;
+}
+
+export function initMobileMenus(doc, rootContainer) {
+    const navWrappers = rootContainer.querySelectorAll('.meros-navigation-wrapper.meros-has-mobile-menu');
+    
     navWrappers.forEach(wrapper => {
+        if (wrapper.dataset.merosMobileMenuInitialised === 'true') return;
+
         const navEl = wrapper.querySelector('nav');
         if (!navEl) return;
 
@@ -13,7 +81,6 @@ export function initMobileMenu(iframe, rootContainer) {
 
         mobileToggle.addEventListener('click', () => {
             const isOpen = wrapper.classList.contains('meros-mobile-menu-open');
-            const openOnClickEnabled = wrapper.classList.contains('meros-open-submenus-on-click');
 
             if (isOpen) return;
 
@@ -28,7 +95,7 @@ export function initMobileMenu(iframe, rootContainer) {
                 backBtn.setAttribute('aria-label', 'Back to Menu');
                 backBtn.setAttribute('title', 'Back to Menu');
                 backBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px" style="transform: rotate(180deg);">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15px" height="15px" aria-label="Back Icon" style="transform: rotate(180deg);">
                             <path d="M 9.9989971 4.9999848 A 1.0001 1.0001 0 1 0 8.5857864 6.4141935 L 13.171572 11 L 8.5857864 15.585807 A 1.0001 1.0001 0 1 0 10.000001 17 L 16.999998 11 L 10.000001 5 A 1.0001 1.0001 0 0 0 9.9989971 4.9999848 z"/>
                         </svg>
                     `;
@@ -38,7 +105,7 @@ export function initMobileMenu(iframe, rootContainer) {
                 closeBtn.setAttribute('aria-label', 'Close Menu');
                 closeBtn.setAttribute('title', 'Close Menu');
                 closeBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px" height="20px" aria-label="Close Icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15px" height="15px" aria-label="Close Icon">
                             <path d="M 4.7070312 3.2929688 A 1.0001 1.0001 0 0 0 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 A 1.0001 1.0001 0 1 0 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 A 1.0001 1.0001 0 1 0 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 A 1.0001 1.0001 0 0 0 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z"/>
                         </svg>
                     `;
@@ -73,25 +140,37 @@ export function initMobileMenu(iframe, rootContainer) {
             mobileToggle.classList.add('open');
             wrapper.classList.add('meros-mobile-menu-open');
         });
+
+        enableWrapperObserver(doc, rootContainer, wrapper);
+        wrapper.dataset.merosMobileMenuInitialised = 'true';
     });
 
-    const observer = new ResizeObserver(() => {
-        const isMobile = rootContainer.classList.contains('is-mobile-preview');
-        setMobileMenu(rootContainer, isMobile);
-    });
-
-    observer.observe(iframe);
+    enableRootObserver(doc, rootContainer);
 }
 
-function setMobileMenu(rootContainer, isMobile) {
+export function cleanUpMobileMenus(doc, rootContainer) {
     const navWrappers = rootContainer.querySelectorAll('.meros-navigation-wrapper');
-
     navWrappers.forEach(wrapper => {
-        if (!isMobile) {
-            wrapper.classList.remove('meros-mobile-menu-open');
-            wrapper.classList.remove('meros-mobile-menu-active');
-        } else {
-            wrapper.classList.add('meros-mobile-menu-active');
+        if (wrapper.classList.contains('meros-has-mobile-menu')) return;
+        
+        const forcedOpenSubmenusOnClick = wrapper.dataset.forcedSubmenuOpenOnClick === 'true';
+        
+        if (forcedOpenSubmenusOnClick) {
+            disableSubmenuOpenOnClick(doc, wrapper);
+        }
+
+        wrapper.classList.remove('meros-mobile-menu-open');
+        wrapper.classList.remove('meros-mobile-menu-active');
+        delete wrapper.dataset.merosMobileMenuInitialised;
+
+        if (wrapper.dataset.merosWrapperObserverId) {
+            const observerId = wrapper.dataset.merosWrapperObserverId;
+            const observer = merosNavWrapperObservers[observerId];
+            if (observer) {
+                observer.disconnect();
+                delete merosNavWrapperObservers[observerId];
+            }
+            delete wrapper.dataset.merosWrapperObserverId;
         }
     });
 }

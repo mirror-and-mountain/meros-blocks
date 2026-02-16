@@ -5,7 +5,9 @@ import { attributeIsDefault } from '../../shared/utils';
 
 export function useNavigationWrapperClasses(
     mobileEnabled, 
-    mobileDirection, 
+    mobileDirection,
+    mobileAlignment,
+    mobileHighlightType,
     columnFill, 
     openSubmenusOnClick
 ) {
@@ -14,11 +16,17 @@ export function useNavigationWrapperClasses(
     if (mobileEnabled) {
         classes.push('meros-has-mobile-menu');
         classes.push('meros-mobile-menu-direction-' + mobileDirection);
+        classes.push('meros-mobile-menu-item-alignment-' + mobileAlignment);
+        classes.push('meros-mobile-menu-highlight-' + mobileHighlightType);
     } else {
         classes.forEach((cls) => {
             if (cls.startsWith('meros-mobile-menu-direction-')) {
                 classes.splice(classes.indexOf(cls), 1);
+            } if (cls.startsWith('meros-mobile-menu-item-alignment-')) {
+                classes.splice(classes.indexOf(cls), 1);
             } if (cls === 'meros-has-mobile-menu') {
+                classes.splice(classes.indexOf(cls), 1);
+            } if (cls.startsWith('meros-mobile-menu-highlight-')) {
                 classes.splice(classes.indexOf(cls), 1);
             }
         });
@@ -50,6 +58,8 @@ export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, submenuS
     const navigationAttributes = getNavigationAttributes();
 
     const setStyleAttribute = (type, key, value) => {
+        if (key === 'itemAlignment') return;
+        
         const defaultStyles = type === 'submenu' 
             ? navigationAttributes.submenuSettings.styles
             : navigationAttributes.mobileSettings.styles;

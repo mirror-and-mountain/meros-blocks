@@ -6,7 +6,7 @@ import { NavigationSubmenuWrapper } from './components/NavigationSubmenuWrapper.
 import { NavigationLinkWrapper } from './components/NavigationLinkWrapper.js';
 
 import { addNavigationAttributes } from './utils.js';
-import { subscribeToSubmenuChanges } from './utils/submenus.js';
+import { subscribeToNavChanges } from './utils/meros-nav.js';
 import { initEditorScripts } from '../shared/utils.js';
 import './style.scss';
 
@@ -27,5 +27,5 @@ wp.domReady(() => {
     addFilter('editor.BlockListBlock', 'meros/navigation-link-wrapper', NavigationLinkWrapper);
 
     // Subscribe to menu changes
-    initEditorScripts(subscribeToSubmenuChanges);
+    initEditorScripts(subscribeToNavChanges);
 });

@@ -68,6 +68,17 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
             return;
         }
 
+        const restrictInnerSubmenus = (block, destId) => {
+            const nestedLinks = block.innerBlocks.filter(
+                (nestedBlock) => nestedBlock.name === 'core/navigation-link'
+            );
+            if (!nestedLinks.length) return;
+
+            nestedLinks.forEach((link) => {
+                moveBlockToPosition(link.clientId, block.clientId, destId, 0);
+            })
+        }
+
         if (submenuType === 'mega-menu') {
             let defaultColumnId = null;
             const megaMenuColumns = innerBlocks.filter(block => block.name === 'meros/mega-menu-column') || [];
@@ -85,14 +96,7 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
 
             innerBlocks.forEach((block) => {
                 if (block.name === 'core/navigation-submenu') {
-                    const nestedLinks = block.innerBlocks.filter(
-                        (nestedBlock) => nestedBlock.name === 'core/navigation-link'
-                    );
-                    if (!nestedLinks.length) return;
-
-                    nestedLinks.forEach((link) => {
-                        moveBlockToPosition(link.clientId, block.clientId, defaultColumnId, 0);
-                    });
+                    restrictInnerSubmenus(block, defaultColumnId);
                 }
 
                 else if (block.name !== 'meros/mega-menu-column') {
@@ -130,6 +134,10 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
                     ) {
                         removeBlock(block.clientId, true);
                     }
+                }
+
+                if (block.name === 'core/navigation-submenu') {
+                    restrictInnerSubmenus(block, clientId);
                 }
             });
         }

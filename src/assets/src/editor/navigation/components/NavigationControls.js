@@ -568,13 +568,13 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
 
                                 {/* Mobile Menu Icon Color */}
                                 <ToolsPanelItem
-                                    label={__('Icon', 'meros-theme')}
+                                    label={__('Icons', 'meros-theme')}
                                     isShownByDefault={true}
                                     hasValue={() => mobileStyles.iconColor !== '#000000'}
                                     onDeselect={() => resetStyles('mobileSettings', 'iconColor')}
                                 >
                                     <ColorPicker
-                                        label={__('Icon', 'meros-theme')}
+                                        label={__('Icons', 'meros-theme')}
                                         value={mobileStyles.iconColor || '#000000'}
                                         margin={false}
                                         onChange={(value) => setStyle('mobileSettings', 'iconColor', value)}
@@ -583,13 +583,13 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
 
                                 {/* Icon Color Open */}
                                 <ToolsPanelItem
-                                    label={__('Icon (Open)', 'meros-theme')}
+                                    label={__('Icons (Open)', 'meros-theme')}
                                     isShownByDefault={true}
                                     hasValue={() => mobileStyles.iconColorOpen !== '#000000'}
                                     onDeselect={() => resetStyles('mobileSettings', 'iconColorOpen')}
                                 >
                                     <ColorPicker
-                                        label={__('Icon (Open)', 'meros-theme')}
+                                        label={__('Icons (Open)', 'meros-theme')}
                                         value={mobileStyles.iconColorOpen || '#000000'}
                                         onChange={(value) => setStyle('mobileSettings', 'iconColorOpen', value)}
                                     />
@@ -685,103 +685,58 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                     />
                                 </ToolsPanelItem>
 
-                                {/* Item Text Hover Color */}
+                                {/* Item Highlight Type */}
                                 <ToolsPanelItem
-                                    label={__('Item Text Hover', 'meros-theme')}
+                                    label={__('Item Highlight Type', 'meros-theme')}
                                     isShownByDefault={true}
-                                    hasValue={() => mobileStyles.itemTextHoverColor !== '#222222'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'itemTextHoverColor')}
+                                    hasValue={() => mobileStyles.itemHighlightType !== 'none'}
+                                    onDeselect={() => resetStyles('mobileSettings', 'itemHighlightType')}
                                 >
-                                    <ColorPicker
-                                        label={__('Item Text Hover', 'meros-theme')}
-                                        value={mobileStyles.itemTextHoverColor || '#222222'}
-                                        onChange={(value) => setStyle('mobileSettings', 'itemTextHoverColor', value)}
+                                    <SelectControl
+                                        label={__('Item Highlight Type', 'meros-theme')}
+                                        value={mobileStyles.itemHighlightType}
+                                        options={[
+                                            { label: __('None', 'meros-theme'), value: 'none' },
+                                            { label: __('Background', 'meros-theme'), value: 'background' },
+                                            { label: __('Underline', 'meros-theme'), value: 'underline' },
+                                            { label: __('Overline', 'meros-theme'), value: 'overline' }
+                                        ]}
+                                        onChange={(value) => setStyle('mobileSettings', 'itemHighlightType', value)}
                                     />
                                 </ToolsPanelItem>
 
-                                {/* Item Background Color */}
-                                <ToolsPanelItem
-                                    label={__('Item Background', 'meros-theme')}
-                                    isShownByDefault={true}
-                                    hasValue={() => mobileStyles.itemBgColor !== '#FFFFFF00'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'itemBgColor')}
-                                >
-                                    <ColorPicker
-                                        label={__('Item Background', 'meros-theme')}
-                                        value={mobileStyles.itemBgColor || '#FFFFFF00'}
-                                        onChange={(value) => setStyle('mobileSettings', 'itemBgColor', value)}
-                                    />
-                                </ToolsPanelItem>
+                                {mobileStyles.itemHighlightType !== 'none' && (
+                                    <>
+                                        {/* Item Highlight */}
+                                        <ToolsPanelItem
+                                            label={__('Item Highlight', 'meros-theme')}
+                                            isShownByDefault={true}
+                                            hasValue={() => mobileStyles.itemHighlightColor !== '#0693E3'}
+                                            onDeselect={() => resetStyles('mobileSettings', 'itemHighlightColor')}
+                                        >
+                                            <ColorPicker
+                                                label={__('Item Highlight', 'meros-theme')}
+                                                value={mobileStyles.itemHighlightColor || '#0693E3'}
+                                                margin={false}
+                                                onChange={(value) => setStyle('mobileSettings', 'itemHighlightColor', value)}
+                                            />
+                                        </ToolsPanelItem>
 
-                                {/* Item Background Color (Hover) */}
-                                <ToolsPanelItem
-                                    label={__('Item Background (Hover)', 'meros-theme')}
-                                    isShownByDefault={true}
-                                    hasValue={() => mobileStyles.itemHoverBgColor !== '#e9e9e9'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'itemHoverBgColor')}
-                                >
-                                    <ColorPicker
-                                        label={__('Item Background (Hover)', 'meros-theme')}
-                                        value={mobileStyles.itemHoverBgColor || '#e9e9e9'}
-                                        onChange={(value) => setStyle('mobileSettings', 'itemHoverBgColor', value)}
-                                    />
-                                </ToolsPanelItem>
-
-                                {/* Submenu Text Color */}
-                                <ToolsPanelItem
-                                    label={__('Submenu Text', 'meros-theme')}
-                                    isShownByDefault={true}
-                                    hasValue={() => mobileStyles.submenuItemTextColor !== '#000000'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'submenuItemTextColor')}
-                                >
-                                    <ColorPicker
-                                        label={__('Submenu Text', 'meros-theme')}
-                                        value={mobileStyles.submenuItemTextColor || '#000000'}
-                                        onChange={(value) => setStyle('mobileSettings', 'submenuItemTextColor', value)}
-                                    />
-                                </ToolsPanelItem>
-
-                                {/* Submenu Text Hover Color */}
-                                <ToolsPanelItem
-                                    label={__('Submenu Text Hover', 'meros-theme')}
-                                    isShownByDefault={true}
-                                    hasValue={() => mobileStyles.submenuItemTextHoverColor !== '#222222'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'submenuItemTextHoverColor')}
-                                >
-                                    <ColorPicker
-                                        label={__('Submenu Text Hover', 'meros-theme')}
-                                        value={mobileStyles.submenuItemTextHoverColor || '#222222'}
-                                        onChange={(value) => setStyle('mobileSettings', 'submenuItemTextHoverColor', value)}
-                                    />
-                                </ToolsPanelItem>
-
-                                {/* Submenu Item Background Color */}
-                                <ToolsPanelItem
-                                    label={__('Submenu Background', 'meros-theme')}
-                                    isShownByDefault={true}
-                                    hasValue={() => mobileStyles.submenuItemBgColor !== '#FFFFFF00'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'submenuItemBgColor')}
-                                >
-                                    <ColorPicker
-                                        label={__('Submenu Background', 'meros-theme')}
-                                        value={mobileStyles.submenuItemBgColor || '#FFFFFF00'}
-                                        onChange={(value) => setStyle('mobileSettings', 'submenuItemBgColor', value)}
-                                    />
-                                </ToolsPanelItem>
-
-                                {/* Submenu Item Background Hover Color */}
-                                <ToolsPanelItem
-                                    label={__('Submenu Background Hover', 'meros-theme')}
-                                    isShownByDefault={true}
-                                    hasValue={() => mobileStyles.submenuItemHoverBgColor !== '#FFFFFF00'}
-                                    onDeselect={() => resetStyles('mobileSettings', 'submenuItemHoverBgColor')}
-                                >
-                                    <ColorPicker
-                                        label={__('Submenu Background Hover', 'meros-theme')}
-                                        value={mobileStyles.submenuItemHoverBgColor || '#FFFFFF00'}
-                                        onChange={(value) => setStyle('mobileSettings', 'submenuItemHoverBgColor', value)}
-                                    />
-                                </ToolsPanelItem>
+                                        {/* Item Text Highlight Color */}
+                                        <ToolsPanelItem
+                                            label={__('Item Text Highlight', 'meros-theme')}
+                                            isShownByDefault={true}
+                                            hasValue={() => mobileStyles.itemTextHoverColor !== '#222222'}
+                                            onDeselect={() => resetStyles('mobileSettings', 'itemTextHoverColor')}
+                                        >
+                                            <ColorPicker
+                                                label={__('Item Text Highlight', 'meros-theme')}
+                                                value={mobileStyles.itemTextHoverColor || '#222222'}
+                                                onChange={(value) => setStyle('mobileSettings', 'itemTextHoverColor', value)}
+                                            />
+                                        </ToolsPanelItem>
+                                    </>
+                                )}
                             </ToolsPanel>
                         </PanelBody>
                     )}

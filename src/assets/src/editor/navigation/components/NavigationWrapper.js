@@ -26,6 +26,7 @@ export const NavigationWrapper = createHigherOrderComponent(
             const { layout, openSubmenusOnClick, merosMenu } = attributes;
             const { mobileSettings, submenuSettings } = merosMenu || {};
             const submenuStyles = submenuSettings.styles || {};
+            const mobileStyles = mobileSettings?.styles || {};
 
             const justification = layout?.justifyContent || 'left';
 
@@ -40,6 +41,8 @@ export const NavigationWrapper = createHigherOrderComponent(
             const wrapperClasses = useNavigationWrapperClasses(
                 mobileSettings?.enabled,
                 mobileSettings?.direction,
+                mobileStyles?.itemAlignment,
+                mobileStyles?.itemHighlightType,
                 submenuSettings.type === 'mega-menu' 
                     ? submenuStyles.megaMenuFillSpace || false
                     : false,
@@ -49,8 +52,8 @@ export const NavigationWrapper = createHigherOrderComponent(
             // Determine mobile menu styles
             const wrapperMobileStyles = useNavigationWrapperStyles(
                 mobileSettings?.enabled,
-                mobileSettings?.styles || {},
-                submenuSettings?.styles || {}
+                mobileStyles || {},
+                submenuStyles || {}
             );
 
             return (
