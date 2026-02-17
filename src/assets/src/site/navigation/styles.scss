@@ -2,12 +2,17 @@
 @use './styles/mobile-icon' as mobile-icon;
 @use './styles/mega-menu' as mega-menu;
 
-.wp-site-blocks {
+:root.meros-mobile-menu-active {
     @include mobile-icon.meros-navigation-icon-styles;
-    // @include mobile.meros-navigation-base-styles;
-    // @include mobile.meros-navigation-left-animation-styles;
-    // @include mobile.meros-navigation-right-animation-styles;
-    // @include mobile.meros-navigation-mobile-open-styles;
-    // @include mobile.meros-navigation-mobile-closed-styles;
+    @include mobile.meros-navigation-base-styles;
+    @include mobile.meros-navigation-left-animation-styles;
+    @include mobile.meros-navigation-right-animation-styles;
+    @include mobile.meros-navigation-mobile-open-styles;
+    @include mobile.meros-navigation-mobile-closed-styles;
+    @include mega-menu.meros-navigation-mega-menu-styles;
+}
+
+:root:not(.meros-mobile-menu-active) {
+    @include mobile-icon.meros-navigation-icon-styles;
     @include mega-menu.meros-navigation-mega-menu-styles;
 }

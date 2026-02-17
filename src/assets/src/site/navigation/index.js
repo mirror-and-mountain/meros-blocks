@@ -1,98 +1,6 @@
 import './styles.scss';
 
-// Allow submenu roots to navigate on second click
-const navigateOnClick = (e) => {
-    const button = e.currentTarget;
-    if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
-        const parent = button.parentElement;
-        if (parent && parent.classList.contains('meros-submenu-wrapper')) {
-            parent.classList.remove('meros-submenu-open');
-            
-            const wrapper = parent.closest('.meros-navigation-wrapper');
-            if (wrapper) {
-                wrapper.classList.remove('meros-submenu-open'); 
-            }
-        }
-
-        const action = button.getAttribute('data-action');
-        if (action) {
-            eval(action);
-        }
-    }
-};
-
-const closeMenuOnClickOutside = (submenu, doc) => {
-    const handleClickOutside = (event) => {
-        if (!submenu.contains(event.target)) {
-            const button = submenu.querySelector('button');
-            if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
-                button.removeEventListener('click', navigateOnClick);
-            }
-
-            submenu.classList.remove('meros-submenu-open');
-            
-            const wrapper = submenu.closest('.meros-navigation-wrapper');
-            if (wrapper) {
-                wrapper.classList.remove('meros-submenu-open'); 
-            }
-        }
-    };
-
-    doc.removeEventListener('click', handleClickOutside);
-    doc.addEventListener('click', handleClickOutside);
-};
-
-// Open submenu on click
-const openSubmenuOnClick = (e) => {
-    const submenu = e.currentTarget;
-    const wrapper = submenu.closest('.meros-navigation-wrapper');
-    if (!wrapper) return;
-
-    if (!submenu.classList.contains('meros-submenu-open')) {
-        const button = submenu.querySelector('button');
-        if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
-            button.addEventListener('click', navigateOnClick);
-        }
-
-        submenu.classList.add('meros-submenu-open');
-        wrapper.classList.add('meros-submenu-open');
-    } 
-};
-
-// Enable open on click for submenus
-export const enableSubmenuOpenOnClick = (wrapper, doc, force = false) => {
-    if (!wrapper.classList.contains('meros-open-submenus-on-click') && force) {
-        wrapper.classList.add('meros-open-submenus-on-click');
-        wrapper.dataset.forcedOpenOnClick = 'true';
-    }
-
-    if (wrapper.classList.contains('meros-open-submenus-on-click')) {
-        const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
-
-        submenus.forEach((submenu) => {
-            submenu.addEventListener('click', openSubmenuOnClick);
-
-            // Close submenu on click outside
-            closeMenuOnClickOutside(submenu, doc);
-        });
-    }
-};
-
-// Disable open on click for submenus
-export const disableSubmenuOpenOnClick = (wrapper) => {
-    if (wrapper.dataset.forcedOpenOnClick === 'true') {
-        wrapper.classList.remove('meros-open-submenus-on-click');
-        delete wrapper.dataset.forcedOpenOnClick;
-
-        const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
-
-        submenus.forEach((submenu) => {
-            submenu.removeEventListener('click', openSubmenuOnClick);
-        });
-    }
-};
-
-const stripWPDataAttributes = (element) => {
+function stripWPDataAttributes(element) {
     const wpDataAttributes = [
         'data-wp-context',
         'data-wp-on--focusout',
@@ -110,58 +18,212 @@ const stripWPDataAttributes = (element) => {
             element.removeAttribute(attr);
         }
     });
-};
+}
 
-// Init submenu elements, behaviour and navigation
-export const initSubmenus = (submenus, doc, editor = false) => {
+function openSubmenu(e) {
+    e.stopPropagation();
+    const submenu = e.currentTarget;
+
+    const wrapper = submenu.closest('.meros-navigation-wrapper.meros-open-submenus-on-click');
+    if (!wrapper) return;
+
+    if (!submenu.classList.contains('meros-submenu-open')) {
+        submenu.classList.add('meros-submenu-open');
+        wrapper.classList.add('meros-submenu-open');
+    } else if (!wrapper.classList.contains('meros-mobile-menu-active')) {
+        // Navigate to the link if the submenu is already open
+        const button = submenu.querySelector('button');
+        const action = button?.dataset?.action;
+
+        if (action) {
+            eval(action);
+            submenu.classList.remove('meros-submenu-open');
+            wrapper.classList.remove('meros-submenu-open');
+        }
+    }
+}
+
+function closeSubmenu(e) {
+    if (e.target.classList.contains('meros-submenu-wrapper')) return;
+    if (e.target.closest('.meros-submenu-wrapper') !== null) return;
+
+    const wrapper = e.currentTarget.querySelector(
+        '.meros-navigation-wrapper.meros-open-submenus-on-click'
+    );
+
+    if (!wrapper) return;
+    wrapper.classList.remove('meros-submenu-open');
+
+    const openSubmenu = wrapper.querySelector('.meros-submenu-open');
+    if (!openSubmenu) return;
+
+    openSubmenu.classList.remove('meros-submenu-open');
+}
+
+function enableSubmenOpenOnClick(wrapper, force = false) {
+    wrapper.classList.add('meros-open-submenus-on-click');
+
+    if (force) {
+        wrapper.dataset.forcedSubmenuOpenOnClick = 'true';
+    }
+
+    const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
     submenus.forEach(submenu => {
-        if (submenu.dataset.merosInitialised === 'true') return;
-        
-        const wrapper = submenu.closest('.meros-navigation-wrapper');
-        if (!wrapper) return;
+        submenu.classList.remove('open-on-hover-click');
+        submenu.classList.add('open-on-click');
+        submenu.addEventListener('click', openSubmenu);
+    });
 
-        // Remove wp data attributes
-        if (!editor) {
-            stripWPDataAttributes(submenu);
-            const panel = submenu.querySelector('.wp-block-navigation__submenu-container');
-            if (panel) {
-                stripWPDataAttributes(panel);
+    const root = document.documentElement;
+    const rootInitialised = root.dataset?.merosListeningForSubmenus === 'true';
+
+    if (!rootInitialised) {
+        root.addEventListener('click', closeSubmenu);
+        root.dataset.merosListeningForSubmenus = 'true';
+    }
+}
+
+function disableSubmenuOpenOnClick(wrapper) {
+    wrapper.classList.remove('meros-open-submenus-on-click');
+
+    if (wrapper.dataset.forcedSubmenuOpenOnClick === 'true') {
+        delete wrapper.dataset.forcedSubmenuOpenOnClick;
+    }
+
+    const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
+    submenus.forEach(submenu => {
+        submenu.removeEventListener('click', openSubmenu);
+        submenu.classList.remove('open-on-click');
+        submenu.classList.add('open-on-hover-click');
+    });
+
+    const root = document.documentElement;
+    const anyOtherWrappers = document.querySelector(
+        '.meros-navigation-wrapper.meros-open-submenus-on-click'
+    );
+
+    if (!anyOtherWrappers && root.dataset?.merosListeningForSubmenus === 'true') {
+        root.removeEventListener('click', closeSubmenu);
+        delete root.dataset.merosListeningForSubmenus;
+    }
+}
+
+function setMobileMenus(width) {
+    const navWrappers = document.querySelectorAll('.meros-navigation-wrapper.meros-has-mobile-menu');
+    navWrappers.forEach(wrapper => {
+        const breakpoint = parseInt(wrapper.dataset.merosMobileMenuBreakpoint) || 768;
+
+        if (width < breakpoint) {
+            document.documentElement.classList.add('meros-mobile-menu-active');
+            wrapper.classList.add('meros-mobile-menu-active');
+            if (!wrapper.classList.contains('meros-open-submenus-on-click')) {
+                enableSubmenOpenOnClick(wrapper, true);
+            }
+        } else {
+            wrapper.classList.remove('meros-mobile-menu-active');
+            wrapper.classList.remove('meros-mobile-menu-open');
+            document.documentElement.classList.remove('meros-mobile-menu-active');
+            if (wrapper.dataset.forcedSubmenuOpenOnClick === 'true') {
+                disableSubmenuOpenOnClick(wrapper);
             }
         }
+    });
+}
 
-        // Handle on click behaviour
+function initMobileMenu(wrapper) {
+    const navEl = wrapper.querySelector('nav');
+    if (!navEl) return;
+
+    const container = navEl.querySelector('.wp-block-navigation__container');
+    if (!container) return;
+
+    const mobileToggle = wrapper.querySelector('.meros-navigation-mobile-toggle');
+    if (!mobileToggle) return;
+
+    mobileToggle.addEventListener('click', () => {
+        const isActive = wrapper.classList.contains('meros-mobile-menu-active');
+        if (!isActive) return;
+
+        const isOpen = wrapper.classList.contains('meros-mobile-menu-open');
+        if (isOpen) return;
+
+        const navBtns = container.querySelector('.meros-navigation-btns');
+        if (!navBtns) return; 
+
+        const backBtn = navBtns.querySelector('.meros-navigation-back-btn');
+        const closeBtn = navBtns.querySelector('.meros-navigation-close-btn');
+
+        if (!backBtn || !closeBtn) return;
+
+        backBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const openSubmenu = wrapper.querySelector('.meros-submenu-open');
+            if (!openSubmenu) return;
+
+            openSubmenu.classList.remove('meros-submenu-open');
+            wrapper.classList.remove('meros-submenu-open');
+        });
+
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (wrapper.classList.contains('meros-mobile-menu-open')) {
+                wrapper.classList.remove('meros-mobile-menu-open');
+                wrapper.classList.add('meros-mobile-menu-closing');
+                mobileToggle.classList.remove('open');
+
+                setTimeout(() => {
+                    wrapper.classList.remove('meros-mobile-menu-closing');
+                }, 400);
+            }
+        });
+        
+        mobileToggle.classList.add('open');
+        wrapper.classList.add('meros-mobile-menu-open');
+    });
+}
+
+function initNavigationBlocks() {
+    const wrappers = document.querySelectorAll('.meros-navigation-wrapper');
+
+    wrappers.forEach(wrapper => {
+        // Strip WP data attributes from submenu elements
+        const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
+        submenus.forEach(submenu => {
+            stripWPDataAttributes(submenu);
+
+            const button = submenu.querySelector('button');
+            const innerContainer = submenu.querySelector('.wp-block-navigation__submenu-container');
+            
+            if (button) {
+                stripWPDataAttributes(button);
+            }
+            
+            if (innerContainer) {
+                stripWPDataAttributes(innerContainer);
+            }
+        });
+
+        // Enable open on click if the wrapper has the class        
         if (wrapper.classList.contains('meros-open-submenus-on-click')) {
-            submenu.addEventListener('click', openSubmenuOnClick);
-            // Close submenu on click outside
-            const handleClickOutside = (event) => {
-                if (!submenu.contains(event.target)) {
-                    const button = submenu.querySelector('button');
-                    if (button.classList.contains('wp-block-navigation-submenu__toggle')) {
-                        button.removeEventListener('click', navigateOnClick);
-                    }
-
-                    submenu.classList.remove('meros-submenu-open');
-                    
-                    const wrapper = submenu.closest('.meros-navigation-wrapper');
-                    if (wrapper) {
-                        wrapper.classList.remove('meros-submenu-open'); 
-                    }
-                }
-            };
-
-            doc.addEventListener('click', handleClickOutside);
+            enableSubmenOpenOnClick(wrapper);
         }
 
-        // Triggers editor observers
-        if (editor) {
-            setTimeout(() => {
-                submenu.dataset.merosInitialised = 'true';
-            }, 200);
+        // Init mobile menu if the wrapper has the class
+        if (wrapper.classList.contains('meros-has-mobile-menu')) {
+            initMobileMenu(wrapper);
         }
     });
-};
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    const subMenus = document.querySelectorAll('.meros-submenu-wrapper');
-    initSubmenus(subMenus, document);
+    const width = window.innerWidth;
+    initNavigationBlocks();
+    setMobileMenus(width);
+
+    window.addEventListener('resize', () => {
+        const newWidth = window.innerWidth;
+        if (newWidth !== width) {
+            setMobileMenus(newWidth);
+        }
+    });
 });

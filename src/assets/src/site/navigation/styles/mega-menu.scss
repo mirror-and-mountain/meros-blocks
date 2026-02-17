@@ -106,13 +106,8 @@
                 }
 
                 .meros-mega-menu-item {
-                    color: var(--meros-nav-submenu-item-color, #000000);
                     font-size: var(--meros-nav-submenu-item-size, 1rem);
                     padding: var(--meros-nav-submenu-item-padding-y, 0px) var(--meros-nav-submenu-item-padding-x, 0px);
-
-                    &:hover {
-                        color: var(--meros-nav-submenu-item-hover-color, #000000);
-                    }
                 }
 
                 .meros-mega-menu-item,
@@ -157,7 +152,6 @@
     // Mobile Closed State
     .meros-navigation-wrapper.meros-mobile-menu-active.meros-mobile-menu-open {
         .wp-block-navigation__container:has(.meros-mega-menu-wrapper) {
-            .meros-submenu-wrapper 
             .wp-block-navigation-submenu >
             .wp-block-navigation-item__content,
             .meros-top-level-item {
@@ -169,7 +163,6 @@
         }
 
         .wp-block-navigation__container:has(.meros-mega-menu-wrapper.meros-submenu-open) {
-            .meros-submenu-wrapper 
             .wp-block-navigation-submenu >
             .wp-block-navigation-item__content,
             .meros-top-level-item {
@@ -183,15 +176,18 @@
     .meros-navigation-wrapper.meros-mobile-menu-active
     .meros-mega-menu-wrapper
     .meros-mega-menu-items-container {
+        transform: none !important;
         opacity: 0;
-        transition: opacity 0.2s ease;
-        will-change: opacity;
+        transition: opacity 0.2s ease !important;
+        will-change: opacity !important;
 
         top: 0 !important;
         right: 0;
+        
         width: 100% !important;
-        max-width: 320px;
+        width: -webkit-fill-available !important;
         min-width: auto;
+        
         height: 100vh;
 
         z-index: 200;
@@ -226,13 +222,6 @@
             
                 .meros-mega-menu-item {
                     margin-left: unset !important;
-                    background: var(--meros-nav-mobile-submenu-item-bg-color, #ffffff00);
-                    color: var(--meros-nav-mobile-submenu-item-text-color, #000000);
-
-                    &:hover {
-                        background: var(--meros-nav-mobile-submenu-item-hover-bg-color, #ffffff00) !important;
-                        color: var(--meros-nav-mobile-submenu-item-text-hover-color, #222222) !important;
-                    }
                 }
 
                 .meros-mega-menu-column-title,

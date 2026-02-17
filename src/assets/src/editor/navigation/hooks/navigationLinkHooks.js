@@ -30,15 +30,3 @@ export function useNavigationLinkWrapperClasses(linkType) {
 
     return classes.join(' ');
 }
-
-export function useNavigationLinkWrapperStyles(linkType, config) {
-    const styles = {};
-
-    if (linkType === 'mega-menu-item') {
-        styles['--meros-mega-menu-item-column'] = config.columnIndex || 1;
-    } else {
-        delete styles['--meros-mega-menu-item-column'];
-    }
-
-    return styles;
-}

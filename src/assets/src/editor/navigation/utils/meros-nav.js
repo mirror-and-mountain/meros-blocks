@@ -90,6 +90,8 @@ export function enableSubmenuOpenOnClick(doc, wrapper, force = false) {
 
     const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
     submenus.forEach(submenu => {
+        submenu.firstElementChild.classList.remove('open-on-hover-click');
+        submenu.firstElementChild.classList.add('open-on-click');
         submenu.addEventListener('click', openSubmenu);
     });
 
@@ -114,6 +116,8 @@ export function disableSubmenuOpenOnClick(doc, wrapper) {
     const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
     submenus.forEach(submenu => {
         submenu.removeEventListener('click', openSubmenu);
+        submenu.firstElementChild.classList.remove('open-on-click');
+        submenu.firstElementChild.classList.add('open-on-hover-click');
     });
 
     const rootContainer = doc.querySelector('.is-root-container');
