@@ -1,0 +1,1 @@
+(()=>{"use strict";document.addEventListener("DOMContentLoaded",()=>{!function({doc:e,win:t,selector:n}){const o=e.querySelector(n);if(!o)return;const r=t=>{e.documentElement.style.setProperty("--meros-header-height",`${t}px`)};r(o.offsetHeight),t.addEventListener("resize",()=>{r(o.offsetHeight)})}({doc:document,win:window,selector:"header"})})})();

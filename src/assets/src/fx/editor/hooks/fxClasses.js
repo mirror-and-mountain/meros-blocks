@@ -1,0 +1,104 @@
+import {
+    isEnabled,
+    isScrollFxBlock,
+    isHoverFxBlock,
+    isHeaderFxBlock,
+    isInSwiper
+} from '../utils.js';
+
+// Classes used on blocks with fx enabled
+export const AnimationClasses = [
+    'meros-has-scroll-animation',
+    'meros-has-hover-animation',
+    'meros-has-header-animation',
+    'meros-has-animated-logo',
+    'meros-has-animated-bg-color',
+    'meros-has-animated-text-color',
+    'meros-has-animated-link-color',
+    'meros-has-animated-link-hover-color',
+    'meros-animate-on-slide-change',
+    'meros-animating',
+    'meros-animated',
+    'meros-preview-hover-fx',
+    'meros-preview-header-fx',
+    'meros-preview-logo-fx'
+];
+
+// Classes used for sticky blocks
+export const StickyClasses = [
+    'meros-sticky-element',
+    'meros-header-offset',
+    'meros-header-no-bottom-margin',
+];
+
+export function useFxClasses(blockName, attrs, clientId, save = false) {
+    const classes = [];
+
+    if (isEnabled(attrs) === false) {
+        return classes;
+    }
+
+    classes.push('meros-has-block-animation');
+
+    const hasClassAttr = (blockName, attr, attrs) => {
+        if (!isScrollFxBlock(blockName, attrs.merosScrollFx) &&
+            !isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
+            return false;
+        }
+
+        const prefix = isScrollFxBlock(blockName, attrs.merosScrollFx)
+            ? 'scroll'
+            : 'header';
+
+        const attrName = `${prefix}${attr.charAt(0).toUpperCase()}${attr.slice(1)}`;
+
+        return Boolean(
+            attrs.merosScrollFx?.[attrName] ||
+            attrs.merosHeaderFx?.[attrName]
+        );
+    };
+
+    if (isScrollFxBlock(blockName, attrs.merosScrollFx)) {
+        classes.push('meros-has-scroll-animation');
+        if (isInSwiper(clientId) && attrs.merosScrollFx.animateOnSlideChange) {
+            classes.push('meros-animate-on-slide-change');
+        }
+    }
+
+    if (isHoverFxBlock(blockName, attrs.merosHoverFx)) {
+        classes.push('meros-has-hover-animation');
+    }
+
+    if (isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
+        classes.push('meros-has-header-animation');
+        if (attrs.merosHeaderFx.headerAnimateLogoWidth !== 100) {
+            classes.push('meros-has-animated-logo-width');
+        }
+    }
+
+    if (hasClassAttr(blockName, 'animateBgColor', attrs)) {
+        classes.push('meros-has-animated-bg-color');
+    }
+
+    if (hasClassAttr(blockName, 'animateTextColor', attrs)) {
+        classes.push('meros-has-animated-text-color');
+    }
+
+    if (hasClassAttr(blockName, 'animateLinkColor', attrs)) {
+        classes.push('meros-has-animated-link-color');
+    }
+
+    if (hasClassAttr(blockName, 'animateLinkHoverColor', attrs)) {
+        classes.push('meros-has-animated-link-hover-color');
+    }
+
+    return classes;
+}
+
+// Cleans fx classes from the given className string
+export function removeClasses(className = '', classesToRemove = []) {
+    return className
+        .split(/\s+/)
+        .filter((cls) => cls && !classesToRemove.includes(cls))
+        .join(' ');
+}

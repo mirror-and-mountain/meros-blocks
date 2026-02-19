@@ -1,0 +1,123 @@
+@mixin meros-navigation-base-styles {
+    .meros-navigation-wrapper {
+        &.meros-desktop-menu-highlight-background {
+            .wp-block-navigation__container
+            .meros-top-level-item:not(.current-menu-item),
+            .meros-submenu-wrapper:not(.current-menu-item) {
+                transition: background-color 0.2s ease, color 0.2s ease;
+                color: var(--meros-nav-desktop-item-text-color, #000000) !important;
+
+                &:hover {
+                    color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+                    background-color: var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                }
+            }
+
+            .wp-block-navigation__container
+            .meros-top-level-item.current-menu-item,
+            .meros-submenu-wrapper.current-menu-item {
+                background-color: var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+            }
+        }
+
+        &.meros-desktop-menu-highlight-underline {
+            .wp-block-navigation__container
+            .meros-top-level-item:not(.current-menu-item),
+            .meros-submenu-wrapper:not(.current-menu-item) {
+                transition: border-bottom 0.2s ease, color 0.2s ease;
+                color: var(--meros-nav-desktop-item-text-color, #000000) !important;
+                border-bottom: 2px solid transparent !important;
+
+                &:hover {
+                    color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+                    border-bottom: 2px solid var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                }
+            }
+
+            .wp-block-navigation__container
+            .meros-top-level-item.current-menu-item,
+            .meros-submenu-wrapper.current-menu-item {
+                border-bottom: 2px solid var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+            }
+            
+        }
+
+        &.meros-desktop-menu-highlight-overline {
+            .wp-block-navigation__container
+            .meros-top-level-item:not(.current-menu-item),
+            .meros-submenu-wrapper:not(.current-menu-item) {
+                transition: border-top 0.2s ease, color 0.2s ease;
+                color: var(--meros-nav-desktop-item-text-color, #000000) !important;
+                border-top: 2px solid transparent !important;
+
+                &:hover {
+                    color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+                    border-top: 2px solid var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                }
+            }
+
+            .wp-block-navigation__container
+            .meros-top-level-item.current-menu-item,
+            .meros-submenu-wrapper.current-menu-item {
+                border-top: 2px solid var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+            }   
+        }
+
+        &.meros-desktop-menu-highlight-border {
+            .wp-block-navigation__container
+            .meros-top-level-item:not(.current-menu-item),
+            .meros-submenu-wrapper:not(.current-menu-item) {
+                transition: border 0.2s ease, color 0.2s ease;
+                color: var(--meros-nav-desktop-item-text-color, #000000) !important;
+                border: 2px solid transparent !important;
+
+                &:hover {
+                    color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+                    border: 2px solid var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                }
+            }
+
+            .wp-block-navigation__container
+            .meros-top-level-item.current-menu-item,
+            .meros-submenu-wrapper.current-menu-item {
+                border: 2px solid var(--meros-nav-desktop-item-highlight-color, #0693E3) !important;
+                color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
+            }
+        }
+
+        .wp-block-navigation__container {
+            gap: var(--meros-nav-desktop-items-gap, 0px) !important;
+
+            .meros-top-level-item,
+            .meros-submenu-wrapper
+            .wp-block-navigation-item__label {
+                white-space: nowrap !important;
+            }
+
+            .meros-top-level-item,
+            .meros-submenu-wrapper {
+                flex: 1;
+                white-space: nowrap !important;
+                padding: var(--meros-nav-desktop-item-padding-y, 0px) var(--meros-nav-desktop-item-padding-x, 0px) !important;
+
+                .wp-block-navigation__submenu-container {
+                    background-color: var(--meros-nav-submenu-bg-color, #ffffff);
+                
+                    .meros-submenu-item:not(.meros-mega-menu-item) {
+                        color: var(--meros-nav-submenu-item-text-color, #000000);
+                        background-color: transparent;
+                        transition: color 0.1s ease, background-color 0.1s ease;
+
+                        &:hover {
+                            color: var(--meros-nav-submenu-item-text-hover-color, #000000);
+                            background-color: var(--meros-nav-submenu-item-highlight-color, #0693E3);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,76 @@
+.meros-has-header-animation,
+.editor-styles-wrapper .meros-has-header-animation.meros-preview-header-fx {
+    --bg-start: var(--meros-header-animate-bg-color-start);
+    --bg-end: var(--meros-header-animate-bg-color-end);
+    --color-start: var(--meros-header-animate-text-color-start);
+    --color-end: var(--meros-header-animate-text-color-end);
+    --link-start: var(--meros-header-animate-link-color-start);
+    --link-end: var(--meros-header-animate-link-color-end);
+    --link-hover-start: var(--meros-header-animate-link-hover-color-start);
+    --link-hover-end: var(--meros-header-animate-link-hover-color-end);
+    --fx-progress: 0;
+
+    &.meros-has-animated-bg-color {
+        background-color: color-mix(
+            in srgb,
+            var(--bg-start) calc(100% - (var(--fx-progress) * 100%)),
+            var(--bg-end) calc(var(--fx-progress) * 100%)
+        ) !important;
+    }
+
+    &.meros-has-animated-text-color {
+        color: color-mix(
+            in srgb,
+            var(--color-start) calc(100% - (var(--fx-progress) * 100%)),
+            var(--color-end) calc(var(--fx-progress) * 100%)
+        ) !important;
+    }
+
+    &.meros-has-animated-link-color {
+        a {
+            color: color-mix(
+                in srgb,
+                var(--link-start) calc(100% - (var(--fx-progress) * 100%)),
+                var(--link-end) calc(var(--fx-progress) * 100%)
+            ) !important;
+        }
+    }
+
+    &.meros-has-animated-link-hover-color {
+        a:hover {
+            color: color-mix(
+                in srgb,
+                var(--link-hover-start) calc(100% - (var(--fx-progress) * 100%)),
+                var(--link-hover-end) calc(var(--fx-progress) * 100%)
+            ) !important;
+        }
+    }
+}
+
+.editor-styles-wrapper .meros-has-header-animation.meros-has-animated-logo-width.meros-preview-header-fx {
+    --logo-width-start: 0px;
+    --logo-width-end: 0px;
+    --fx-progress: 0;
+
+    .components-resizable-box__container:not(.has-show-handle) {
+        width: calc(
+            var(--logo-width-start) +
+            (var(--logo-width-end) - var(--logo-width-start)) * var(--fx-progress)
+        ) !important;
+        height: auto !important;
+    }
+}
+
+.meros-has-header-animation.meros-has-animated-logo-width {
+    --logo-width-start: 0px;
+    --logo-width-end: 0px;
+    --fx-progress: 0;
+
+    .wp-block-site-logo img {
+        width: calc(
+            var(--logo-width-start) +
+            (var(--logo-width-end) - var(--logo-width-start)) * var(--fx-progress)
+        ) !important;
+        height: auto !important;
+    }
+}

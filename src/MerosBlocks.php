@@ -13,6 +13,7 @@ class MerosBlocks extends Extension
 
     protected function configure(): void
     {        
+        $this->assetsStructure = '/**/{location}/*.{extension}';
         $this->loadAssets();
         $this->loadBlocks();
         $this->includeHooks();

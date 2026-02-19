@@ -19,11 +19,13 @@ add_filter('render_block', function ($block_content, $block) {
                 'titleSize' => '0.875rem',
                 'titlePaddingX' => '16px',
                 'titlePaddingY' => '16px',
-                'itemColor' => '#000000',
-                'itemHoverColor' => '#222222',
+                'itemTextColor' => '#000000',
+                'itemTextHoverColor' => '#222222',
                 'itemSize' => '1rem',
                 'itemPaddingX' => '0px',
                 'itemPaddingY' => '0px',
+                'itemHighlightType' => 'none',
+                'itemHighlightColor' => '#0693E3',
                 'megaMenuColumnGap' => '80px',
                 'megaMenuColumnAlignment' => 'start',
                 'megaMenuFillSpace' => false,
@@ -54,15 +56,14 @@ add_filter('render_block', function ($block_content, $block) {
         'desktopSettings' => [
             'enabled' => true,
             'styles' => [
-                'textColor' => '#000000',
-                'textHoverColor' => '#222222',
-                'itemBgColor' => '#FFFFFF00',
-                'itemHoverBgColor' => '#e9e9e9',
-                'submenuBgColor' => '#FFFFFF00',
-                'submenuItemBgColor' => '#FFFFFF00',
-                'submenuHoverBgColor' => '#e9e9e9',
-                'submenuTextColor' => '#000000',
-                'submenuTextHoverColor' => '#222222'
+                'itemsGap' => '0px',
+                'itemsJustification' => 'start',
+                'itemPaddingX' => '0px',
+                'itemPaddingY' => '0px',
+                'itemTextColor' => '#000000',
+                'itemTextHoverColor' => '#222222',
+                'itemHighlightType' => 'none',
+                'itemHighlightColor' => '#0693E3'
             ]
         ]
     ];
@@ -105,6 +106,23 @@ add_filter('render_block', function ($block_content, $block) {
         }
     }
 
+    // Handle desktop menu styles
+    $desktopStyles = $merosDesktopSettings['styles'] ?? [];
+    $desktopItemHighlightType = $desktopStyles['itemHighlightType'] ?? 'none';
+
+    $wrapperClasses[] = 'meros-desktop-menu-highlight-' . esc_attr($desktopItemHighlightType);
+
+    foreach ($desktopStyles as $key => $value) {
+        if (in_array($key, array_keys($merosDefaultSettings['desktopSettings']['styles']), true)) {
+            if ($value === $merosDefaultSettings['desktopSettings']['styles'][$key]) {
+                continue;
+            }
+
+            $property = '--' . \Illuminate\Support\Str::kebab('merosNavDesktop' . ucfirst($key));
+            $wrapperStyles[$property] = $value;
+        }
+    }
+
     // Handle mobile menu settings and styles
     $mobileBreakpoint = null;
 
@@ -127,7 +145,7 @@ add_filter('render_block', function ($block_content, $block) {
             $wrapperClasses[] = 'meros-mobile-menu-highlight-' . esc_attr($itemHighlightType);
         }
 
-        foreach($mobileStyles as $key => $value) {
+        foreach ($mobileStyles as $key => $value) {
             if (in_array($key, array_keys($merosDefaultSettings['mobileSettings']['styles']), true)) {
                 if ($value === $merosDefaultSettings['mobileSettings']['styles'][$key]) {
                     continue;
@@ -140,7 +158,7 @@ add_filter('render_block', function ($block_content, $block) {
     }
 
     // Handle submenu styles
-    foreach($merosSubmenuSettings['styles'] ?? [] as $key => $value) {
+    foreach ($merosSubmenuSettings['styles'] ?? [] as $key => $value) {
         if (in_array($key, array_keys($merosDefaultSettings['submenuSettings']['styles']), true)) {
             if ($value === $merosDefaultSettings['submenuSettings']['styles'][$key]) {
                 continue;
@@ -265,15 +283,21 @@ add_filter('render_block', function ($block_content, $block) {
         ? $block['attrs']['merosSubmenu']
         : [];
 
+    // Fallback to default settings if not set
     if ($merosSubmenuSettings === []) {
-        return $block_content;
+        $merosSubmenuSettings = [
+            'type' => 'default',
+            'styles' => [
+                'dropShadow' => true,
+            ]
+        ];
     }
 
     $submenuType = $merosSubmenuSettings['type'] ?? 'default';
     $dropShadow  = $merosSubmenuSettings['styles']['dropShadow'] ?? false;
 
     // Set wrapper classes
-    $wrapperClasses = ['meros-submenu-wrapper'];
+    $wrapperClasses = ['meros-submenu-wrapper', 'meros-submenu'];
 
     if ($submenuType === 'mega-menu') {
         $wrapperClasses[] = 'meros-mega-menu-wrapper';
@@ -423,16 +447,28 @@ add_filter('render_block', function ($block_content, $block) {
 
 // Filter to add custom attributes to the Navigation Link block
 add_filter( 'register_block_type_args', function( $args, $name ) {
-    if ( 'core/navigation-link' !== $name ) {
-        return $args;
+    if ( $name === 'core/navigation-link' ) {
+        $args['attributes']['merosMenuItem'] = [
+            'type'    => 'object',
+            'default' => [
+                'type' => 'dropdown-item'
+            ],
+        ];
     }
 
-    $args['attributes']['merosMenuItem'] = [
-        'type'    => 'object',
-        'default' => [
-            'type' => 'dropdown-item'
-        ],
-    ];
-
+    if ( $name === 'core/navigation-submenu' ) {
+        $args['attributes']['merosSubmenu'] = [
+            'type'    => 'object',
+            'default' => [
+                'type' => 'default',
+                'styles' => [
+                    'dropShadow' => true,
+                ]
+            ],
+        ];
+    }
+    
     return $args;
 }, 10, 2 );
+
+// Register save hook for submenu to add custom classes
