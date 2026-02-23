@@ -1,6 +1,7 @@
 @mixin meros-navigation-desktop-styles {
     // Fix wrapper border
-    .meros-navigation-wrapper {
+    .meros-navigation-wrapper,
+    .meros-submenu-wrapper {
         border: none !important;
     }
 

@@ -604,7 +604,7 @@
         display: none;
 
         position: relative;
-        justify-content: var(--meros-mobile-menu-item-alignment, flex-start);
+        justify-content: var(--meros-mobile-menu-justification, flex-start);
         z-index: 100;
 
         cursor: pointer;
