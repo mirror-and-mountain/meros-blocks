@@ -2,7 +2,7 @@ import { isCompatible, isEnabled } from '../utils.js';
 import { AnimationClasses, useFxClasses, removeClasses } from './fxClasses.js';
 import { AnimationStyleVars, useFxStyleVars, removeStyleVars } from './fxStyleVars.js';
 
-export const saveFxStyles = (extraProps, blockType, attributes, clientId) => {
+export const saveFxStyles = (extraProps, blockType, attributes) => {
     if (!isCompatible(blockType.name)) {
         return extraProps;
     }
@@ -26,6 +26,9 @@ export const saveFxStyles = (extraProps, blockType, attributes, clientId) => {
             style: baseStyle,
         };
     }
+
+    // Get the clientId from attributes
+    const clientId = attributes?.merosClientId || '';
 
     // Animation enabled → add classes & vars cleanly
     return {

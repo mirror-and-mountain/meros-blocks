@@ -4,7 +4,7 @@ import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import { InspectorControls, PanelBody } from '../../../components/Controls.js';
-import { isDirectChildOf, isChildOf } from '../../../utils/editor.js';
+import { isChildOf } from '../../../utils/editor.js';
 
 import StickyControls from './StickyControls.js';
 import ScrollFX from './ScrollFX.js';
@@ -42,7 +42,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
             }
         );
 
-        const isInSwiper = isChildOf('meros/swiper', clientId);
+        const isInSwiper = isChildOf(clientId, 'meros/swiper-slide');
 
         // Update wp preset colours for headerfx
         useEffect(() => {

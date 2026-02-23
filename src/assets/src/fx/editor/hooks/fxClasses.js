@@ -2,9 +2,11 @@ import {
     isEnabled,
     isScrollFxBlock,
     isHoverFxBlock,
-    isHeaderFxBlock,
-    isInSwiper
+    isHeaderFxBlock
 } from '../utils.js';
+
+import { useEffect } from '@wordpress/element';
+import { isChildOf } from '../../../utils/editor.js';
 
 // Classes used on blocks with fx enabled
 export const AnimationClasses = [
@@ -60,7 +62,7 @@ export function useFxClasses(blockName, attrs, clientId, save = false) {
 
     if (isScrollFxBlock(blockName, attrs.merosScrollFx)) {
         classes.push('meros-has-scroll-animation');
-        if (isInSwiper(clientId) && attrs.merosScrollFx.animateOnSlideChange) {
+        if (isChildOf(clientId, 'meros/swiper-slide') && attrs.merosScrollFx.animateOnSlideChange) {
             classes.push('meros-animate-on-slide-change');
         }
     }
@@ -101,4 +103,12 @@ export function removeClasses(className = '', classesToRemove = []) {
         .split(/\s+/)
         .filter((cls) => cls && !classesToRemove.includes(cls))
         .join(' ');
+}
+
+export function useClientIdAttribute(attributes, setAttributes, clientId) {
+    useEffect(() => {
+        if (!attributes.merosClientId) {
+            setAttributes({ merosClientId: clientId });
+        }
+    }, [clientId]);
 }

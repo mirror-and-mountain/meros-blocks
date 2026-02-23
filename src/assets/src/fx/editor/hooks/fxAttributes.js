@@ -19,6 +19,7 @@ export const useFxAttributes = (settings, name) => {
         ...settings,
         attributes: {
             ...settings.attributes,
+            merosClidentId: { type: 'string', default: '' },
             merosScrollFx: { type: 'object', default: getFxAttrs('Scroll') },
             merosHoverFx: { type: 'object', default: getFxAttrs('Hover') },
             merosHeaderFx: { type: 'object', default: getFxAttrs('Header') },

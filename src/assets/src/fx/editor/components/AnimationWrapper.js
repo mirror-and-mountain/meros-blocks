@@ -3,8 +3,9 @@ import { useEffect, useState } from '@wordpress/element';
 
 import { previewFx, isCompatible, isEnabled } from '../utils.js';
 
-import { AnimationClasses, removeClasses, useFxClasses } from '../hooks/fxClasses.js';
+import { AnimationClasses, removeClasses, useFxClasses, useClientIdAttribute } from '../hooks/fxClasses.js';
 import { AnimationStyleVars, removeStyleVars, useFxStyleVars } from '../hooks/fxStyleVars.js';
+import { use } from '@wordpress/data';
 
 export const AnimationWrapper = createHigherOrderComponent(
     (BlockListBlock) => {
@@ -24,6 +25,9 @@ export const AnimationWrapper = createHigherOrderComponent(
                 props.wrapperProps?.style || {},
                 AnimationStyleVars
             );
+
+            // Ensure clientId is available in attributes for fx processing
+            useClientIdAttribute(attributes, setAttributes, clientId);
 
             const scrollPreview = attributes?.merosScrollFx?.scrollPreviewFx || false;
             const hoverPreview = previewFx.hoverPreviewFx[clientId] || false;

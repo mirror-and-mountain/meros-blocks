@@ -53,7 +53,7 @@ export const isHeaderFxBlock = (blockName, attrs, clientId, save = false) => {
 
 // Helper to determine if the block is within a swiper block
 export const isInSwiper = (clientId) => {
-    return isChildOf('meros/swiper', clientId);
+    return isChildOf(clientId, 'meros/swiper-slide');
 };
 
 // Determines whether the given block (id) contains a site logo block
