@@ -23,13 +23,10 @@ export function useNavigationAttributes(settings, name) {
                     type: 'object',
                     default: {
                         type: 'default',
-                        styles: {
-                            dropShadow: true,
-                        }
+                        ...getNavigationSubmenuAttributes(),
                     }
                 }
-            },
-            supports: {}
+            }
         };
     }
 
@@ -51,30 +48,11 @@ export function useNavigationAttributes(settings, name) {
 
 export function getNavigationAttributes() {
     return {
+        'enabled': false,
+        'usedExistingMenu': false,
+        'menuInitialised': false,
         "submenuSettings": {
-            "type": "default",
-            "styles": {
-                "bgColor": "#FFFFFF",
-                "borderColor": "#ABABAB",
-                "borderWidth": '1px',
-                "dropShadow": true,
-                "borderWidth": '1px',
-                "titleColor": "#5B5B5B",
-                "titleSize": '0.875rem',
-                "titlePaddingX": '16px',
-                "titlePaddingY": '16px',
-                "itemTextColor": "#000000",
-                "itemTextHoverColor": "#222222",
-                "itemSize": '1rem',
-                "itemPaddingX": '0px',
-                "itemPaddingY": '0px',
-                "itemHighlightType": "none",
-                "itemHighlightColor": "#0693E3",
-                "megaMenuColumnGap": '80px',
-                "megaMenuColumnAlignment": "start",
-                "megaMenuFillSpace": false,
-                "megaMenuItemGap": '0px'
-            }
+            "type": "default"
         },
         "mobileSettings": {
             "enabled": true,
@@ -83,6 +61,9 @@ export function getNavigationAttributes() {
             "underHeader": false,
             "icon": "hamburger-1",
             "styles": {
+                "width": '80%',
+                "maxWidth": "320px",
+                "boxShadow": true,
                 "itemsGap": '0px',
                 "iconColor": "#000000",
                 "iconColorOpen": "#000000",
@@ -104,13 +85,42 @@ export function getNavigationAttributes() {
                 "borderWidth": '1px',
                 "itemsGap": '0px',
                 "itemsJustification": "start",
-                "itemPaddingX": '0px',
+                "itemPaddingX": '10px',
                 "itemPaddingY": '0px',
                 "itemTextColor": "#000000",
                 "itemTextHoverColor": "#222222",
                 "itemHighlightType": "none",
                 "itemHighlightColor": "#0693E3",
+                "itemHighlightBorderWidth": '1px',
             }
+        }
+    };
+}
+
+export function getNavigationSubmenuAttributes() {
+    return {
+        "styles": {
+            "bgColor": "#FFFFFF",
+            "borderColor": "#FFFFFF00",
+            "borderWidth": '0px',
+            "itemBorderColor": "#FFFFFF00",
+            "itemBorderWidth": '0px',
+            "dropShadow": true,
+            "itemTextColor": "#000000",
+            "itemTextHoverColor": "#222222",
+            "itemPaddingX": '0px',
+            "itemPaddingY": '0px',
+            "itemHighlightType": "none",
+            "itemHighlightColor": "#0693E3",
+            "itemHighlightBorderWidth": '1px',
+            "titleColor": "#5B5B5B",
+            "titleSize": '0.875rem',
+            "titlePaddingX": '16px',
+            "titlePaddingY": '16px',
+            "megaMenuColumnGap": '80px',
+            "megaMenuColumnAlignment": "start",
+            "megaMenuFillSpace": false,
+            "megaMenuItemGap": '0px'
         }
     };
 }

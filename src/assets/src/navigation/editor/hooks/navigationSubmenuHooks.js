@@ -1,17 +1,33 @@
 import { useEffect } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { attributeIsDefault } from '../../../utils/editor.js';
+
+import { getNavigationSubmenuAttributes } from './navigationAttributes.js';
 
 export function useNavigationSubmenuWrapperClasses(submenuType, styles) {
     const classes = ['meros-submenu-wrapper'];
-    const hasShadow = styles?.dropShadow ?? true;
+
+    const submenuHighlightType = styles?.itemHighlightType || 'none';
+    const columnFill = submenuType === 'mega-menu' ? styles?.megaMenuFillSpace ?? false : false;
+    const dropShadow = styles?.dropShadow || false;
 
     if (submenuType === 'mega-menu') {
         classes.push('meros-mega-menu-wrapper');
-        if (hasShadow) {
+
+        if (dropShadow) {
             classes.push('meros-mega-menu-has-shadow');
         } else {
             const index = classes.indexOf('meros-mega-menu-has-shadow');
+            if (index !== -1) {
+                classes.splice(index, 1);
+            }
+        }
+
+        if (columnFill) {
+            classes.push('meros-mega-menu-fill-space');
+        } else {
+            const index = classes.indexOf('meros-mega-menu-fill-space');
             if (index !== -1) {
                 classes.splice(index, 1);
             }
@@ -25,39 +41,46 @@ export function useNavigationSubmenuWrapperClasses(submenuType, styles) {
         if (shadowIndex !== -1) {
             classes.splice(shadowIndex, 1);
         }
+        const fillIndex = classes.indexOf('meros-mega-menu-fill-space');
+        if (fillIndex !== -1) {
+            classes.splice(fillIndex, 1);
+        }
     }
 
+    classes.push(`meros-submenu-highlight-${submenuHighlightType}`);
     return classes.join(' ');
 }
 
-export function useNavigationSubmenuWrapperLinkSync(innerBlocks, submenuType, isMounted) {
-    const { updateBlockAttributes } = dispatch('core/block-editor');
+export function useNavigationSubmenuWrapperStyles(submenuStyles) {
+    const styles = {};
+    const defaultStyles = getNavigationSubmenuAttributes().styles || {};
 
-    useEffect(() => {
-        if (!isMounted.current) {
-            isMounted.current = true;
+    const setStyleAttribute = (key, value) => {
+        if (
+            key === 'megaMenuFillSpace' || 
+            key === 'dropShadow'
+        ) {
             return;
         }
 
-        if (!innerBlocks?.length) return;
-        console.log('Syncing submenu links with submenu type:', submenuType);
+        const cssVarName = `--meros-nav-submenu-${key.replace(/[A-Z]/g, (match) => '-' + match.toLowerCase())}`;
 
-        innerBlocks.forEach((block) => {
-            if (block.name !== 'core/navigation-link') return;
-            const merosMenuItem = block.attributes?.merosMenuItem || {};
-            if (merosMenuItem?.type === submenuType + '-item') return;
+        if (
+            attributeIsDefault(value, defaultStyles[key]) ||
+            defaultStyles[key] === undefined ||
+            value === ''
+        ) {
+            delete styles[cssVarName];
+        } else {
+            styles[cssVarName] = value;
+        }
+    };
 
-            const updatedAttributes = {
-                ...block.attributes,
-                merosMenuItem: {
-                    ...merosMenuItem,
-                    type: submenuType + '-item',
-                },
-            };
+    Object.keys(submenuStyles).forEach((key) => {
+        setStyleAttribute(key, submenuStyles[key]);
+    });
 
-            updateBlockAttributes(block.clientId, updatedAttributes);
-        })
-    }, [innerBlocks, submenuType, isMounted]);
+    return styles;
 }
 
 export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clientId, isMounted) {
@@ -93,8 +116,6 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
                 defaultColumnId = megaMenuColumns[0].clientId;
             }
 
-            const innerBlocksCount = innerBlocks?.length || 0;
-
             innerBlocks.forEach((block) => {
                 if (block.name === 'core/navigation-submenu') {
                     restrictInnerSubmenus(block, defaultColumnId);
@@ -104,7 +125,7 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
                     moveBlockToPosition(block.clientId, clientId, defaultColumnId, 0);
                 }
 
-                else if (block.name === 'meros/mega-menu-column' && innerBlocksCount < 4) {
+                else if (block.name === 'meros/mega-menu-column') {
                     const columnBlocks = block.innerBlocks || [];
 
                     columnBlocks.forEach((columnBlock) => {
@@ -116,13 +137,6 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
                             moveBlockToPosition(link.clientId, columnBlock.clientId, block.clientId, 0);
                         });
                     });
-                }
-
-                else if (block.name === 'meros/mega-menu-column' && 
-                    block === megaMenuColumns[3] &&
-                    innerBlocksCount > 4
-                ) {
-                    removeBlock(block.clientId, true);
                 }
             });
         }

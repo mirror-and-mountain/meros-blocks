@@ -2,17 +2,31 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
+import { getParentBlockAttribute } from '../../../utils/editor.js';
+
 import {
     useNavigationSubmenuWrapperClasses,
-    useNavigationSubmenuWrapperLinkSync,
+    useNavigationSubmenuWrapperStyles,
     useNavigationSubmenuWrapperRules
 } from '../hooks/navigationSubmenuHooks.js';
 
 export const NavigationSubmenuWrapper = createHigherOrderComponent(
     (BlockListBlock) => {
         return (props) => {
-            const { name, attributes, clientId } = props;
+            const { name, attributes, setAttributes, clientId } = props;
             if (name !== 'core/navigation-submenu') {
+                return <BlockListBlock {...props} />;
+            }
+
+             // Meros Enabled
+            const enabled = getParentBlockAttribute(
+                clientId, 
+                'core/navigation', 
+                'merosMenu.enabled', 
+                false
+            );
+
+            if (!enabled) {
                 return <BlockListBlock {...props} />;
             }
 
@@ -25,21 +39,36 @@ export const NavigationSubmenuWrapper = createHigherOrderComponent(
                 return getBlocks(clientId);
             }, [clientId]);
 
-            // Get settings
-            const type = attributes?.merosSubmenu?.type || 'dropdown';
-            const styles = attributes?.merosSubmenu?.styles || {};
+            // Get type
+            const type = getParentBlockAttribute(
+                clientId, 
+                'core/navigation', 
+                'merosMenu.submenuSettings.type', 
+                'default'
+            );
 
-            // Effects
-            // Sync child link types with submenu type
-            useNavigationSubmenuWrapperLinkSync(innerBlocks, type, isMounted);
+            // Set type
+            if (type !== attributes.merosSubmenu?.type) {
+                setAttributes({
+                    merosSubmenu: {
+                        ...attributes.merosSubmenu,
+                        type
+                    }
+                });
+            }
+
             // Block nested submenus if mega menu
             useNavigationSubmenuWrapperRules(innerBlocks, type, clientId, isMounted);
 
             // Determine wrapper classes
+            const styles = attributes.merosSubmenu?.styles || {};
             const wrapperClasses = useNavigationSubmenuWrapperClasses(type, styles);
 
+            // Determine wrapper styles
+            const wrapperStyles = useNavigationSubmenuWrapperStyles(styles);
+
             return (
-                <div className={wrapperClasses}>
+                <div className={wrapperClasses} style={wrapperStyles}>
                     <BlockListBlock 
                         {...props}
                         wrapperProps={{

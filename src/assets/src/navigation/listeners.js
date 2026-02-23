@@ -1,11 +1,33 @@
+import { dispatch } from '@wordpress/data';
+
 let merosNavDoc = null;
 let merosNavCursorInsideWrapperOrSubmenu = false;
 let merosNavLastClosestElement = null;
 
+function preventClickThrough(e) {
+    e.preventDefault();
+}
+
 function openSubmenuOnClick(e) {
     const submenu = e.currentTarget;
     const wrapper = submenu.closest('.meros-navigation-wrapper');
+
     if (!wrapper || !wrapper.classList.contains('meros-open-submenus-on-click')) return;
+    const isEditor = submenu.closest('.editor-styles-wrapper') !== null;
+    const isMobile = wrapper.classList.contains('meros-mobile-menu-active');
+
+    if (!isMobile &&
+        !isEditor &&
+        submenu.classList.contains('meros-submenu-open')
+    ) {
+        const action = submenu.dataset?.action;
+        if (action) {
+            submenu.classList.remove('meros-submenu-open');
+            wrapper.classList.remove('meros-submenu-open');
+            eval(action);
+            return;
+        }
+    }
 
     if (!submenu.classList.contains('meros-submenu-open')) {
         let switchingMegaMenu = false;
@@ -35,6 +57,16 @@ function openSubmenuOnClick(e) {
 
         submenu.classList.add('meros-submenu-open');
         wrapper.classList.add('meros-submenu-open');
+    } else {
+        submenu.classList.remove('meros-submenu-open');
+        wrapper.classList.remove('meros-submenu-open');
+
+        if (!isEditor) return;
+        const navBlockId = wrapper.querySelector('nav.wp-block-navigation')?.dataset?.block;
+        if (!navBlockId) return;
+
+        const { selectBlock } = dispatch('core/block-editor');
+        selectBlock(navBlockId);
     }
 }
 
@@ -68,7 +100,7 @@ function wrapperHoverLeave(e) {
     if (to && to.contains(innerWrapper)) return;
 
     merosNavCursorInsideWrapperOrSubmenu = false;
-    
+
     // Reset state
     resetSubmenuStates(innerWrapper);
 }
@@ -135,7 +167,7 @@ function handleSubmenuOpenOnHover(e) {
             if (merosNavLastClosestElement?.classList.contains('meros-submenu-open')) {
                 switchingMegaMenu = true;
                 merosNavLastClosestElement.classList.add('meros-mega-menu-switching');
-                
+
                 setTimeout(() => {
                     if (merosNavLastClosestElement) {
                         merosNavLastClosestElement.classList.remove('meros-mega-menu-switching');
@@ -147,7 +179,7 @@ function handleSubmenuOpenOnHover(e) {
 
             if (switchingMegaMenu) {
                 closestElement.classList.add('meros-mega-menu-switching');
-                
+
                 setTimeout(() => {
                     if (closestElement) {
                         closestElement.classList.remove('meros-mega-menu-switching');
@@ -166,7 +198,7 @@ function handleSubmenuOpenOnHover(e) {
 
 function resetSubmenuStates(wrapper) {
     const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
-    
+
     submenus.forEach(submenu => {
         submenu.classList.remove('meros-submenu-open');
         submenu.classList.remove('meros-mega-menu-switching');
@@ -177,6 +209,7 @@ function resetSubmenuStates(wrapper) {
 
 export function enableSubmenuOpenOnClick(doc, wrapper, force = false) {
     wrapper.classList.add('meros-open-submenus-on-click');
+    
     if (force) {
         wrapper.dataset.forcedSubmenuOpenOnClick = 'true';
     }
@@ -192,6 +225,10 @@ export function enableSubmenuOpenOnClick(doc, wrapper, force = false) {
         }
 
         submenu.addEventListener('click', openSubmenuOnClick);
+        const link = submenu.querySelector('a.wp-block-navigation-item__content');
+        if (link) {
+            link.addEventListener('click', preventClickThrough);
+        }
     });
 
     const rootContainer = doc.querySelector('.is-root-container') || doc.querySelector('body');
@@ -221,6 +258,11 @@ export function disableSubmenuOpenOnClick(doc, wrapper) {
         } else {
             submenu.firstElementChild.classList.remove('open-on-click');
             submenu.firstElementChild.classList.add('open-on-hover-click');
+        }
+
+        const link = submenu.querySelector('a.wp-block-navigation-item__content');
+        if (link) {
+            link.removeEventListener('click', preventClickThrough);
         }
     });
 

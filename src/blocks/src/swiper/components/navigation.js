@@ -7,7 +7,7 @@ import {
     RangeControl
 } from '@wordpress/components';
 
-import { ColorPicker } from '../../../../assets/src/editor/fx/components/ColorPicker.js';
+import { ColorPicker } from '../../../../assets/src/components/ColorPicker.js';
 import { NavigationSets } from '../navigation/navigation-sets.js';
 
 export default function NavigationControls({ attributes, setAttributes }) {

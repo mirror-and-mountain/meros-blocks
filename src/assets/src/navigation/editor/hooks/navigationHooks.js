@@ -1,12 +1,11 @@
-import { useEffect } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
+import { useEffect, useRef, useMemo } from '@wordpress/element';
+import { dispatch, select } from '@wordpress/data';
 import { getNavigationAttributes } from './navigationAttributes.js';
-import { attributeIsDefault } from '../../../utils/editor.js';
+import { attributeIsDefault, isChildOf } from '../../../utils/editor.js';
 
 export function useNavigationWrapperClasses(
     desktopSettings,
     mobileSettings,
-    submenuSettings,
     openSubmenusOnClick
 ) {
     const classes = ['meros-navigation-wrapper'];
@@ -14,16 +13,15 @@ export function useNavigationWrapperClasses(
     // Desktop props
     const desktopHighlightType = desktopSettings?.styles?.itemHighlightType || 'none';
 
-    // Submenu props
-    const columnFill = submenuSettings?.type === 'mega-menu' && submenuSettings?.styles?.megaMenuFillSpace
-        ? submenuSettings.styles.megaMenuFillSpace
-        : false;
-
     // Mobile props
     const mobileEnabled = mobileSettings?.enabled;
     const mobileDirection = mobileSettings?.direction || 'left';
+
+    const mobileUnderHeader = mobileDirection === 'top' && mobileSettings?.underHeader === true;
+
     const mobileAlignment = mobileSettings?.styles?.itemAlignment || 'left';
     const mobileHighlightType = mobileSettings?.styles?.itemHighlightType || 'none';
+    const mobileShadow = mobileDirection !== 'top' && mobileSettings?.styles?.dropShadow === true;
 
     // Desktop classes
     classes.push('meros-desktop-menu-highlight-' + desktopHighlightType);
@@ -34,6 +32,24 @@ export function useNavigationWrapperClasses(
         classes.push('meros-mobile-menu-direction-' + mobileDirection);
         classes.push('meros-mobile-menu-item-alignment-' + mobileAlignment);
         classes.push('meros-mobile-menu-highlight-' + mobileHighlightType);
+
+        if (mobileUnderHeader) {
+            classes.push('meros-mobile-menu-under-header');
+        } else {
+            const index = classes.indexOf('meros-mobile-menu-under-header');
+            if (index !== -1) {
+                classes.splice(index, 1);
+            }
+        }
+
+        if (mobileShadow) {
+            classes.push('meros-mobile-menu-has-shadow');
+        } else {
+            const index = classes.indexOf('meros-mobile-menu-has-shadow');
+            if (index !== -1) {
+                classes.splice(index, 1);
+            }
+        }
     } else {
         classes.forEach((cls) => {
             if (cls.startsWith('meros-mobile-menu-direction-')) {
@@ -44,18 +60,10 @@ export function useNavigationWrapperClasses(
                 classes.splice(classes.indexOf(cls), 1);
             } if (cls.startsWith('meros-mobile-menu-highlight-')) {
                 classes.splice(classes.indexOf(cls), 1);
+            } if (cls === 'meros-mobile-menu-has-shadow') {
+                classes.splice(classes.indexOf(cls), 1);
             }
         });
-    }
-
-    // Submenu classes
-    if (columnFill) {
-        classes.push('meros-mega-menu-fill-space');
-    } else {
-        const index = classes.indexOf('meros-mega-menu-fill-space');
-        if (index !== -1) {
-            classes.splice(index, 1);
-        }
     }
 
     // Open submenus on click class
@@ -71,7 +79,7 @@ export function useNavigationWrapperClasses(
     return classes.join(' ');
 }
 
-export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, submenuStyles, desktopStyles) {
+export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, desktopStyles) {
     const styles = {};
     const navigationAttributes = getNavigationAttributes();
 
@@ -81,22 +89,22 @@ export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, submenuS
             key === 'itemAlignment' ||
             key === 'itemHighlightType' ||
             key === 'itemsJustification' ||
-            key === 'megaMenuColumnAlignment'
+            key === 'showLogo' ||
+            key === 'boxShadow'
         ) {
             return;
         }
-        
-        const defaultStyles = type === 'submenu' 
-            ? navigationAttributes.submenuSettings.styles
-            : type === 'mobile'
-                ? navigationAttributes.mobileSettings.styles
-                : navigationAttributes.desktopSettings.styles;
+
+        const defaultStyles = type === 'mobile'
+            ? navigationAttributes.mobileSettings.styles
+            : navigationAttributes.desktopSettings.styles;
 
         const cssVarName = `--meros-nav-${type}-${key.replace(/[A-Z]/g, (match) => '-' + match.toLowerCase())}`;
-        
+
         if (
             attributeIsDefault(value, defaultStyles[key]) || // Remove the value if it is the same as the default
-            defaultStyles[key] === undefined // If the attribute doesn't exist in defaults, don't set it
+            defaultStyles[key] === undefined || // If the attribute doesn't exist in defaults, don't set it
+            value === '' // If the value is an empty string, remove the style
         ) {
             delete styles[cssVarName];
         } else {
@@ -109,11 +117,6 @@ export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, submenuS
         setStyleAttribute('desktop', key, desktopStyles[key]);
     });
 
-    // Set submenu styles
-    Object.keys(submenuStyles).forEach((key) => {
-        setStyleAttribute('submenu', key, submenuStyles[key]);
-    });
-
     // Set mobile styles if mobile menu is enabled
     if (mobileEnabled) {
         Object.keys(mobileStyles).forEach((key) => {
@@ -124,70 +127,232 @@ export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, submenuS
     return styles;
 }
 
-export function useNavigationWrapperSubmenuSync(innerBlocks, submenuSettings) {
-    const { updateBlockAttributes } = dispatch('core/block-editor');
+export function useNavigationWrapperMenuTemplates(
+    isInitialised,
+    availableMenus,
+    menusResolved,
+    currentMenu,
+    isResolving,
+    merosAttributes,
+    clientId,
+    setAttributes
+) {
+    const isCreating = useRef(false);
 
-    // Update child submenus with selected submenu type
-    useEffect(() => {
-        if (!innerBlocks?.length) return;
+    const menuType =
+        merosAttributes?.submenuSettings?.type || 'default';
 
-        innerBlocks.forEach((childBlock) => {
-            if (childBlock.name !== 'core/navigation-submenu') return;
+    const blockEditor = select('core/block-editor');
+    const { removeBlock } = dispatch('core/block-editor');
 
-            const childAttributes = childBlock.attributes;
-            const submenuType = childAttributes?.merosSubmenu?.type || 'default';
-            const submenuDropShadow = childAttributes?.merosSubmenu?.styles?.dropShadow ?? true;
+    /* ------------------------------------------------------------------ */
+    /* Header placement helpers                                            */
+    /* ------------------------------------------------------------------ */
 
-            if (submenuType !== submenuSettings?.type || 
-                submenuDropShadow !== (submenuSettings?.styles?.dropShadow ?? true)
-            ) {
-                const updatedAttributes = {
-                    ...childAttributes,
-                    merosSubmenu: {
-                        ...(childAttributes.merosSubmenu || {}),
-                        type: submenuSettings?.type || 'default',
-                        styles: {
-                            ...(childAttributes.merosSubmenu?.styles || {}),
-                            dropShadow: submenuSettings?.styles?.dropShadow ?? true,
-                        }
-                    }
-                };
-
-                updateBlockAttributes(
-                    childBlock.clientId,
-                    updatedAttributes
-                );
+    const isInHeader = (blockId) =>
+        isChildOf(
+            blockId,
+            ['core/template-part', 'core/group'],
+            (block) => {
+                if (block.name === 'core/template-part') {
+                    return block.attributes?.slug === 'header';
+                }
+                if (block.name === 'core/group') {
+                    return block.attributes?.tagName === 'header';
+                }
             }
-        });
-    }, [innerBlocks, submenuSettings?.type, submenuSettings?.styles?.dropShadow]);
+        );
+
+    /* ------------------------------------------------------------------ */
+    /* 1. Placement validation (runs once, no async, no menus)             */
+    /* ------------------------------------------------------------------ */
+
+    useEffect(() => {
+        const justInserted =
+            blockEditor.wasBlockJustInserted(clientId);
+
+        if (!justInserted) return;
+
+        if (!isInHeader(clientId)) {
+            removeBlock(clientId);
+
+            alert(
+                'Navigation blocks must be placed inside a header template part or a group with tag "header".'
+            );
+        }
+    }, [clientId]);
+
+    /* ------------------------------------------------------------------ */
+    /* Memo: find an existing menu for this type                            */
+    /* ------------------------------------------------------------------ */
+
+    const existingMenuForType = useMemo(() => {
+        if (!availableMenus?.length) return null;
+
+        return availableMenus.find(
+            (menu) => menu.slug?.includes(menuType)
+        );
+    }, [availableMenus, menuType]);
+
+    /* ------------------------------------------------------------------ */
+    /* 2. Initial menu assignment / creation                               */
+    /* ------------------------------------------------------------------ */
+
+    useEffect(() => {
+        if (
+            !menusResolved ||
+            isInitialised ||
+            isCreating.current ||
+            !isInHeader(clientId)
+        ) {
+            return;
+        }
+
+        isCreating.current = true;
+
+        // Prefer existing menu of correct type
+        if (existingMenuForType) {
+            setAttributes({
+                ref: existingMenuForType.id,
+                merosMenu: {
+                    ...merosAttributes,
+                    menuInitialised: true,
+                    usedExistingMenu: true,
+                },
+            });
+
+            isCreating.current = false;
+            return;
+        }
+
+        // Otherwise create one
+        createMenu(menuType, clientId)
+            .then((menuId) => {
+                setAttributes({
+                    ref: menuId,
+                    merosMenu: {
+                        ...merosAttributes,
+                        menuInitialised: true,
+                    },
+                });
+            })
+            .catch((err) => {
+                console.error('Failed to create menu', err);
+            })
+            .finally(() => {
+                isCreating.current = false;
+            });
+    }, [
+        menusResolved,
+        isInitialised,
+        menuType,
+        clientId,
+        existingMenuForType,
+    ]);
+
+    /* ------------------------------------------------------------------ */
+    /* 3. Replace menu if type changes                                     */
+    /* ------------------------------------------------------------------ */
+
+    useEffect(() => {
+        if (
+            !isInitialised ||
+            !currentMenu ||
+            isResolving ||
+            isCreating.current ||
+            !isInHeader(clientId)
+        ) {
+            return;
+        }
+
+        const matchesType =
+            currentMenu.slug?.includes(menuType);
+
+        if (matchesType) return;
+
+        isCreating.current = true;
+
+        // Clean up drafts
+        if (currentMenu.status === 'draft') {
+            deleteMenu(currentMenu.id);
+        }
+
+        // Reuse an existing correct menu if possible
+        if (existingMenuForType) {
+            setAttributes({
+                ref: existingMenuForType.id,
+                merosMenu: {
+                    ...merosAttributes,
+                    usedExistingMenu: true,
+                },
+            });
+
+            isCreating.current = false;
+            return;
+        }
+
+        // Otherwise create a new one
+        createMenu(menuType, clientId)
+            .then((menuId) => {
+                setAttributes({
+                    ref: menuId,
+                });
+            })
+            .catch((err) => {
+                console.error('Failed to replace menu', err);
+            })
+            .finally(() => {
+                isCreating.current = false;
+            });
+    }, [
+        isInitialised,
+        currentMenu,
+        isResolving,
+        menuType,
+        clientId,
+        existingMenuForType,
+        menusResolved,
+    ]);
 }
 
-export function useNavigationWrapperLinkSync(innerBlocks) {
-    const { updateBlockAttributes } = dispatch('core/block-editor');
+async function deleteMenu(menuId) {
+    const { deleteEntityRecord } = dispatch('core');
+    await deleteEntityRecord('postType', 'wp_navigation', menuId, { force: true });
+}
 
-    // Update child navigation links with top-level item type
-    useEffect(() => {
-        if (!innerBlocks?.length) return;
+async function createMenu(type, clientId) {
+    const { saveEntityRecord } = dispatch('core');
 
-        innerBlocks.forEach((block) => {
-            if (block.name !== 'core/navigation-link') return;
-            const childAttributes = block.attributes;
-            const linkType = childAttributes?.merosMenuItem?.type || 'top-level-item';
+    const title = type === 'default'
+        ? 'Advanced Menu'
+        : 'Mega Menu';
 
-            if (linkType !== 'top-level-item') {
-                const updatedAttributes = {
-                    ...childAttributes,
-                    merosMenuItem: {
-                        ...(childAttributes.merosMenuItem || {}),
-                        type: 'top-level-item'
-                    }
-                };
+    const content = type === 'default'
+        ? `
+        <!-- wp:navigation-submenu {"label":"Submenu"} -->
+        <!-- wp:navigation-link {"label":"Menu Item","url":"#"} /-->
+        <!-- /wp:navigation-submenu -->
+      `
+        : `
+        <!-- wp:navigation-link {"label":"Top Level Link","type":"page","url":"#","kind":"post-type","merosMenuItem":{"type":"top-level-item"}} /-->
 
-                updateBlockAttributes(
-                    block.clientId,
-                    updatedAttributes
-                );
-            }
-        });
-    }, [innerBlocks]);
+        <!-- wp:navigation-submenu {"label":"Mega Menu","merosSubmenu":{"type":"mega-menu","styles":{"dropShadow":true}}} -->
+        <!-- wp:meros/mega-menu-column -->
+        <div class="meros-mega-menu-column"><div class="meros-mega-menu-column-title"><p>Column Title</p></div><ul class="meros-mega-menu-column-content"><!-- wp:navigation-link {"label":"Menu Item","url":"#"} /--></ul></div>
+        <!-- /wp:meros/mega-menu-column -->
+
+        <!-- wp:meros/mega-menu-column -->
+        <div class="meros-mega-menu-column"><div class="meros-mega-menu-column-title"><p>Column Title</p></div><ul class="meros-mega-menu-column-content"><!-- wp:navigation-link {"label":"Menu Item","url":"#"} /--></ul></div>
+        <!-- /wp:meros/mega-menu-column -->
+        <!-- /wp:navigation-submenu -->
+      `;
+
+    const newMenu = await saveEntityRecord('postType', 'wp_navigation', {
+        title: title,
+        content: content,
+        status: 'publish',
+        slug: `${type}-${clientId.slice(0, 8)}`
+    });
+
+    return newMenu.id;
 }

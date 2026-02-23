@@ -1,11 +1,22 @@
-@mixin meros-navigation-base-styles {
+@mixin meros-navigation-desktop-styles {
+    // Fix wrapper border
     .meros-navigation-wrapper {
+        border: none !important;
+    }
+
+    .meros-navigation-wrapper {
+        .wp-block-navigation__container
+        .meros-top-level-item:not(.current-menu-item),
+        .meros-submenu-wrapper:not(.current-menu-item) {
+            color: var(--meros-nav-desktop-item-text-color, #000000) !important;
+        }
+
+        // Background Highlight Type
         &.meros-desktop-menu-highlight-background {
             .wp-block-navigation__container
             .meros-top-level-item:not(.current-menu-item),
             .meros-submenu-wrapper:not(.current-menu-item) {
                 transition: background-color 0.2s ease, color 0.2s ease;
-                color: var(--meros-nav-desktop-item-text-color, #000000) !important;
 
                 &:hover {
                     color: var(--meros-nav-desktop-item-text-hover-color, #222222) !important;
@@ -21,6 +32,7 @@
             }
         }
 
+        // Underline Highlight Type
         &.meros-desktop-menu-highlight-underline {
             .wp-block-navigation__container
             .meros-top-level-item:not(.current-menu-item),
@@ -44,6 +56,7 @@
             
         }
 
+        // Overline Highlight Type
         &.meros-desktop-menu-highlight-overline {
             .wp-block-navigation__container
             .meros-top-level-item:not(.current-menu-item),
@@ -66,6 +79,7 @@
             }   
         }
 
+        // Border Highlight Type
         &.meros-desktop-menu-highlight-border {
             .wp-block-navigation__container
             .meros-top-level-item:not(.current-menu-item),
@@ -88,6 +102,7 @@
             }
         }
 
+        // Spacing
         .wp-block-navigation__container {
             gap: var(--meros-nav-desktop-items-gap, 0px) !important;
 
@@ -99,24 +114,9 @@
 
             .meros-top-level-item,
             .meros-submenu-wrapper {
-                flex: 1;
+                // flex: 1;
                 white-space: nowrap !important;
-                padding: var(--meros-nav-desktop-item-padding-y, 0px) var(--meros-nav-desktop-item-padding-x, 0px) !important;
-
-                .wp-block-navigation__submenu-container {
-                    background-color: var(--meros-nav-submenu-bg-color, #ffffff);
-                
-                    .meros-submenu-item:not(.meros-mega-menu-item) {
-                        color: var(--meros-nav-submenu-item-text-color, #000000);
-                        background-color: transparent;
-                        transition: color 0.1s ease, background-color 0.1s ease;
-
-                        &:hover {
-                            color: var(--meros-nav-submenu-item-text-hover-color, #000000);
-                            background-color: var(--meros-nav-submenu-item-highlight-color, #0693E3);
-                        }
-                    }
-                }
+                padding: var(--meros-nav-desktop-item-padding-y, 0px) var(--meros-nav-desktop-item-padding-x, 10px) !important;
             }
         }
     }

@@ -5,7 +5,7 @@ import {
     ToolsPanel,
     ToolsPanelItem,
     TextControl
-} from '../../../assets/src/editor/shared/components/Controls';
+} from '../../../assets/src/components/Controls.js';
 
 export default function Edit({ attributes, setAttributes }) {
 

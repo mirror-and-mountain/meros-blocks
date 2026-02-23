@@ -1,26 +1,61 @@
 import { subscribe, select } from '@wordpress/data';
-import { initMegaMenu, cleanUpMegaMenu } from './mega-menu.js';
-import { initMobileMenus, cleanUpMobileMenus } from './mobile-menu.js';
-import { 
-    enableSubmenuOpenOnClick, 
+import { initMobileMenu, cleanUpMobileMenu } from './mobile-menu.js';
+
+import {
+    enableSubmenuOpenOnClick,
     disableSubmenuOpenOnClick,
-    enableSubmenuOpenOnHover, 
-    disableSubmenuOpenOnHover 
-} from '../utils/listeners.js';
+    enableSubmenuOpenOnHover,
+    disableSubmenuOpenOnHover
+} from '../../listeners.js'
 
-function initMerosNav(doc, rootContainer, navBlock, submenuType, submenus, isMobile) {
-    submenus.forEach(submenu => {
-        initSubmenu(doc, submenu, submenuType);
-    });
+function initNav(navBlockId, isMobile, doc, blockEditor) {
+    // Get block
+    const block = blockEditor.getBlock(navBlockId);
 
-    const navEl = doc.getElementById(`block-${navBlock.clientId}`);
-    const wrapper = navEl?.closest('.meros-navigation-wrapper');
+    if (!block) return;
+
+    // Get attributes
+    const attributes = block.attributes || {};
+    const merosAttributes = attributes.merosMenu || null;
+
+    if (!merosAttributes) return;
+
+    // Bail if meros menu is not enabled
+    if (!merosAttributes.enabled || !merosAttributes.menuInitialised) {
+        return;
+    }
+
+    // Get block element
+    const blockElement = doc.getElementById(`block-${navBlockId}`);
+    if (!blockElement) return;
+
+    // Get wrapper
+    const wrapper = blockElement.closest('.meros-navigation-wrapper');
     if (!wrapper) return;
 
-    const mobileMenuEnabled = navBlock?.attributes?.merosMenu?.mobileSettings?.enabled ?? true;
-    const openSubmenusOnClick = navBlock?.attributes?.openSubmenusOnClick ?? false;
+    // Get submenu type & click behaviour
+    const submenuType = merosAttributes.submenuSettings?.type || 'default';
+    const openSubmenusOnClick = block?.attributes?.openSubmenusOnClick ?? false;
 
-    if (!isMobile) {
+    // Initialise mega menu if enabled
+    if (submenuType === 'mega-menu') {
+        initMegaMenu(wrapper, doc);
+    }
+
+    // Initialise mobile menu
+    const mobileEnabled = merosAttributes.mobileSettings?.enabled ?? true;
+
+    if (mobileEnabled && wrapper.dataset.merosMobileMenuInitialised !== 'true') {
+        initMobileMenu(doc, wrapper);
+    } else if (!mobileEnabled && wrapper.dataset.merosMobileMenuInitialised === 'true') {
+        cleanUpMobileMenu(doc, wrapper);
+    }
+
+    const updateClickBehaviour =
+        openSubmenusOnClick && !wrapper.classList.contains('meros-open-submenus-on-click') ||
+        !openSubmenusOnClick && wrapper.classList.contains('meros-open-submenus-on-click');
+
+    if (!isMobile && updateClickBehaviour) {
         if (openSubmenusOnClick) {
             disableSubmenuOpenOnHover(doc, wrapper);
             enableSubmenuOpenOnClick(doc, wrapper);
@@ -29,103 +64,55 @@ function initMerosNav(doc, rootContainer, navBlock, submenuType, submenus, isMob
             enableSubmenuOpenOnHover(doc, wrapper);
         }
     }
-
-    if (mobileMenuEnabled && wrapper.dataset.merosMobileMenuInitialised !== 'true') {
-        initMobileMenus(doc, rootContainer);
-    }
-
-    if (!mobileMenuEnabled && wrapper.dataset.merosMobileMenuInitialised === 'true') {
-        cleanUpMobileMenus(doc, rootContainer);
-    }
 }
 
-function initSubmenu(doc, submenu, submenuType) {
-    const clientId = submenu.clientId;
-    const innerBlocks = submenu.innerBlocks || [];
+function initMegaMenu(wrapper, doc) {
+    const initialised = wrapper?.dataset?.merosMegaMenuInitialised === 'true';
+    const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper.meros-mega-menu-wrapper');
 
-    if (submenuType === 'default') {
-        initDefaultSubmenu(doc, innerBlocks, clientId);
-    }
+    submenus.forEach(submenu => {
+        let merosItemsContainer = submenu?.querySelector('.meros-mega-menu-items-container') || null;
+        if (initialised && merosItemsContainer !== null) return;
 
-    if (submenuType === 'mega-menu') {
-        initMegaMenu(doc, innerBlocks, clientId);
-    }
-}
+        const wpItemsContainer = submenu.querySelector('.wp-block-navigation__submenu-container');
+        if (!wpItemsContainer) return;
 
-function initDefaultSubmenu(doc, innerBlocks, clientId) {
-    const blockElement = doc.getElementById(`block-${clientId}`);
-    const wrapper = blockElement?.closest('.meros-submenu-wrapper');
-    if (!wrapper) return;
+        merosItemsContainer = doc.createElement('div');
+        merosItemsContainer.classList.add('meros-mega-menu-items-container');
 
-    const isMegaMenu = wrapper?.querySelector('.meros-mega-menu-items-container') !== null;
-    const initialised = wrapper?.dataset?.merosInitialised === 'true';
+        merosItemsContainer.appendChild(wpItemsContainer);
+        submenu.appendChild(merosItemsContainer);
 
-    if (!isMegaMenu && initialised) return;
-
-    if (isMegaMenu) {
-        cleanUpMegaMenu(doc, innerBlocks, clientId);
-    }
-
-    wrapper.dataset.merosInitialised = 'true';
+        wrapper.dataset.merosMegaMenuInitialised = 'true';
+    });
 }
 
 export function subscribeToNavChanges({ doc }) {
     let merosNavUpdating = false;
-    if (merosNavUpdating) return;
 
-    const blockEditor = select('core/block-editor');
-
-    const rootContainer = doc.querySelector('.is-root-container');
-    if (!rootContainer) return;
-
-    // Run on initial load to set up any existing submenus
-    const navBlocks = rootContainer.querySelectorAll('.meros-navigation-wrapper');
-    navBlocks.forEach(navBlock => {
-        const id = navBlock.id.replace('block-', '');
-        const block = blockEditor.getBlock(id);
-
-        if (!block) return;
-
-        const submenuType = block?.attributes?.merosMenu?.submenuSettings?.type || 'default';
-        const submenus = block.innerBlocks.filter(block => block.name === 'core/navigation-submenu') || [];
-        initMerosNav(doc, block, submenuType, submenus);
-    });
-
-    initMobileMenus(doc, rootContainer);
-
-    // Subscribe to changes in the editor
     subscribe(() => {
-        const selectedBlock = blockEditor.getSelectedBlock();
-        const blockClientId = blockEditor.getSelectedBlockClientId();
-        const blockName = selectedBlock?.name;
-        const blockAttributes = selectedBlock?.attributes || {};
+        if (merosNavUpdating) return;
+
+        const blockEditor = select('core/block-editor');
+
+        const rootContainer = doc.querySelector('.is-root-container');
+        if (!rootContainer) return;
 
         const isMobile = rootContainer.classList.contains('is-mobile-preview');
 
-        if (blockName === 'core/navigation') {
-            merosNavUpdating = true;
+        const navBlocks = blockEditor.getBlocksByName('core/navigation') || [];
+        if (!navBlocks.length) return;
 
-            const submenuSettings = blockAttributes?.merosMenu?.submenuSettings || {};
-            const submenuType = submenuSettings.type || 'dropdown';
-            const submenus = blockEditor.getBlocks(blockClientId)
-                .filter(block => block.name === 'core/navigation-submenu') || [];
+        const handledNavBlocks = new Set();
 
-            initMerosNav(doc, rootContainer, selectedBlock, submenuType, submenus, isMobile);
+        merosNavUpdating = true;
 
-            merosNavUpdating = false;
-        }
+        navBlocks.forEach(navBlockId => {
+            if (handledNavBlocks.has(navBlockId)) return;
+            initNav(navBlockId, isMobile, doc, blockEditor);
+            handledNavBlocks.add(navBlockId);
+        });
 
-        if (blockName === 'core/navigation-submenu') {
-            const parentBlock = blockEditor.getBlock(selectedBlock?.parentClientId);
-            if (parentBlock?.name !== 'core/navigation') return;
-
-            merosNavUpdating = true;
-
-            const submenuType = blockAttributes?.merosSubmenu?.type || 'default';
-            initSubmenu(doc, selectedBlock, submenuType);
-
-            merosNavUpdating = false;
-        }
-
+        merosNavUpdating = false;
     });
 }

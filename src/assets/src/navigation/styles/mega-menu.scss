@@ -1,20 +1,60 @@
+// See mobile.scss for mega-menu mobile styles
 @mixin meros-navigation-mega-menu-styles {
-
+    // Positioning
     .meros-navigation-wrapper:not(.meros-mobile-menu-active) 
     .meros-mega-menu-wrapper {
         position: relative;
     }
 
-    // Flex fill
-    .meros-navigation-wrapper.meros-mega-menu-fill-space:not(.meros-mobile-menu-active)
+    // Highlights & Colour
+    .meros-navigation-wrapper
     .meros-mega-menu-wrapper
+    .meros-mega-menu-item {
+        color: var(--meros-nav-submenu-item-text-color, #000000);
+        
+        &:hover,
+        &.current-menu-item {
+            color: var(--meros-nav-submenu-item-text-color, #000000);
+        }
+    }
+
+    .meros-navigation-wrapper
+    .meros-mega-menu-wrapper.meros-submenu-highlight-underline
+    .meros-mega-menu-item {
+        color: var(--meros-nav-submenu-item-text-color, #000000);
+        border-bottom: none;
+        
+        &:hover,
+        &.current-menu-item {
+            color: var(--meros-nav-submenu-item-text-hover-color, #000000);
+            border-bottom: var(--meros-nav-submenu-item-highlight-border-width, 1px) solid var(--meros-nav-submenu-item-highlight-color, #0693E3);
+        }
+    }
+
+    .meros-navigation-wrapper
+    .meros-mega-menu-wrapper.meros-submenu-highlight-overline
+    .meros-mega-menu-item {
+        color: var(--meros-nav-submenu-item-text-color, #000000);
+        border: none;
+        
+        &:hover,
+        &.current-menu-item {
+            color: var(--meros-nav-submenu-item-text-hover-color, #000000);
+            border-top: var(--meros-nav-submenu-item-highlight-border-width, 1px) solid var(--meros-nav-submenu-item-highlight-color, #0693E3);
+        }
+    }
+    
+
+    // Flex fill
+    .meros-navigation-wrapper:not(.meros-mobile-menu-active)
+    .meros-mega-menu-wrapper.meros-mega-menu-fill-space
     .meros-mega-menu-items-container
     .wp-block-navigation__submenu-container
     .meros-mega-menu-column {
         flex: 1;
     }
 
-    // Desktop Closed state
+    // Transition Fix for Switching Submenus
     .meros-navigation-wrapper
     .meros-mega-menu-wrapper.meros-mega-menu-switching
     .meros-mega-menu-items-container {
@@ -22,7 +62,7 @@
         will-change: unset;
     }
 
-
+    // Desktop Base Styles
     .meros-navigation-wrapper
     .meros-mega-menu-wrapper
     .meros-mega-menu-items-container {
@@ -53,7 +93,7 @@
         overflow: hidden;
 
         background-color: var(--meros-nav-submenu-bg-color, #FFFFFF);
-        border-bottom: solid var(--meros-nav-submenu-border-width, 1px) var(--meros-nav-submenu-border-color, #ABABAB);
+        border-bottom: solid var(--meros-nav-submenu-border-width, 0px) var(--meros-nav-submenu-border-color, #FFFFFF00);
 
         .wp-block-navigation__submenu-container,
         .wp-block-navigation__submenu-container .meros-mega-menu-item,
@@ -107,15 +147,8 @@
                 }
 
                 .meros-mega-menu-item {
-                    font-size: var(--meros-nav-submenu-item-size, 1rem);
                     padding: var(--meros-nav-submenu-item-padding-y, 0px) var(--meros-nav-submenu-item-padding-x, 0px);
                     background-color: transparent;
-                    color: var(--meros-nav-submenu-item-text-color, #000000);
-
-                    &:hover,
-                    &.current-menu-item {
-                        color: var(--meros-nav-submenu-item-text-hover-color, #000000);
-                    }
                 }
 
                 .meros-mega-menu-item,
@@ -155,109 +188,9 @@
         }
     }
 
-    // Mobile Closed State
-    .meros-navigation-wrapper.meros-mobile-menu-active.meros-mobile-menu-open {
-        .wp-block-navigation__container:has(.meros-mega-menu-wrapper) {
-            .wp-block-navigation-submenu >
-            .wp-block-navigation-item__content,
-            .meros-top-level-item {
-                transform: translateX(0);
-                opacity: 1;
-                transition: transform 0.2s ease, opacity 0.2s ease;
-                will-change: transform, opacity;
-            }
-        }
-
-        .wp-block-navigation__container:has(.meros-mega-menu-wrapper.meros-submenu-open) {
-            .wp-block-navigation-submenu >
-            .wp-block-navigation-item__content,
-            .meros-top-level-item {
-                transform: translateX(-2%);
-                opacity: 0;
-                pointer-events: none;
-            }
-        }
-    }
-
-    .meros-navigation-wrapper.meros-mobile-menu-active
-    .meros-mega-menu-wrapper
-    .meros-mega-menu-items-container {
-        transform: none !important;
-        visibility: hidden;
-        pointer-events: none;
-
-        opacity: 0;
-        transition: opacity 0.2s ease !important;
-        will-change: opacity !important;
-
-        top: 0 !important;
-        right: 0;
-        
-        width: 100% !important;
-        width: -webkit-fill-available !important;
-        min-width: auto;
-        
-        height: 100vh;
-
-        z-index: 200;
-        padding-top: 40px;
-
-        border-bottom: none;
-        box-shadow: none !important;
-        background-color: var(--meros-nav-mobile-bg-color, #FFFFFF) !important;
-
-        .wp-block-navigation__submenu-container {
-            position: relative;
-            inset: 0;
-            
-            flex-direction: column !important;
-            gap: 10px !important;
-            
-            width: 100% !important;
-
-            .meros-mega-menu-column {
-                flex-direction: column !important;
-                margin-bottom: -15px !important;
-                width: 100% !important;
-
-                .meros-mega-menu-column-content,
-                .meros-mega-menu-column-content
-                .block-editor-inner-blocks
-                .block-editor-block-list__layout {
-                    display: flex;
-                    flex-direction: column;
-                    gap: var(--meros-nav-mobile-items-gap, 0px) !important;
-                }
-            
-                .meros-mega-menu-item {
-                    margin-left: unset !important;
-                }
-
-                .meros-mega-menu-column-title,
-                .meros-mega-menu-item {
-                    opacity: 1 !important;
-                    transition: none !important;
-                    transition-delay: 0s !important;
-                    will-change: unset;
-
-                    width: 100% !important;
-                    width: -webkit-fill-available !important;
-                    padding: var(--meros-nav-mobile-item-padding-y, 10px) var(--meros-nav-mobile-item-padding-x, 30px) !important;
-                }
-            }
-        }
-    }
-
+    // Fix links
+    .meros-mega-menu-wrapper, 
     .meros-mega-menu-wrapper a {
         cursor: pointer !important;
-    }
-
-    // Mobile Open State
-    .meros-navigation-wrapper.meros-mobile-menu-active.meros-mobile-menu-open
-    .meros-mega-menu-wrapper.meros-submenu-open
-    .meros-mega-menu-items-container {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
     }
 }

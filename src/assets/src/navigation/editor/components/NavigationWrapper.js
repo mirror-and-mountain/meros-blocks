@@ -4,45 +4,74 @@ import { useSelect } from '@wordpress/data';
 import {
     useNavigationWrapperClasses,
     useNavigationWrapperStyles,
-    useNavigationWrapperSubmenuSync,
-    useNavigationWrapperLinkSync
+    useNavigationWrapperMenuTemplates
 } from '../hooks/navigationHooks.js';
 
 export const NavigationWrapper = createHigherOrderComponent(
     (BlockListBlock) => {
         return (props) => {
-            const { name, attributes, clientId } = props;
+            const { name, attributes, setAttributes, clientId } = props;
+
             if (name !== 'core/navigation') {
                 return <BlockListBlock {...props} />;
             }
 
-            // Get inner blocks
-            const innerBlocks = useSelect((select) => {
-                const { getBlocks } = select('core/block-editor');
-                return getBlocks(clientId);
-            }, [clientId]);
+            // Meros Enabled
+            const enabled = attributes?.merosMenu?.enabled;
+            if (!enabled) {
+                return <BlockListBlock {...props} />;
+            }
+
+            // Available menus
+            const { availableMenus, menusResolved } = useSelect((select) => {
+                const core = select('core');
+                return {
+                    availableMenus: core.getEntityRecords('postType', 'wp_navigation') || [],
+                    menusResolved: core.hasFinishedResolution('getEntityRecords', ['postType', 'wp_navigation']),
+                };
+            }, []);
+
+            // Current menu
+            const menuRef = attributes?.ref || null;
+            const { currentMenu, isCurrentMenuResolving } = useSelect((select) => {
+                if (!menuRef) return { currentMenu: null, isCurrentMenuResolving: false };
+
+                const core = select('core');
+                return {
+                    currentMenu: core.getEntityRecord('postType', 'wp_navigation', menuRef),
+                    isCurrentMenuResolving: core.isResolving(
+                        'getEntityRecord', 
+                        ['postType', 'wp_navigation', menuRef]
+                    ),
+                };
+            }, [menuRef]);
+
+
+            // Initialise menu template
+            const isInitialised = attributes?.merosMenu?.menuInitialised ?? false;
+            useNavigationWrapperMenuTemplates(
+                isInitialised, 
+                availableMenus,
+                menusResolved,
+                currentMenu,
+                isCurrentMenuResolving, 
+                attributes.merosMenu, 
+                clientId,
+                setAttributes
+            );
 
             // Get settings
             const { layout, openSubmenusOnClick, merosMenu } = attributes;
             const { mobileSettings, submenuSettings, desktopSettings } = merosMenu || {};
-            const submenuStyles = submenuSettings.styles || {};
             const mobileStyles = mobileSettings?.styles || {};
             const desktopStyles = desktopSettings?.styles || {};
 
             const justification = layout?.justifyContent || 'left';
 
-            // Effects
-            // Update child submenus with selected submenu type
-            useNavigationWrapperSubmenuSync(innerBlocks, submenuSettings);
-
-            // Update child navigation links with top-level item type
-            useNavigationWrapperLinkSync(innerBlocks);
-
             // Determine wrapper classes
             const wrapperClasses = useNavigationWrapperClasses(
                 desktopSettings,
                 mobileSettings,
-                submenuSettings,
                 openSubmenusOnClick
             );
 
@@ -50,7 +79,6 @@ export const NavigationWrapper = createHigherOrderComponent(
             const wrapperMobileStyles = useNavigationWrapperStyles(
                 mobileSettings?.enabled,
                 mobileStyles || {},
-                submenuStyles || {},
                 desktopStyles || {}
             );
 

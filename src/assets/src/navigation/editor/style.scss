@@ -1,33 +1,38 @@
-@use '../styles/mobile-icon' as mobile-icon;
-@use '../styles/mega-menu' as mega-menu;
-@use '../styles/mobile.scss' as mobile;
 @use '../styles/desktop.scss' as desktop;
+@use '../styles/mobile.scss' as mobile;
+@use '../styles/submenus' as submenus;
+@use '../styles/mega-menu' as mega-menu;
 
 // Hide default overlay menu panel
+.block-editor-block-inspector:has(.meros-navigation-settings-controls)
 .components-tools-panel:has(div[aria-label="Configure overlay menu"]) {
     display: none !important;
 }
 
-// Hide submenu & overlay background panel
-.components-tools-panel:has(div[title="Submenu & overlay background"]) {
+// Hide submenu & overlay background panels
+.block-editor-block-inspector:has(.meros-navigation-style-controls)
+.components-tools-panel:has(div[title="Submenu & overlay background"]),
+
+.block-editor-block-inspector:has(.meros-navigation-style-controls)
+.components-tools-panel:has(button[aria-label="Dimensions options"]),
+
+.block-editor-block-inspector:has(.meros-navigation-style-controls)
+.components-tools-panel:has(div.color-block-support-panel__inner-wrapper) {
     display: none !important;
 }
 
 // Mobile menu styles
 .is-root-container.is-mobile-preview {
-    @include mobile-icon.meros-navigation-icon-styles;
-    @include mobile.meros-navigation-base-styles;
-    @include mobile.meros-navigation-left-animation-styles;
-    @include mobile.meros-navigation-right-animation-styles;
-    @include mobile.meros-navigation-mobile-open-styles;
-    @include mobile.meros-navigation-mobile-closed-styles;
+    @include mobile.meros-navigation-mobile-styles;
+    @include mobile.meros-navigation-mobile-icons-styles;
     @include mega-menu.meros-navigation-mega-menu-styles;
 }
 
-// Mega menu styles
+// Desktop menu styles
 .is-root-container:not(.is-mobile-preview) {
-    @include desktop.meros-navigation-base-styles;
-    @include mobile-icon.meros-navigation-icon-styles;
+    @include desktop.meros-navigation-desktop-styles;
+    @include mobile.meros-navigation-mobile-icons-styles;
     @include mega-menu.meros-navigation-mega-menu-styles;
+    @include submenus.meros-navigation-submenu-styles;
 }
 

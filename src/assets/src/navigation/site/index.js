@@ -3,7 +3,7 @@ import {
     disableSubmenuOpenOnClick, 
     enableSubmenuOpenOnHover, 
     disableSubmenuOpenOnHover 
-} from '../editor/utils/listeners';
+} from '../listeners.js';
 
 import './styles.scss';
 
@@ -66,7 +66,36 @@ function initMobileMenu(wrapper) {
         if (!isActive) return;
 
         const isOpen = wrapper.classList.contains('meros-mobile-menu-open');
-        if (isOpen) return;
+        const isUnderHeader = wrapper.classList.contains('meros-mobile-menu-under-header');
+        let overlay = document.querySelector('.meros-mobile-menu-overlay');
+
+        if (isOpen) {
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+
+            if (isUnderHeader) {
+                console.log('here');
+                wrapper.classList.remove('meros-mobile-menu-open');
+                wrapper.classList.add('meros-mobile-menu-closing');
+                mobileToggle.classList.remove('open');
+                
+                setTimeout(() => {
+                    wrapper.classList.remove('meros-mobile-menu-closing');
+                }, 400);
+
+                return;
+            }
+            return;
+        }
+
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.classList.add('meros-mobile-menu-overlay');
+            document.body.prepend(overlay);
+        }
+
+        overlay.classList.add('active');
 
         const navBtns = container.querySelector('.meros-navigation-btns');
         if (!navBtns) return; 
@@ -91,6 +120,10 @@ function initMobileMenu(wrapper) {
                 wrapper.classList.remove('meros-mobile-menu-open');
                 wrapper.classList.add('meros-mobile-menu-closing');
                 mobileToggle.classList.remove('open');
+
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
 
                 setTimeout(() => {
                     wrapper.classList.remove('meros-mobile-menu-closing');
