@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
 import {
-    __experimentalToolsPanel as ToolsPanel,
-    __experimentalToolsPanelItem as ToolsPanelItem,
+    ToolsPanel,
+    ToolsPanelItem,
     ToggleControl,
     RangeControl
-} from '@wordpress/components';
+} from '../../../../assets/src/components/Controls.js';
 
 export default function AnimationControls({ attributes, setAttributes }) {
     const {
@@ -50,12 +50,12 @@ export default function AnimationControls({ attributes, setAttributes }) {
                 onDeselect={() => setAttributes({
                     loop: centeredSlides === true ? false : true
                 })}
-                disabled={centeredSlides === true}
             >
                 <ToggleControl
                     label={__('Enable Loop', 'meros-theme')}
                     checked={loop !== false}
                     onChange={(value) => setAttributes({ loop: value })}
+                    disabled={centeredSlides === true}
                 />
             </ToolsPanelItem>
             <ToolsPanelItem

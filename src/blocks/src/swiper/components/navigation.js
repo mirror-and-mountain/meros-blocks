@@ -1,11 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import {
-    __experimentalToolsPanel as ToolsPanel,
-    __experimentalToolsPanelItem as ToolsPanelItem,
+    ToolsPanel,
+    ToolsPanelItem,
     ToggleControl,
     SelectControl,
     RangeControl
-} from '@wordpress/components';
+} from '../../../../assets/src/components/Controls.js';
 
 import { ColorPicker } from '../../../../assets/src/components/ColorPicker.js';
 import { NavigationSets } from '../navigation/navigation-sets.js';

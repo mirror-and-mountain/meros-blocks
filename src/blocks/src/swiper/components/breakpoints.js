@@ -1,10 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import { PanelBody } from "@wordpress/components";
+
 import {
-    __experimentalToolsPanel as ToolsPanel,
-    __experimentalToolsPanelItem as ToolsPanelItem,
+    PanelBody,
+    ToolsPanel,
+    ToolsPanelItem,
     ToggleControl
-} from '@wordpress/components';
+} from '../../../../assets/src/components/Controls.js';
 
 import BreakpointControls from "./breakpoint.js";
 

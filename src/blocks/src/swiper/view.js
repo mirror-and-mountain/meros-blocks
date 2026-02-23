@@ -22,7 +22,8 @@ function animateVisibleSlideElements(swiper) {
             slide.classList.contains('swiper-slide-visible');
 
         slide.querySelectorAll('.meros-has-block-animation').forEach(el => {
-            const shouldReanimate = el.classList.contains(REANIMATE);
+            const wrapper = el.closest('.meros-animation-wrapper');
+            const shouldReanimate = wrapper ? wrapper.classList.contains(REANIMATE) : false;
 
             if (isActive) {
                 if (shouldReanimate) {

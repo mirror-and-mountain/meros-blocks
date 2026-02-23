@@ -33,7 +33,7 @@ export const StickyClasses = [
     'meros-header-no-bottom-margin',
 ];
 
-export function useFxClasses(blockName, attrs, clientId, save = false) {
+export function useFxClasses(blockName, attrs, clientId = '', save = false) {
     const classes = [];
 
     if (isEnabled(attrs) === false) {
@@ -62,7 +62,11 @@ export function useFxClasses(blockName, attrs, clientId, save = false) {
 
     if (isScrollFxBlock(blockName, attrs.merosScrollFx)) {
         classes.push('meros-has-scroll-animation');
-        if (isChildOf(clientId, 'meros/swiper-slide') && attrs.merosScrollFx.animateOnSlideChange) {
+        if (
+            clientId !== '' && 
+            isChildOf(clientId, 'meros/swiper-slide') &&
+            attrs.merosScrollFx.animateOnSlideChange
+        ) {
             classes.push('meros-animate-on-slide-change');
         }
     }
@@ -103,12 +107,4 @@ export function removeClasses(className = '', classesToRemove = []) {
         .split(/\s+/)
         .filter((cls) => cls && !classesToRemove.includes(cls))
         .join(' ');
-}
-
-export function useClientIdAttribute(attributes, setAttributes, clientId) {
-    useEffect(() => {
-        if (!attributes.merosClientId) {
-            setAttributes({ merosClientId: clientId });
-        }
-    }, [clientId]);
 }

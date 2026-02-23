@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
-import { PanelBody } from '@wordpress/components';
 import SettingsControls from './settings.js';
 import AnimationControls from './animation.js';
 import NavigationControls from './navigation.js';
 import Breakpoints from './breakpoints.js';
+
+import { InspectorControls, PanelBody } from '../../../../assets/src/components/Controls.js';
 
 export function SwiperControls({ attributes, setAttributes, slideCount }) {
     return (

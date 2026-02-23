@@ -1,11 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import {
-    __experimentalToolsPanel as ToolsPanel,
-    __experimentalToolsPanelItem as ToolsPanelItem,
-    __experimentalNumberControl as NumberControl,
+    ToolsPanel,
+    ToolsPanelItem,
+    NumberControl,
     ToggleControl,
     RangeControl
-} from '@wordpress/components';
+} from '../../../../assets/src/components/Controls.js';
 
 export default function SettingsControls({ attributes, setAttributes, slideCount }) {
     const {
@@ -17,6 +17,8 @@ export default function SettingsControls({ attributes, setAttributes, slideCount
         height,
         mousewheel,
         freeMode,
+        loop,
+        autoplay,
         enableBreakPoints,
         breakPointDesktopWidth,
         breakpoints
@@ -153,6 +155,7 @@ export default function SettingsControls({ attributes, setAttributes, slideCount
                             }
                         }
                     }}
+                    disabled={loop === true}
                 />
             </ToolsPanelItem>
             <ToolsPanelItem
@@ -172,6 +175,7 @@ export default function SettingsControls({ attributes, setAttributes, slideCount
                             setAttributes({ autoplay: false });
                         }
                     }}
+                    disabled={autoplay === true}
                 />
             </ToolsPanelItem>
             <ToolsPanelItem
@@ -191,6 +195,7 @@ export default function SettingsControls({ attributes, setAttributes, slideCount
                             setAttributes({ autoplay: false });
                         }
                     }}
+                    disabled={autoplay === true}
                 />
             </ToolsPanelItem>
 
@@ -209,6 +214,7 @@ export default function SettingsControls({ attributes, setAttributes, slideCount
                         onChange={(value) => 
                             setAttributes({ freeMode: { ...freeMode, sticky: value } })
                         }
+                        disabled={autoplay === true}
                     />
                 </ToolsPanelItem>
             )}

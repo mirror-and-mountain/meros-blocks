@@ -107,6 +107,9 @@
         .wp-block-navigation__container {
             gap: var(--meros-nav-desktop-items-gap, 0px) !important;
 
+            width: -webkit-fill-available !important;
+            width: 100% !important;
+
             .meros-top-level-item,
             .meros-submenu-wrapper
             .wp-block-navigation-item__label {

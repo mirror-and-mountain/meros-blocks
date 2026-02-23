@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import {
-    __experimentalToolsPanelItem as ToolsPanelItem,
-    __experimentalNumberControl as NumberControl,
+    ToolsPanelItem,
+    NumberControl,
     ToggleControl
-} from '@wordpress/components';
+} from '../../../../assets/src/components/Controls.js';
 
 export default function BreakpointControls({
     label,

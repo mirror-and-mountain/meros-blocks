@@ -5,7 +5,8 @@ add_filter('render_block', function ($block_content, $block) {
         $block['attrs']['merosScrollFx']['enabled'] === true;
 
     if ($hasScrollFx) {
-        return '<div class="meros-animation-wrapper">' . $block_content . '</div>';
+        $swiperClass = $block['attrs']['merosScrollFx']['animateOnSlideChange'] ? 'meros-animate-on-slide-change' : '';
+        return '<div class="meros-animation-wrapper ' . $swiperClass . '">' . $block_content . '</div>';
     }
 
     return $block_content;

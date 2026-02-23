@@ -1,5 +1,5 @@
 import { isScrollFxBlock, isHoverFxBlock, isHeaderFxBlock } from '../utils.js';
-import { useFxAttributes } from './fxAttributes';
+import { getFxAttrs } from './fxAttributes';
 
 // CSS variables used for blocks with fx enabled
 export const AnimationStyleVars = [
@@ -78,7 +78,7 @@ export const FxVarMap = {
     headerAnimateLogoWidth: v => ({ '--meros-header-animated-logo-width': v })
 };
 
-export function useFxStyleVars(blockName, attrs, clientId, save = false) {
+export function useFxStyleVars(blockName, attrs, clientId = '', save = false) {
     const NON_STYLE_KEYS = new Set(['enabled', 'preset', 'animateOnSlideChange']);
 
     const diffAttrs = (current, defaults = {}) => {
@@ -110,21 +110,21 @@ export function useFxStyleVars(blockName, attrs, clientId, save = false) {
     if (isScrollFxBlock(blockName, attrs.merosScrollFx)) {
         Object.assign(
             styleVars,
-            fxToStyleVars(diffAttrs(attrs.merosScrollFx, useFxAttributes('Scroll')))
+            fxToStyleVars(diffAttrs(attrs.merosScrollFx, getFxAttrs('Scroll')))
         );
     }
 
-    if (isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
+    if (clientId !== '' && isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
         Object.assign(
             styleVars,
-            fxToStyleVars(diffAttrs(attrs.merosHeaderFx, useFxAttributes('Header')))
+            fxToStyleVars(diffAttrs(attrs.merosHeaderFx, getFxAttrs('Header')))
         );
     }
 
     if (isHoverFxBlock(blockName, attrs.merosHoverFx)) {
         Object.assign(
             styleVars,
-            fxToStyleVars(diffAttrs(attrs.merosHoverFx, useFxAttributes('Hover')))
+            fxToStyleVars(diffAttrs(attrs.merosHoverFx, getFxAttrs('Hover')))
         );
     }
 

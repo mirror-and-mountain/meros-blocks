@@ -37,16 +37,16 @@ export const isHoverFxBlock = (blockName, attrs) => {
 };
 
 // Helper to determine if the block is compatible with header fx, has it enabled, and is within a header template part
-export const isHeaderFxBlock = (blockName, attrs, clientId, save = false) => {
-    // if (!save) {
-    //     const isInHeader = isDirectChildOf(
-    //         clientId, 
-    //         'core/template-part', 
-    //         block => block.attributes?.slug === 'header'
-    //     );
+export const isHeaderFxBlock = (blockName, attrs, clientId = '', save = false) => {
+    if (!save && clientId !== '') {
+        const isInHeader = isDirectChildOf(
+            clientId, 
+            'core/template-part', 
+            block => block.attributes?.slug === 'header'
+        );
         
-    //     return isInHeader && HeaderFxBlocks.includes(blockName) && attrs?.enabled;
-    // }
+        return isInHeader && HeaderFxBlocks.includes(blockName) && attrs?.enabled;
+    }
 
     return HeaderFxBlocks.includes(blockName) && attrs?.enabled;
 };

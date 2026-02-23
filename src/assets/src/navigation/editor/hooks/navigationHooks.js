@@ -127,6 +127,27 @@ export function useNavigationWrapperStyles(mobileEnabled, mobileStyles, desktopS
     return styles;
 }
 
+export function useNavigationWrapperRules(innerBlocks, clientId, isMounted) {
+    const { removeBlock } = dispatch('core/block-editor');
+    const restrictedBlocks = ['core/page-list'];
+
+    useEffect(() => {
+        if (!isMounted.current) {
+            isMounted.current = true;
+            return;
+        }
+
+        if (!innerBlocks.length) return;    
+
+        innerBlocks.forEach((block) => {
+            if (restrictedBlocks.includes(block.name)) {
+                removeBlock(block.clientId);
+            }
+        });
+
+    }, [innerBlocks, clientId]);
+}
+
 export function useNavigationWrapperMenuTemplates(
     isInitialised,
     availableMenus,

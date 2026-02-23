@@ -1,9 +1,11 @@
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
+import { useRef } from '@wordpress/element';
 
 import {
     useNavigationWrapperClasses,
     useNavigationWrapperStyles,
+    useNavigationWrapperRules,
     useNavigationWrapperMenuTemplates
 } from '../hooks/navigationHooks.js';
 
@@ -67,6 +69,15 @@ export const NavigationWrapper = createHigherOrderComponent(
             const desktopStyles = desktopSettings?.styles || {};
 
             const justification = layout?.justifyContent || 'left';
+
+            // Apply block rules
+            const isMounted = useRef(false);
+            const innerBlocks = useSelect((select) => {
+                const { getBlocks } = select('core/block-editor');
+                return getBlocks(clientId);
+            }, [clientId]);
+            
+            useNavigationWrapperRules(innerBlocks, clientId, isMounted);
 
             // Determine wrapper classes
             const wrapperClasses = useNavigationWrapperClasses(

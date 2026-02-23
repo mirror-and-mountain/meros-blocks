@@ -27,20 +27,17 @@ export const saveFxStyles = (extraProps, blockType, attributes) => {
         };
     }
 
-    // Get the clientId from attributes
-    const clientId = attributes?.merosClientId || '';
-
     // Animation enabled → add classes & vars cleanly
     return {
         ...extraProps,
         className: [
-            ...useFxClasses(blockType.name, attributes, clientId, true),
+            ...useFxClasses(blockType.name, attributes, '', true),
             baseClassName,
         ].filter(Boolean).join(' ') || undefined,
 
         style: {
             ...baseStyle,
-            ...useFxStyleVars(blockType.name, attributes, clientId, true),
+            ...useFxStyleVars(blockType.name, attributes, '', true),
         },
     };
 };

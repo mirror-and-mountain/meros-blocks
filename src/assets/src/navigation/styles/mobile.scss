@@ -144,6 +144,23 @@
 
     // Highlights & Colour
     .meros-navigation-wrapper.meros-has-mobile-menu {
+        // Base to override submenu and desktop styles
+        .wp-block-navigation__container
+        .meros-top-level-item,
+        .meros-submenu-wrapper.wp-block-navigation-submenu, // For front end
+        .meros-submenu-wrapper .meros-submenu-item {
+            color: var(--meros-nav-mobile-item-text-color, #000000) !important;
+            border-bottom: none !important;
+            border-top: none !important;
+            background-color: transparent !important;
+
+            &:hover {
+                color: var(--meros-nav-mobile-item-text-color, #000000) !important;
+                background-color: transparent !important;
+            }
+        }
+
+
         // Underline Highlight Type
         &.meros-mobile-menu-highlight-underline {
             .wp-block-navigation__container
@@ -450,6 +467,8 @@
 
                     width: 100% !important;
                     width: -webkit-fill-available !important;
+
+                    margin-right: calc(-1 * var(--meros-nav-mobile-item-padding-x, 30px)) !important;
                     padding: var(--meros-nav-mobile-item-padding-y, 10px) var(--meros-nav-mobile-item-padding-x, 30px) !important;
 
                     a {

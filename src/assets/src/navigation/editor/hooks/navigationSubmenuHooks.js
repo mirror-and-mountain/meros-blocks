@@ -121,6 +121,10 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
                     restrictInnerSubmenus(block, defaultColumnId);
                 }
 
+                else if (block.name === 'core/page-list') {
+                    removeBlock(block.clientId, true);
+                }
+
                 else if (block.name !== 'meros/mega-menu-column') {
                     moveBlockToPosition(block.clientId, clientId, defaultColumnId, 0);
                 }
@@ -143,12 +147,12 @@ export function useNavigationSubmenuWrapperRules(innerBlocks, submenuType, clien
 
         else if (submenuType === 'default') {
             innerBlocks.forEach((block) => {
-                if (block.name === 'meros/mega-menu-column') {
-                    if (!block.innerBlocks?.length || 
-                        block.innerBlocks?.length === 0
-                    ) {
-                        removeBlock(block.clientId, true);
-                    }
+                if (
+                    block.name === 'meros/mega-menu-column' ||
+                    block.name === 'core/page-list'
+
+                ) {
+                    removeBlock(block.clientId, true);
                 }
 
                 if (block.name === 'core/navigation-submenu') {
