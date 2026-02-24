@@ -9,6 +9,7 @@ export function useNavigationSubmenuWrapperClasses(submenuType, styles) {
     const classes = ['meros-submenu-wrapper'];
 
     const submenuHighlightType = styles?.itemHighlightType || 'none';
+    const belowHeader = styles?.belowHeader || false;
     const columnFill = submenuType === 'mega-menu' ? styles?.megaMenuFillSpace ?? false : false;
     const dropShadow = styles?.dropShadow || false;
 
@@ -33,6 +34,15 @@ export function useNavigationSubmenuWrapperClasses(submenuType, styles) {
             }
         }
     } else {
+        if (belowHeader) {
+            classes.push('meros-submenu-below-header');
+        } else {
+            const index = classes.indexOf('meros-submenu-below-header');
+            if (index !== -1) {
+                classes.splice(index, 1);
+            }
+        }
+
         const index = classes.indexOf('meros-mega-menu-wrapper');
         if (index !== -1) {
             classes.splice(index, 1);
@@ -58,7 +68,8 @@ export function useNavigationSubmenuWrapperStyles(submenuStyles) {
     const setStyleAttribute = (key, value) => {
         if (
             key === 'megaMenuFillSpace' || 
-            key === 'dropShadow'
+            key === 'dropShadow' ||
+            key === 'belowHeader'
         ) {
             return;
         }

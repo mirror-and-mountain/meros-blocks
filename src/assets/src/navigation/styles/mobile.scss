@@ -45,7 +45,7 @@
                     .wp-block-navigation__submenu-icon {
                         position: absolute;
                         align-self: end;
-                        margin-top: 5px;
+                        margin-top: var(--meros-nav-mobile-item-padding-y, 10px) !important;
 
                         svg {
                             rotate: 270deg;
@@ -322,12 +322,13 @@
 
         a,
         button {
+            margin-top: calc(var(--meros-nav-mobile-item-padding-y, 10px) / 2) !important;
             padding: unset !important;
         }
 
         .wp-block-navigation__submenu-container {
             position: relative;
-            top: 0;
+            top: 0 !important;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease;
@@ -341,7 +342,7 @@
             border: none !important;
             box-shadow: none !important;
             background: var(--meros-nav-mobile-bg-color, #FFFFFF) !important;
-
+            
             margin-left: calc(-1 * var(--meros-nav-mobile-item-padding-x, 30px)) !important;
             margin-right: calc(-1 * var(--meros-nav-mobile-item-padding-x, 30px)) !important;
 
@@ -357,10 +358,6 @@
                     flex-grow: 0 !important;
                 }
             }
-        }
-
-        &.meros-submenu-open > a {
-            margin-bottom: var(--meros-nav-mobile-item-padding-y, 10px) !important;
         }
         
         &.meros-submenu-open {

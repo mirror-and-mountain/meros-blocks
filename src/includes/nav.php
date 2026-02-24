@@ -53,6 +53,8 @@ function getMerosNavigationSubmenuDefaultAttributes() {
     return [
         'type' => 'default',
         'styles' => [
+            'topOffset' => '100%',
+            'belowHeader' => false,
             'bgColor' => '#FFFFFF',
             'borderColor' => '#ABABAB',
             'borderWidth' => '0px',
@@ -326,6 +328,11 @@ add_filter('render_block', function ($block_content, $block) {
         if ($styles['dropShadow'] ?? false) {
             $wrapperClasses[] = 'meros-mega-menu-has-shadow';
         }
+    } else {
+        if ($styles['belowHeader'] ?? false) {
+            $wrapperClasses[] = 'meros-submenu-below-header';
+        }
+        
     }
 
     // Styles
@@ -335,7 +342,8 @@ add_filter('render_block', function ($block_content, $block) {
                 $value === $merosDefaultSettings['styles'][$key] ||
                 $key === 'itemHighlightType' ||
                 $key === 'megaMenuFillSpace' ||
-                $key === 'dropShadow'
+                $key === 'dropShadow' ||
+                $key === 'belowHeader'
             ) {
                 continue;
             }

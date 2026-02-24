@@ -100,6 +100,8 @@ export function getNavigationAttributes() {
 export function getNavigationSubmenuAttributes() {
     return {
         "styles": {
+            "topOffset": '100%',
+            "belowHeader": false,
             "bgColor": "#FFFFFF",
             "borderColor": "#FFFFFF00",
             "borderWidth": '0px',

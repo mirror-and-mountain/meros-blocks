@@ -82,6 +82,36 @@ export const NavigationSubmenuControls = createHigherOrderComponent((BlockEdit) 
                             label={__('Submenu Styles', 'meros-theme')}
                             resetAll={() => resetStyles()}
                         >
+                            {/* Place below header */}
+                            {/* <ToolsPanelItem
+                                label={__('Place Below Header', 'meros-theme')}
+                                isShownByDefault={true}
+                                hasValue={() => submenuStyles.belowHeader === true}
+                                onDeselect={() => resetStyles('belowHeader')}
+                            >
+                                <ToggleControl
+                                    label={__('Place Below Header', 'meros-theme')}
+                                    checked={submenuStyles.belowHeader ?? false}
+                                    onChange={(value) => setStyle('belowHeader', value)}
+                                />
+                            </ToolsPanelItem> */}
+
+                            {/* Top */}
+                            {submenuStyles.belowHeader === false && (
+                                <ToolsPanelItem
+                                    label={__('Top', 'meros-theme')}
+                                    isShownByDefault={true}
+                                    hasValue={() => submenuStyles.topOffset !== '100%'}
+                                    onDeselect={() => resetStyles('topOffset')}
+                                >
+                                    <UnitControl
+                                        label={__('Top', 'meros-theme')}
+                                        value={submenuStyles.topOffset || '100%'}
+                                        onChange={(value) => setStyle('topOffset', value)}
+                                    />
+                                </ToolsPanelItem>
+                            )}
+
                             {/* Background Colour */}
                             <ToolsPanelItem
                                 label={__('Background Colour', 'meros-theme')}
