@@ -437,10 +437,11 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                             label={__('Full Width Menu', 'meros-theme')}
                                             checked={mobileStyles.width === '100%'}
                                             onChange={(value) => setStyle('mobileSettings', 'width', value ? '100%' : '80%')}
+                                            disabled={mobileSettings.direction === 'top'}
                                         />
                                     </ToolsPanelItem>
 
-                                    {mobileStyles.width && mobileStyles.width !== '100%' && (
+                                    {mobileStyles.width && mobileStyles.width !== '100%' && mobileSettings.direction !== 'top' && (
                                         <>
                                             <ToolsPanelItem
                                                 label={__('Menu Width', 'meros-theme')}

@@ -17,24 +17,24 @@ import './style.scss';
 // Constants
 const merosNavAttributes = getNavigationAttributes();
 
-// Register Advanced Navigation Variation
-registerBlockVariation('core/navigation', {
-    name: 'advanced-navigation',
-    title: __('Advanced Navigation', 'meros'),
-    description: __('A navigation block with advanced features including a customisable mobile menu.', 'meros'),
-    isActive: [ 'merosMenu.enabled', 'merosMenu.submenuSettings.type' ],
-    isDefault: false,
-    attributes: {
-        merosMenu: {
-            ...merosNavAttributes,
-            enabled: true,
-            submenuSettings: {
-                ...merosNavAttributes.submenuSettings,
-                type: 'default'
-            }
-        }
-    }
-});
+// Register Advanced Navigation Variation - Disabled for now
+// registerBlockVariation('core/navigation', {
+//     name: 'advanced-navigation',
+//     title: __('Advanced Navigation', 'meros'),
+//     description: __('A navigation block with advanced features including a customisable mobile menu.', 'meros'),
+//     isActive: [ 'merosMenu.enabled', 'merosMenu.submenuSettings.type' ],
+//     isDefault: false,
+//     attributes: {
+//         merosMenu: {
+//             ...merosNavAttributes,
+//             enabled: true,
+//             submenuSettings: {
+//                 ...merosNavAttributes.submenuSettings,
+//                 type: 'default'
+//             }
+//         }
+//     }
+// });
 
 // Register Advanced Navigation with Mega Menu Submenu Type
 registerBlockVariation('core/navigation', {
