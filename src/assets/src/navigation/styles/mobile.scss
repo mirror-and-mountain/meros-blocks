@@ -496,6 +496,14 @@
             max-width: var(--meros-nav-mobile-max-width, 320px);
         }
 
+        &.meros-mobile-menu-full-width {
+            .wp-block-navigation__container {
+                width: 100% !important;
+                width: -webkit-fill-available !important;
+                max-width: none !important;
+            }
+        }
+
         &.meros-mobile-menu-has-shadow {
             .wp-block-navigation__container {
                 box-shadow: -2px 0 12px rgba(0, 0, 0, 0.12) !important;
@@ -512,6 +520,14 @@
 
             width: var(--meros-nav-mobile-width, 80%);
             max-width: var(--meros-nav-mobile-max-width, 320px);
+        }
+
+        &.meros-mobile-menu-full-width {
+            .wp-block-navigation__container {
+                width: 100% !important;
+                width: -webkit-fill-available !important;
+                max-width: none !important;
+            }
         }
 
         &.meros-mobile-menu-has-shadow {

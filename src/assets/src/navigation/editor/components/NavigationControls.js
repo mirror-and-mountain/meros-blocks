@@ -372,21 +372,21 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
 
                                     {desktopStyles.itemHighlightType !== 'none' && (
                                         <>
-                                            {desktopStyles.itemHighlightType !== 'none' && 
+                                            {desktopStyles.itemHighlightType !== 'none' &&
                                                 desktopStyles.itemHighlightType !== 'background' && (
-                                                <ToolsPanelItem
-                                                    label={__('Item Highlight Width', 'meros-theme')}
-                                                    isShownByDefault={true}
-                                                    hasValue={() => desktopStyles.itemHighlightBorderWidth !== '1px'}
-                                                    onDeselect={() => resetStyles('desktopSettings', 'itemHighlightBorderWidth')}
-                                                >
-                                                    <UnitControl
+                                                    <ToolsPanelItem
                                                         label={__('Item Highlight Width', 'meros-theme')}
-                                                        value={desktopStyles.itemHighlightBorderWidth || '1px'}
-                                                        onChange={(value) => setStyle('desktopSettings', 'itemHighlightBorderWidth', value)}
-                                                    />
-                                                </ToolsPanelItem>    
-                                            )}
+                                                        isShownByDefault={true}
+                                                        hasValue={() => desktopStyles.itemHighlightBorderWidth !== '1px'}
+                                                        onDeselect={() => resetStyles('desktopSettings', 'itemHighlightBorderWidth')}
+                                                    >
+                                                        <UnitControl
+                                                            label={__('Item Highlight Width', 'meros-theme')}
+                                                            value={desktopStyles.itemHighlightBorderWidth || '1px'}
+                                                            onChange={(value) => setStyle('desktopSettings', 'itemHighlightBorderWidth', value)}
+                                                        />
+                                                    </ToolsPanelItem>
+                                                )}
 
                                             <ToolsPanelItem
                                                 label={__('Item Highlight Colour', 'meros-theme')}
@@ -418,7 +418,7 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                 </ToolsPanel>
                             </PanelBody>
                         )}
-                        
+
                         {/* Styles Tab - Mobile Styles */}
                         {mobileSettings?.enabled && (
                             <PanelBody title={__('Mobile Menu Styles', 'meros-theme')} initialOpen={false}>
@@ -426,23 +426,35 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                     label={__('Mobile Menu Styles', 'meros-theme')}
                                     resetAll={() => resetStyles('mobileSettings')}
                                 >
-                                    {/* Width */}
+                                    {/* Full width */}
                                     <ToolsPanelItem
-                                        label={__('Menu Width', 'meros-theme')}
+                                        label={__('Full Width Menu', 'meros-theme')}
                                         isShownByDefault={true}
-                                        hasValue={() => mobileStyles.width !== '80%'}
+                                        hasValue={() => mobileStyles.width === '100%'}
                                         onDeselect={() => resetStyles('mobileSettings', 'width')}
                                     >
-                                        <UnitControl
-                                            label={__('Menu Width', 'meros-theme')}
-                                            value={mobileStyles.width || '80%'}
-                                            onChange={(value) => setStyle('mobileSettings', 'width', value)}
+                                        <ToggleControl
+                                            label={__('Full Width Menu', 'meros-theme')}
+                                            checked={mobileStyles.width === '100%'}
+                                            onChange={(value) => setStyle('mobileSettings', 'width', value ? '100%' : '80%')}
                                         />
                                     </ToolsPanelItem>
 
-                                    {/* Shadow & Max Width */}
                                     {mobileStyles.width && mobileStyles.width !== '100%' && (
                                         <>
+                                            <ToolsPanelItem
+                                                label={__('Menu Width', 'meros-theme')}
+                                                isShownByDefault={true}
+                                                hasValue={() => mobileStyles.width !== '80%'}
+                                                onDeselect={() => resetStyles('mobileSettings', 'width')}
+                                            >
+                                                <UnitControl
+                                                    label={__('Menu Width', 'meros-theme')}
+                                                    value={mobileStyles.width || '80%'}
+                                                    onChange={(value) => setStyle('mobileSettings', 'width', value)}
+                                                />
+                                            </ToolsPanelItem>
+
                                             <ToolsPanelItem
                                                 label={__('Menu Max Width', 'meros-theme')}
                                                 isShownByDefault={true}

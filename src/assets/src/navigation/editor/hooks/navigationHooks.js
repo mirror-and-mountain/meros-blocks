@@ -16,12 +16,11 @@ export function useNavigationWrapperClasses(
     // Mobile props
     const mobileEnabled = mobileSettings?.enabled;
     const mobileDirection = mobileSettings?.direction || 'left';
-
     const mobileUnderHeader = mobileDirection === 'top' && mobileSettings?.underHeader === true;
-
     const mobileAlignment = mobileSettings?.styles?.itemAlignment || 'left';
     const mobileHighlightType = mobileSettings?.styles?.itemHighlightType || 'none';
     const mobileShadow = mobileDirection !== 'top' && mobileSettings?.styles?.dropShadow === true;
+    const mobileWidth = mobileSettings?.styles?.width || '80%';
 
     // Desktop classes
     classes.push('meros-desktop-menu-highlight-' + desktopHighlightType);
@@ -50,6 +49,15 @@ export function useNavigationWrapperClasses(
                 classes.splice(index, 1);
             }
         }
+
+        if (mobileWidth === '100%') {
+            classes.push('meros-mobile-menu-full-width');
+        } else {
+            const index = classes.indexOf('meros-mobile-menu-full-width');
+            if (index !== -1) {
+                classes.splice(index, 1);
+            }
+        }
     } else {
         classes.forEach((cls) => {
             if (cls.startsWith('meros-mobile-menu-direction-')) {
@@ -61,6 +69,8 @@ export function useNavigationWrapperClasses(
             } if (cls.startsWith('meros-mobile-menu-highlight-')) {
                 classes.splice(classes.indexOf(cls), 1);
             } if (cls === 'meros-mobile-menu-has-shadow') {
+                classes.splice(classes.indexOf(cls), 1);
+            } if (cls === 'meros-mobile-menu-full-width') {
                 classes.splice(classes.indexOf(cls), 1);
             }
         });

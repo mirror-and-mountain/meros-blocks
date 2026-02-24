@@ -120,7 +120,6 @@ add_filter('render_block', function ($block_content, $block) {
     // Handle desktop menu styles
     $desktopStyles = $merosDesktopSettings['styles'] ?? [];
     $desktopItemHighlightType = $desktopStyles['itemHighlightType'] ?? 'none';
-
     $wrapperClasses[] = 'meros-desktop-menu-highlight-' . esc_attr($desktopItemHighlightType);
 
     foreach ($desktopStyles as $key => $value) {
@@ -145,6 +144,7 @@ add_filter('render_block', function ($block_content, $block) {
         // Set the breakpoint
         $mobileBreakpoint = $merosMobileSettings['breakpoint'] ?? 768;
 
+        $width       = $merosMobileSettings['styles']['width'] ?? '80%';
         $direction   = $merosMobileSettings['direction'] ?? 'left';
         $underHeader = $direction === 'top' && $merosMobileSettings['underHeader'] === true;
         $icon        = $merosMobileSettings['icon'] ?? 'hamburger-1';
@@ -168,6 +168,10 @@ add_filter('render_block', function ($block_content, $block) {
 
         if ($mobileShadow) {
             $wrapperClasses[] = 'meros-mobile-menu-has-shadow';
+        }
+
+        if ($width === '100%') {
+            $wrapperClasses[] = 'meros-mobile-menu-full-width';
         }
 
         foreach ($mobileStyles as $key => $value) {
