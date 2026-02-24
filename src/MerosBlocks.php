@@ -11,7 +11,7 @@ class MerosBlocks extends Extension
     protected string $authorSupportUrl = "https://merosblocks.com/support";
     protected string $description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
 
-    protected function configure(): void
+    protected function boot(): void
     {        
         $this->assetsStructure = '/**/{location}/*.{extension}';
         $this->loadAssets();
