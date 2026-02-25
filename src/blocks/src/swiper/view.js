@@ -40,7 +40,7 @@ function animateVisibleSlideElements(swiper) {
     });
 }
 
-function MerosSwiperInit(el, params) {
+function getMerosSwiperInstance(el, params) {
     return new Swiper(el, {
         modules: [Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Mousewheel],
         ...params
@@ -61,10 +61,13 @@ function setDynamicSlides(swiperEl) {
     return true;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function initMerosSwipers(livewireNavigated = false) {
     const swipers = document.querySelectorAll('.meros-swiper');
 
     swipers.forEach((swiperEl) => {
+        const isPersisted = swiperEl.hasAttribute('x-persist');
+        if (isPersisted && livewireNavigated) return;
+
         if (swiperEl.dataset.dynamic === 'true') {
             const dynamicSet = setDynamicSlides(swiperEl);
             if (!dynamicSet) return;
@@ -132,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
             watchSlidesProgress: true
         };
 
-        const swiper = MerosSwiperInit(swiperEl, params);
+        const swiper = getMerosSwiperInstance(swiperEl, params);
 
         // Animate elements in visible slides on init
         requestAnimationFrame(() => {
@@ -156,4 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-});
+}
+
+document.addEventListener('DOMContentLoaded', () => initMerosSwipers(false));
+document.addEventListener('livewire:navigated', () => initMerosSwipers(true));
