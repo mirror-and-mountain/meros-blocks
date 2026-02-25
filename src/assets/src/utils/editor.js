@@ -65,8 +65,8 @@ export function initEditorScripts(callback, args = {}) {
 /**
  * Checks if a block is a child of a specified parent block type.
  *
- * @param {string|string[]} parentNames - The name(s) of the parent block to check against.
  * @param {string} clientId - The client ID of the block to check.
+ * @param {string|string[]} parentNames - The name(s) of the parent block to check against.
  * @param {Function|null} logicalTest - Optional function to apply additional logic on the parent block.
  * @returns {boolean} True if the block is a child of the specified parent, false otherwise.
  */
