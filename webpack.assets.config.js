@@ -79,5 +79,22 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: ({ chunk }) => `${chunk.name}/style-index.css`,
     }),
-  ],
+
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: '**/conditions.php',
+          context: path.resolve(__dirname, 'src/assets/src'),
+          to: path.resolve(__dirname, 'src/assets/build'),
+          noErrorOnMissing: true,
+        },
+        {
+          from: '**/config.php',
+          context: path.resolve(__dirname, 'src/assets/src'),
+          to: path.resolve(__dirname, 'src/assets/build'),
+          noErrorOnMissing: true,
+        }
+      ],
+    }),
+  ]
 };
