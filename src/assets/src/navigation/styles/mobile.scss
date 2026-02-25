@@ -8,7 +8,7 @@
         visibility: hidden;
         transition: opacity 0.4s ease;
 
-        z-index: 198;
+        z-index: 200 !important;
 
         &.active {
             opacity: 1;
@@ -154,7 +154,8 @@
             border-top: none !important;
             background-color: transparent !important;
 
-            &:hover {
+            &:hover,
+            &.current-menu-item {
                 color: var(--meros-nav-mobile-item-text-color, #000000) !important;
                 background-color: transparent !important;
             }
@@ -171,7 +172,8 @@
                 border-bottom: 2px solid transparent !important;
                 transition: color 0.2s ease, border-bottom-color 0.2s ease;
 
-                &:hover {
+                &:hover,
+                &.current-menu-item {
                     color: var(--meros-nav-mobile-item-text-hover-color, #222222) !important;
                     border-bottom: 2px solid var(--meros-nav-mobile-item-highlight-color, #0693E3) !important;
                 }
@@ -182,7 +184,8 @@
             .meros-submenu-wrapper {
                 border-bottom: none !important;
 
-                &:hover {
+                &:hover,
+                &.current-menu-item {
                     border-bottom: none !important;
                 }
             }
@@ -198,7 +201,8 @@
                 border-top: 2px solid transparent !important;
                 transition: color 0.2s ease, border-top-color 0.2s ease;
 
-                &:hover {
+                &:hover,
+                &.current-menu-item {
                     color: var(--meros-nav-mobile-item-text-hover-color, #222222) !important;
                     border-top: 2px solid var(--meros-nav-mobile-item-highlight-color, #0693E3) !important;
                 }
@@ -209,7 +213,8 @@
             .meros-submenu-wrapper {
                 border-top: none !important;
 
-                &:hover {
+                &:hover,
+                &.current-menu-item {
                     border-top: none !important;
                 }
             }
@@ -225,7 +230,8 @@
                 transition: background-color 0.2s ease, color 0.2s ease;
                 color: var(--meros-nav-mobile-item-text-color, #000000) !important;
 
-                &:hover {
+                &:hover,
+                &.current-menu-item {
                     color: var(--meros-nav-mobile-item-text-hover-color, #222222) !important;
                     background-color: var(--meros-nav-mobile-item-highlight-color, #0693E3) !important;
                     
@@ -238,7 +244,8 @@
                 color: var(--meros-nav-mobile-item-text-color, #000000) !important;
                 background-color: transparent !important;
 
-                &:hover {
+                &:hover,
+                &.current-menu-item {
                     color: var(--meros-nav-mobile-item-text-color, #000000) !important;
                     background-color: transparent !important;
                 }
@@ -263,7 +270,7 @@
         padding-left: 30px;
 
         background: var(--meros-nav-mobile-bg-color, #FFFFFF) !important;
-        z-index: 199 !important;
+        z-index: 400 !important;
 
         overflow-y: scroll !important;
         overflow-x: hidden !important;
@@ -378,9 +385,7 @@
                 transform: translateX(0);
                 opacity: 1;
 
-                transition:
-                    opacity 0.2s ease,
-                    transform 0.4s ease;
+                transition: opacity 0.4s ease, transform 0.4s ease;
 
                 will-change: transform, opacity;
             }
@@ -392,10 +397,6 @@
             .meros-top-level-item {
                 opacity: 0;
                 transform: translateX(-20%);
-
-                transition:
-                    opacity 0.2s ease,
-                    transform 0.4s ease 0.2s;
 
                 pointer-events: none;
                 background-color: transparent !important;
@@ -411,8 +412,13 @@
     .meros-navigation-wrapper.meros-mobile-menu-active
     .meros-mega-menu-wrapper
     .meros-mega-menu-items-container {
-        transform: translateX(100%);
+        transform-origin: unset;
+        transition-delay: 0s;
+        transform: translateX(20%);
         opacity: 0;
+
+        transition: transform 0.4s ease, opacity 0.4s ease;
+        will-change: transform, opacity;
         
         pointer-events: none;
 
@@ -425,8 +431,6 @@
         min-width: auto;
 
         padding-top: 29px;
-    
-        z-index: 200;
 
         border-bottom: none;
         box-shadow: none !important;
@@ -440,6 +444,9 @@
             gap: 10px !important;
             
             width: 100% !important;
+
+            transition: none !important;
+            will-change: unset;
 
             .meros-mega-menu-column {
                 flex-direction: column !important;
@@ -459,7 +466,6 @@
                 .meros-mega-menu-item {
                     opacity: 1 !important;
                     transition: none !important;
-                    transition-delay: 0s !important;
                     will-change: unset;
 
                     width: 100% !important;
@@ -483,6 +489,11 @@
         transform: translateX(0);
         opacity: 1;
         pointer-events: auto;
+        cursor: default !important;
+
+        .wp-block-navigation__submenu-container {
+            cursor: default !important;
+        }
     }
 
     // Mobile Menu Animation - Left
@@ -699,36 +710,35 @@
                 }
             }
         }
+ 
+        .wp-block-navigation__container 
+        .meros-navigation-btns {
+            display: flex;
+            justify-content: space-between;
 
-        .wp-block-navigation__container {
-            .meros-navigation-btns {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            margin-left: -30px;
+            padding: 0 15px;
+            width: 100%;
+            width: -webkit-fill-available;
+
+            z-index: 500;
+
+            .meros-navigation-back-btn {
+                visibility: hidden !important;
+            }
+
+            .meros-navigation-close-btn {
                 display: flex;
-                justify-content: space-between;
+                cursor: pointer;
 
-                margin-top: 20px;
-                margin-bottom: 10px;
-                margin-left: -30px;
-                padding: 0 15px;
-                width: 100%;
-                width: -webkit-fill-available;
-
-                z-index: 1000;
-
-                .meros-navigation-back-btn {
-                    visibility: hidden;
-                }
-
-                .meros-navigation-close-btn {
-                    display: flex;
-                    cursor: pointer;
-
-                    svg {
-                        fill: var(--meros-nav-mobile-icon-color-open, #000000);
-                    }
+                svg {
+                    fill: var(--meros-nav-mobile-icon-color-open, #000000);
                 }
             }
         }
-
+        
         &.meros-mobile-menu-direction-top.meros-mobile-menu-under-header {
             .wp-block-navigation__container {
                 .meros-navigation-btns {
@@ -742,7 +752,7 @@
                 }
 
                 .meros-mega-menu-items-container {
-                    padding-top: 12px !important;
+                    padding-top: 25px !important;
                 }
             }
         }
@@ -751,7 +761,7 @@
             .wp-block-navigation__container:has(.meros-mega-menu-wrapper) 
             .meros-navigation-btns 
             .meros-navigation-back-btn {
-                visibility: visible;
+                visibility: visible !important;
                 cursor: pointer;
 
                 svg {

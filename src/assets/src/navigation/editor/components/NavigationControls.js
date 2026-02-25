@@ -12,7 +12,8 @@ import {
     SelectControl,
     ToggleControl,
     UnitControl,
-    ColorPicker
+    ColorPicker,
+    HTMLEditor
 } from '../../../components/Controls.js';
 
 export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
@@ -659,6 +660,19 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                             </PanelBody>
                         )}
                     </div>
+                </InspectorControls>
+
+                {/* Advanced Tab */}
+                <InspectorControls group="advanced">
+                    {mobileSettings?.enabled && (
+                        <div className="meros-navigation-advanced-controls">
+                            <HTMLEditor 
+                                label={__('Custom Mobile Menu HTML', 'meros-theme')}
+                                value={mobileSettings?.customHTML || ''}
+                                onChange={(value) => setSetting('mobileSettings', 'customHTML', value)}
+                            />
+                        </div>
+                    )}
                 </InspectorControls>
             </Fragment>
         );

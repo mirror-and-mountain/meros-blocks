@@ -71,6 +71,7 @@
 
         position: fixed;
         pointer-events: auto;
+        cursor: default !important;
 
         transition: transform 0.4s ease;
 
@@ -120,6 +121,8 @@
             
             height: auto;
             width: var(--wp--style--global--wide-size, 100%) !important;
+
+            cursor: default !important;
 
             // Editor only
             .block-list-appender {

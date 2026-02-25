@@ -1,13 +1,13 @@
 .meros-sticky-element {
     position: sticky !important;
     top: var(--meros-sticky-top-offset, 0px) !important;
-    z-index: 400;
+    z-index: 100;
 }
 
 div[x-persist="header"]:has(header.meros-sticky-element) {
     position: sticky !important;
     top: 0 !important;
-    z-index: 500;
+    z-index: 300;
 
     header {
         position: relative !important;
@@ -24,7 +24,7 @@ header.meros-sticky-element,
 header.meros-sticky-element {
     position: sticky !important;
     top: 0 !important;
-    z-index: 500;
+    z-index: 300;
 
     .meros-sticky-element {
         position: relative !important;

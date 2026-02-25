@@ -7,6 +7,8 @@
         "build": "npm run build:blocks && npm run build:assets"
     },
     "devDependencies": {
+        "@codemirror/basic-setup": "^0.20.0",
+        "@codemirror/lang-html": "^6.4.11",
         "@types/wordpress__block-editor": "^11.5.16",
         "@wordpress/block-editor": "^14.15.0",
         "@wordpress/blocks": "^14.9.0",
@@ -17,6 +19,7 @@
         "@wordpress/hooks": "^4.22.0",
         "@wordpress/i18n": "^5.20.0",
         "@wordpress/scripts": "^30.13.0",
+        "codemirror": "^6.0.2",
         "swiper": "^12.0.3"
     }
 }

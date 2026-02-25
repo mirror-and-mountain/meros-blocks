@@ -1,6 +1,8 @@
 import { InspectorControls as BaseInspectorControls } from '@wordpress/block-editor';
+import { useEffect, useRef } from '@wordpress/element';
+
 import { ColorPicker as BaseColorPicker } from './ColorPicker.js';
-import { 
+import {
     PanelBody as BasePanelBody,
     TextControl as BaseTextControl,
     ToggleControl as BaseToggleControl,
@@ -39,10 +41,10 @@ export function ToolsPanel({ label, resetAll, children }) {
 
 export function ToolsPanelItem({ label, isShownByDefault, hasValue, onDeselect, children }) {
     return (
-        <BaseToolsPanelItem 
-            label={label} 
-            isShownByDefault={isShownByDefault} 
-            hasValue={hasValue} 
+        <BaseToolsPanelItem
+            label={label}
+            isShownByDefault={isShownByDefault}
+            hasValue={hasValue}
             onDeselect={onDeselect}
         >
             {children}
@@ -128,11 +130,11 @@ export function NumberControl({ label, value, onChange, min, max, step }) {
 }
 
 export function UnitControl({ label, value, onChange, units = [
-    { name: 'px', label: 'px'},
-    { name: 'em', label: 'em'},
-    { name: 'rem', label: 'rem'},
-    { name: '%', label: '%'}
-]}) {
+    { name: 'px', label: 'px' },
+    { name: 'em', label: 'em' },
+    { name: 'rem', label: 'rem' },
+    { name: '%', label: '%' }
+] }) {
     return (
         <BaseUnitControl
             label={label}
@@ -155,4 +157,49 @@ export function ColorPicker({ label, value, onChange, margin = true }) {
     );
 }
 
+export function HTMLEditor({ label, value, onChange }) {
+    const textareaRef = useRef(null);
+    const editorRef = useRef(null);
+
+    useEffect(() => {
+        if (!textareaRef.current || editorRef.current) return;
+
+        editorRef.current = wp.codeEditor.initialize(
+            textareaRef.current,
+            {
+                mode: 'htmlmixed',
+                lineNumbers: true,
+                indentUnit: 2,
+                tabSize: 2,
+                indentWithTabs: false,
+            }
+        );
+
+        editorRef.current.codemirror.setSize(null, 200);
+        editorRef.current.codemirror.on('change', (cm) => {
+            onChange(cm.getValue());
+        });
+    }, []);
+
+    // Keep external value in sync
+    useEffect(() => {
+        if (!editorRef.current) return;
+
+        const cm = editorRef.current.codemirror;
+        if (cm.getValue() !== value) {
+            cm.setValue(value || '');
+        }
+    }, [value]);
+
+    return (
+        <>
+            <label className="components-truncate components-text components-input-control__label em5sgkm2 dbadef-eb-f-ae-aaaeaead-116rv4z e19lxcc00">{label}</label>
+            <textarea
+                ref={textareaRef}
+                defaultValue={value}
+                style={{ width: '100%' }}
+            />
+        </>
+    );
+}
 

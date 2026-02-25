@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('livewire:navigated', () => {
-    merosSetHeaderHeight({
-        doc: document,
-        win: window,
-        selector: 'header',
+    requestAnimationFrame(() => {
+        merosSetHeaderHeight({
+            doc: document,
+            win: window,
+            selector: 'header',
+        });
     });
 });
