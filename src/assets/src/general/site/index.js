@@ -7,3 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
         selector: 'header',
     });
 });
+
+document.addEventListener('livewire:navigated', () => {
+    merosSetHeaderHeight({
+        doc: document,
+        win: window,
+        selector: 'header',
+    });
+});

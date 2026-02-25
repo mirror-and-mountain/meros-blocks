@@ -171,7 +171,7 @@ function initNavigationBlocks() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initAdvancedNav() {
     const width = window.innerWidth;
     initNavigationBlocks();
     setMobileMenus(width);
@@ -182,4 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setMobileMenus(newWidth);
         }
     });
-});
+}
+
+document.addEventListener('DOMContentLoaded', initAdvancedNav);
+document.addEventListener('livewire:navigated', initAdvancedNav);
