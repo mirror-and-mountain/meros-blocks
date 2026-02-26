@@ -102,9 +102,8 @@ class MerosBlocksFilters extends Filters {
      */
     public function register(): void {
         // Feature filters
-        $this->add($this->hookPrefix . '_block_fx_is_experimental', '__return_true');
-        $this->add($this->hookPrefix . '_advanced_navigation_is_experimental', '__return_true');
         $this->add($this->hookPrefix . '_mega_menu_column_is_switchable', '__return_false');
+        $this->add($this->hookPrefix . '_swiper_slide_is_switchable', '__return_false');
 
         // Nav filters
         $this->add('render_block', [$this, 'renderAdvancedNav'], 10, 2);

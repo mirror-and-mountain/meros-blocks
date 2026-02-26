@@ -13,7 +13,7 @@ import {
     ToggleControl,
     UnitControl,
     ColorPicker,
-    HTMLEditor
+    HTMLEditorModal
 } from '../../../components/Controls.js';
 
 export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
@@ -271,26 +271,14 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                         hasValue={() => mobileSettings?.customHtmlTop !== ''}
                                         onDeselect={() => resetSettings('mobileSettings', 'customHtmlTop')}
                                     >
-                                         <HTMLEditor 
+                                         <HTMLEditorModal
                                             label={__('Custom HTML (Top)', 'meros-theme')}
-                                            value={mobileSettings?.customHTMLTop || ''}
-                                            onChange={(value) => setSetting('mobileSettings', 'customHTMLTop', value)}
+                                            value={mobileSettings?.customHtmlTop}
+                                            onChange={(value) =>
+                                                setSetting('mobileSettings', 'customHtmlTop', value)
+                                            }
                                         />
                                     </ToolsPanelItem>
-
-                                    {/* Custom HTML - Bottom */}
-                                    {/* <ToolsPanelItem
-                                        label={__('Custom HTML (Bottom)', 'meros-theme')}
-                                        isShownByDefault={false}
-                                        hasValue={() => mobileSettings?.customHtmlBottom !== ''}
-                                        onDeselect={() => resetSettings('mobileSettings', 'customHtmlBottom')}
-                                    >
-                                         <HTMLEditor 
-                                            label={__('Custom HTML (Bottom)', 'meros-theme')}
-                                            value={mobileSettings?.customHTMLBottom || ''}
-                                            onChange={(value) => setSetting('mobileSettings', 'customHTMLBottom', value)}
-                                         />
-                                     </ToolsPanelItem> */}
                                 </>
                             )}
                         </ToolsPanel>

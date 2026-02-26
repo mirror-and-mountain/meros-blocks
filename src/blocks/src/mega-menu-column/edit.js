@@ -6,7 +6,7 @@ import {
     ToolsPanelItem,
     TextControl,
     ToggleControl,
-    HTMLEditor
+    HTMLEditorModal
 } from '../../../assets/src/components/Controls.js';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -61,7 +61,7 @@ export default function Edit({ attributes, setAttributes }) {
                         hasValue={() => customHTML !== ''}
                         onDeselect={() => setAttributes({ customHTML: '' })}
                     >
-                        <HTMLEditor
+                        <HTMLEditorModal
                             label={__('Custom HTML', 'meros')}
                             value={customHTML}
                             onChange={(value) => {

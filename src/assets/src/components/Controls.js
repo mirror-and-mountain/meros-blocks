@@ -1,5 +1,6 @@
+import { __ } from '@wordpress/i18n';
 import { InspectorControls as BaseInspectorControls } from '@wordpress/block-editor';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 import { ColorPicker as BaseColorPicker } from './ColorPicker.js';
 import {
@@ -9,6 +10,8 @@ import {
     SelectControl as BaseSelectControl,
     RangeControl as BaseRangeControl,
     FontSizePicker as BaseFontSizePicker,
+    Button as BaseButton,
+    Modal as BaseModal,
     __experimentalUnitControl as BaseUnitControl,
     __experimentalNumberControl as BaseNumberControl,
     __experimentalToolsPanel as BaseToolsPanel,
@@ -157,7 +160,7 @@ export function ColorPicker({ label, value, onChange, margin = true }) {
     );
 }
 
-export function HTMLEditor({ label, value, onChange }) {
+export function HTMLEditor({ label, value, onChange, height = 200 }) {
     const textareaRef = useRef(null);
     const editorRef = useRef(null);
 
@@ -175,7 +178,7 @@ export function HTMLEditor({ label, value, onChange }) {
             }
         );
 
-        editorRef.current.codemirror.setSize(null, 200);
+        editorRef.current.codemirror.setSize(null, height);
         editorRef.current.codemirror.on('change', (cm) => {
             onChange(cm.getValue());
         });
@@ -199,6 +202,46 @@ export function HTMLEditor({ label, value, onChange }) {
                 defaultValue={value}
                 style={{ width: '100%' }}
             />
+        </>
+    );
+}
+
+export function HTMLEditorModal({ label, value, onChange }) {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <>
+            <BaseButton
+                variant="secondary"
+                onClick={() => setIsOpen(true)}
+                className="meros-html-editor-button"
+            >
+                {label}
+            </BaseButton>
+
+            {isOpen && (
+                <BaseModal
+                    title={label}
+                    onRequestClose={() => setIsOpen(false)}
+                    shouldCloseOnClickOutside={false}
+                    className="meros-html-editor-modal"
+                >
+                    <HTMLEditor
+                        label={label}
+                        value={value}
+                        onChange={onChange}
+                        height={300}
+                    />
+
+                    <div style={{ marginTop: '16px', textAlign: 'right' }}>
+                        <BaseButton
+                            variant="primary"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            {__('Done', 'meros-theme')}
+                        </BaseButton>
+                    </div>
+                </BaseModal>
+            )}
         </>
     );
 }
