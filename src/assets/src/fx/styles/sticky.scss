@@ -38,7 +38,14 @@ header.meros-header-no-bottom-margin + .wp-block,
 
 // Front end
 .wp-site-blocks:not(.is-root-container)
-div[x-persist="header"]:has(header.meros-sticky-element) + * ,
+div[x-persist="header"]:has(header.meros-header-no-bottom-margin) + * {
+    margin-top: 0 !important;
+
+    header {
+        margin-top: unset !important;
+    }
+}
+
 .wp-site-blocks:not(.is-root-container)
 header.meros-header-no-bottom-margin + * {
     margin-top: 0 !important;
@@ -50,7 +57,14 @@ header.meros-header-offset + .wp-block,
 
 // Front end
 .wp-site-blocks:not(.is-root-container)
-div[x-persist="header"]:has(header.meros-sticky-element) + * ,
+div[x-persist="header"]:has(header.meros-header-offset) + * {
+    margin-top: calc(var(--meros-header-height) * -1) !important;
+
+    header {
+        margin-top: unset !important;
+    }
+}
+
 .wp-site-blocks:not(.is-root-container)
 header.meros-header-offset + * {
     margin-top: calc(
