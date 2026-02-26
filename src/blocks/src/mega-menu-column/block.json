@@ -15,6 +15,14 @@
         "title": {
             "type": "string",
             "default": "Column Title"
+        },
+        "customHTML": {
+            "type": "string",
+            "default": ""
+        },
+        "grow": {
+            "type": "boolean",
+            "default": false
         }
     }
 }

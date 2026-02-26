@@ -4,21 +4,27 @@ import {
     InspectorControls,
     ToolsPanel,
     ToolsPanelItem,
-    TextControl
+    TextControl,
+    ToggleControl,
+    HTMLEditor
 } from '../../../assets/src/components/Controls.js';
 
 export default function Edit({ attributes, setAttributes }) {
 
-    const { title } = attributes;
+    const { title, customHTML, grow } = attributes;
 
-    const resetTitle = () => {
-        setAttributes({ title: 'Column Title' });
+    const resetAttrs = () => {
+        setAttributes({ title: 'Column Title', customHTML: '', grow: false });
+    };
+
+    const styles = {
+        flexGrow: grow ? 1 : 'initial'
     };
 
     return (
         <>
             <InspectorControls>
-                <ToolsPanel label={__('Settings', 'meros')} resetAll={resetTitle}>
+                <ToolsPanel label={__('Settings', 'meros')} resetAll={resetAttrs}>
                     <ToolsPanelItem 
                         label={__('Column Title', 'meros')}
                         isShownByDefault={true}
@@ -33,17 +39,56 @@ export default function Edit({ attributes, setAttributes }) {
                             }}
                         />
                     </ToolsPanelItem>
+
+                    <ToolsPanelItem
+                        label={__('Grow', 'meros')}
+                        isShownByDefault={true}
+                        hasValue={() => grow !== false}
+                        onDeselect={() => setAttributes({ grow: false })}
+                    >
+                        <ToggleControl
+                            label={__('Grow', 'meros')}
+                            checked={grow}
+                            onChange={(value) => {
+                                setAttributes({ grow: value });
+                            }}
+                        />
+                    </ToolsPanelItem>
+
+                    <ToolsPanelItem
+                        label={__('Custom HTML', 'meros')}
+                        isShownByDefault={true}
+                        hasValue={() => customHTML !== ''}
+                        onDeselect={() => setAttributes({ customHTML: '' })}
+                    >
+                        <HTMLEditor
+                            label={__('Custom HTML', 'meros')}
+                            value={customHTML}
+                            onChange={(value) => {
+                                setAttributes({ customHTML: value });
+                            }}
+                        />
+                    </ToolsPanelItem>
                 </ToolsPanel>
             </InspectorControls>
 
-            <div className="meros-mega-menu-column">
+            <div className="meros-mega-menu-column" style={styles}>
                 <div className="meros-mega-menu-column-title">
                     <p>{title}</p>
                 </div>
                 <div className="meros-mega-menu-column-content">
-                    <InnerBlocks
-                        allowedBlocks={['core/navigation-link']}
-                    />
+                    <>
+                        <InnerBlocks
+                            allowedBlocks={['core/navigation-link']}
+                        />
+
+                        {customHTML && (
+                            <div 
+                                className="meros-mega-menu-column-custom-content"
+                                dangerouslySetInnerHTML={{ __html: customHTML }}
+                            />
+                        )}
+                    </>
                 </div>
             </div>
         </>

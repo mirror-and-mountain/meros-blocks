@@ -149,6 +149,10 @@
                     gap: var(--meros-nav-submenu-mega-menu-item-gap, 0px);
                 }
 
+                .meros-mega-menu-column-custom-content {
+                    padding: 0 var(--meros-nav-submenu-title-padding-x, 16px);
+                }
+
                 .meros-mega-menu-item {
                     padding: var(--meros-nav-submenu-item-padding-y, 0px) var(--meros-nav-submenu-item-padding-x, 0px);
                     background-color: transparent;

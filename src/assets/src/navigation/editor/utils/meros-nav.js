@@ -34,7 +34,6 @@ function initNav(navBlockId, isMobile, doc, blockEditor) {
 
     // Get submenu type & click behaviour
     const submenuType = merosAttributes.submenuSettings?.type || 'default';
-    const openSubmenusOnClick = block?.attributes?.openSubmenusOnClick ?? false;
 
     // Update custom HTML areas
     const customMobileHTMLTop = merosAttributes.mobileSettings?.customHTMLTop || '';
@@ -62,18 +61,9 @@ function initNav(navBlockId, isMobile, doc, blockEditor) {
         cleanUpMobileMenu(doc, wrapper);
     }
 
-    const updateClickBehaviour =
-        openSubmenusOnClick && !wrapper.classList.contains('meros-open-submenus-on-click') ||
-        !openSubmenusOnClick && wrapper.classList.contains('meros-open-submenus-on-click');
-
-    if (!isMobile && updateClickBehaviour) {
-        if (openSubmenusOnClick) {
-            disableSubmenuOpenOnHover(doc, wrapper);
-            enableSubmenuOpenOnClick(doc, wrapper);
-        } else {
-            disableSubmenuOpenOnClick(doc, wrapper);
-            enableSubmenuOpenOnHover(doc, wrapper);
-        }
+    if (!isMobile) {
+        // Always on-click in the editor.
+        enableSubmenuOpenOnClick(doc, wrapper);
     }
 }
 
