@@ -11,7 +11,6 @@ import {
 function initNav(navBlockId, isMobile, doc, blockEditor) {
     // Get block
     const block = blockEditor.getBlock(navBlockId);
-
     if (!block) return;
 
     // Get attributes
@@ -36,6 +35,18 @@ function initNav(navBlockId, isMobile, doc, blockEditor) {
     // Get submenu type & click behaviour
     const submenuType = merosAttributes.submenuSettings?.type || 'default';
     const openSubmenusOnClick = block?.attributes?.openSubmenusOnClick ?? false;
+
+    // Update custom HTML areas
+    const customMobileHTMLTop = merosAttributes.mobileSettings?.customHTMLTop || '';
+    if (customMobileHTMLTop !== '') {
+        const customHTMLArea = wrapper.querySelector('.meros-mobile-menu-top-content');
+        if (customHTMLArea) {
+            const innerHTML = customHTMLArea.innerHTML;
+            if (innerHTML !== customMobileHTMLTop) {
+                customHTMLArea.innerHTML = customMobileHTMLTop;
+            }
+        }
+    }
 
     // Initialise mega menu if enabled
     if (submenuType === 'mega-menu') {

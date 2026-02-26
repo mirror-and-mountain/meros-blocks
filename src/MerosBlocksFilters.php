@@ -286,8 +286,22 @@ class MerosBlocksFilters extends Filters {
             $wpNavEl = $dom->getElementsByTagName('nav')->item(0);
             $wpNavContainer = $wpNavEl->getElementsByTagName('ul')->item(0);
 
-            // Create mobile navigation buttons
+            // Create mobile top section and navigation buttons
             if (str_contains($wpNavContainer->getAttribute('class'), 'wp-block-navigation__container')) {
+                $topContainer = $dom->createElement('div');
+                $topContainer->setAttribute('class', 'meros-mobile-menu-top-container');
+
+                $customHTMLArea = $dom->createElement('div');
+                $customHTMLArea->setAttribute('class', 'meros-mobile-menu-top-content');
+                // dd($merosMobileSettings['customHTML']);
+                if (is_string($merosMobileSettings['customHTMLTop']) && $merosMobileSettings['customHTMLTop'] !== '') {
+                    $fragment = $dom->createDocumentFragment();
+                    $fragment->appendXML($merosMobileSettings['customHTMLTop']);
+                    $customHTMLArea->appendChild($fragment);
+                }
+
+                $topContainer->appendChild($customHTMLArea);
+
                 $navBtnWrapper = $dom->createElement('ul');
                 $navBtnWrapper->setAttribute('class', 'meros-navigation-btns');
 
@@ -321,7 +335,8 @@ class MerosBlocksFilters extends Filters {
 
                 $navBtnWrapper->appendChild($backBtn);
                 $navBtnWrapper->appendChild($closeBtn);
-                $wpNavContainer->prepend($navBtnWrapper);
+                $topContainer->appendChild($navBtnWrapper);
+                $wpNavContainer->prepend($topContainer);
 
                 $block_content = $dom->saveHTML($wpNavEl);
             }

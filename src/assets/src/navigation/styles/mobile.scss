@@ -701,6 +701,19 @@
         display: none;
     }
 
+    .meros-navigation-wrapper.meros-has-mobile-menu
+    .wp-block-navigation__container
+    .meros-mobile-menu-top-container {
+        display: none;
+        
+        width: 100%;
+        width: -webkit-fill-available;
+        
+        margin-left: calc(-1 * var(--meros-nav-mobile-item-padding-x, 30px)) !important;
+        padding: 0 15px;
+        
+        z-index: 500;
+    }
 
     .meros-navigation-wrapper.meros-mobile-menu-active {
         &.meros-mobile-menu-under-header:has(.meros-submenu-wrapper:not(.meros-mega-menu-wrapper)) {
@@ -712,20 +725,18 @@
         }
  
         .wp-block-navigation__container 
+        .meros-mobile-menu-top-container
         .meros-navigation-btns {
             display: flex;
-            justify-content: space-between;
+            justify-content: end;
+            gap: 5px;
 
             margin-top: 20px;
             margin-bottom: 10px;
-            margin-left: -30px;
-            padding: 0 15px;
             width: 100%;
-            width: -webkit-fill-available;
-
-            z-index: 500;
 
             .meros-navigation-back-btn {
+                margin-top: -1px;
                 visibility: hidden !important;
             }
 
@@ -758,7 +769,8 @@
         }
 
         &.meros-submenu-open {
-            .wp-block-navigation__container:has(.meros-mega-menu-wrapper) 
+            .wp-block-navigation__container:has(.meros-mega-menu-wrapper)
+            .meros-mobile-menu-top-container 
             .meros-navigation-btns 
             .meros-navigation-back-btn {
                 visibility: visible !important;
@@ -767,6 +779,13 @@
                 svg {
                     fill: var(--meros-nav-mobile-icon-color-open, #000000);
                 }
+            }
+        }
+
+        &.meros-mobile-menu-open {
+            .wp-block-navigation__container 
+            .meros-mobile-menu-top-container {
+                display: flex;
             }
         }
     }

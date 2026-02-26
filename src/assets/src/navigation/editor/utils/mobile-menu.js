@@ -120,8 +120,14 @@ export function initMobileMenu(doc, wrapper) {
 
         overlay.classList.add('active');
 
-        const navBtns = container.querySelector('.meros-navigation-btns');
-        if (!navBtns) {
+        const topHTML = container.querySelector('.meros-mobile-menu-top-container');
+        if (!topHTML) {
+            const topContainer = doc.createElement('div');
+            topContainer.classList.add('meros-mobile-menu-top-container');
+
+            const customHTMLArea = doc.createElement('div');
+            customHTMLArea.classList.add('meros-mobile-menu-top-content');
+
             const btnsContainer = document.createElement('div');
             btnsContainer.classList.add('meros-navigation-btns');
 
@@ -147,7 +153,10 @@ export function initMobileMenu(doc, wrapper) {
 
             btnsContainer.appendChild(backBtn);
             btnsContainer.appendChild(closeBtn);
-            container.prepend(btnsContainer);
+
+            topContainer.appendChild(customHTMLArea);
+            topContainer.appendChild(btnsContainer);
+            container.prepend(topContainer);
 
             backBtn.addEventListener('click', (e) => {
                 e.stopPropagation();

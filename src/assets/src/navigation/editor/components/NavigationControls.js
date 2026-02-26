@@ -263,6 +263,34 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                             onChange={(value) => setSetting('mobileSettings', 'icon', value)}
                                         />
                                     </ToolsPanelItem>
+
+                                    {/* Custom HTML - Top */}
+                                    <ToolsPanelItem
+                                        label={__('Custom HTML (Top)', 'meros-theme')}
+                                        isShownByDefault={false}
+                                        hasValue={() => mobileSettings?.customHtmlTop !== ''}
+                                        onDeselect={() => resetSettings('mobileSettings', 'customHtmlTop')}
+                                    >
+                                         <HTMLEditor 
+                                            label={__('Custom HTML (Top)', 'meros-theme')}
+                                            value={mobileSettings?.customHTMLTop || ''}
+                                            onChange={(value) => setSetting('mobileSettings', 'customHTMLTop', value)}
+                                        />
+                                    </ToolsPanelItem>
+
+                                    {/* Custom HTML - Bottom */}
+                                    {/* <ToolsPanelItem
+                                        label={__('Custom HTML (Bottom)', 'meros-theme')}
+                                        isShownByDefault={false}
+                                        hasValue={() => mobileSettings?.customHtmlBottom !== ''}
+                                        onDeselect={() => resetSettings('mobileSettings', 'customHtmlBottom')}
+                                    >
+                                         <HTMLEditor 
+                                            label={__('Custom HTML (Bottom)', 'meros-theme')}
+                                            value={mobileSettings?.customHTMLBottom || ''}
+                                            onChange={(value) => setSetting('mobileSettings', 'customHTMLBottom', value)}
+                                         />
+                                     </ToolsPanelItem> */}
                                 </>
                             )}
                         </ToolsPanel>
@@ -660,19 +688,6 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                             </PanelBody>
                         )}
                     </div>
-                </InspectorControls>
-
-                {/* Advanced Tab */}
-                <InspectorControls group="advanced">
-                    {mobileSettings?.enabled && (
-                        <div className="meros-navigation-advanced-controls">
-                            <HTMLEditor 
-                                label={__('Custom Mobile Menu HTML', 'meros-theme')}
-                                value={mobileSettings?.customHTML || ''}
-                                onChange={(value) => setSetting('mobileSettings', 'customHTML', value)}
-                            />
-                        </div>
-                    )}
                 </InspectorControls>
             </Fragment>
         );
