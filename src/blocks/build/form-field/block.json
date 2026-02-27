@@ -1,0 +1,293 @@
+{
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "meros/form-field",
+  "version": "0.1.0",
+  "title": "Form Field",
+  "category": "widgets",
+  "icon": "format-gallery",
+  "description": "A form field block",
+  "textdomain": "meros-theme",
+  "example": {},
+  "editorScript": "file:./index.js",
+  "parent": [
+    "meros/form-row"
+  ],
+  "attributes": {
+    "id": {
+      "type": "string",
+      "default": ""
+    },
+    "type": {
+      "type": "string",
+      "default": "text"
+    },
+    "label": {
+      "type": "string",
+      "default": ""
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "showIcon": {
+      "type": "string",
+      "default": "left"
+    },
+    "stringValue": {
+      "type": "string",
+      "default": ""
+    },
+    "booleanValue": {
+      "type": "boolean",
+      "default": false
+    },
+    "numberValue": {
+      "type": "number",
+      "default": 0
+    },
+    "selectedOptions": {
+      "type": "array",
+      "default": []
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "rows": {
+      "type": "number",
+      "default": 4
+    },
+    "options": {
+      "type": "array",
+      "default": []
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false
+    },
+    "horizontal": {
+      "type": "boolean",
+      "default": false
+    },
+    "useSwitch": {
+      "type": "boolean",
+      "default": false
+    },
+    "min": {
+      "type": "number",
+      "default": 0
+    },
+    "max": {
+      "type": "number",
+      "default": 100
+    },
+    "step": {
+      "type": "number",
+      "default": 1
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "hidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "conditions": {
+      "type": "object",
+      "default": {
+        "show": [],
+        "hide": [],
+        "disable": [],
+        "enable": [],
+        "require": [],
+        "optional": []
+      }
+    }
+  },
+  "variations": [
+    {
+      "name": "text",
+      "title": "Text Field",
+      "attributes": {
+        "type": "text",
+        "label": "Text Field",
+        "placeholder": "Enter text",
+        "name": "text-field"
+      }
+    },
+    {
+      "name": "email",
+      "title": "Email Field",
+      "attributes": {
+        "type": "email",
+        "label": "Email Field",
+        "placeholder": "Enter email",
+        "name": "email-field"
+      }
+    },
+    {
+      "name": "date",
+      "title": "Date Field",
+      "attributes": {
+        "type": "date",
+        "label": "Date Field",
+        "placeholder": "Select date",
+        "name": "date-field"
+      }
+    },
+    {
+      "name": "time",
+      "title": "Time Field",
+      "attributes": {
+        "type": "time",
+        "label": "Time Field",
+        "placeholder": "Select time",
+        "name": "time-field"
+      }
+    },
+    {
+      "name": "password",
+      "title": "Password Field",
+      "attributes": {
+        "type": "password",
+        "label": "Password Field",
+        "placeholder": "Enter password",
+        "name": "password-field"
+      }
+    },
+    {
+      "name": "textarea",
+      "title": "Textarea Field",
+      "attributes": {
+        "type": "textarea",
+        "label": "Textarea Field",
+        "placeholder": "Enter text",
+        "name": "textarea-field"
+      }
+    },
+    {
+      "name": "number",
+      "title": "Number Field",
+      "attributes": {
+        "type": "number",
+        "label": "Number Field",
+        "placeholder": "Enter number",
+        "name": "number-field",
+        "min": 0,
+        "max": 100,
+        "step": 1
+      }
+    },
+    {
+      "name": "range",
+      "title": "Range Field",
+      "attributes": {
+        "type": "range",
+        "label": "Range Field",
+        "name": "range-field",
+        "min": 0,
+        "max": 100,
+        "step": 1
+      }
+    },
+    {
+      "name": "select",
+      "title": "Select Field",
+      "attributes": {
+        "type": "select",
+        "label": "Select Field",
+        "name": "select-field",
+        "options": [
+          {
+            "label": "Option 1",
+            "value": "option1"
+          },
+          {
+            "label": "Option 2",
+            "value": "option2"
+          },
+          {
+            "label": "Option 3",
+            "value": "option3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "advanced-select",
+      "title": "Advanced Select Field",
+      "attributes": {
+        "type": "advanced-select",
+        "label": "Advanced Select Field",
+        "name": "advanced-select-field",
+        "multiple": true,
+        "options": [
+          {
+            "label": "Option 1",
+            "value": "option1"
+          },
+          {
+            "label": "Option 2",
+            "value": "option2"
+          },
+          {
+            "label": "Option 3",
+            "value": "option3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "checkbox-group",
+      "title": "Checkbox Group",
+      "attributes": {
+        "type": "checkbox-group",
+        "label": "Checkbox Group",
+        "name": "checkbox-group",
+        "options": [
+          {
+            "label": "Option 1",
+            "value": "option1"
+          },
+          {
+            "label": "Option 2",
+            "value": "option2"
+          },
+          {
+            "label": "Option 3",
+            "value": "option3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "radio-group",
+      "title": "Radio Group",
+      "attributes": {
+        "type": "radio-group",
+        "label": "Radio Group",
+        "name": "radio-group",
+        "options": [
+          {
+            "label": "Option 1",
+            "value": "option1"
+          },
+          {
+            "label": "Option 2",
+            "value": "option2"
+          },
+          {
+            "label": "Option 3",
+            "value": "option3"
+          }
+        ]
+      }
+    }
+  ]
+}

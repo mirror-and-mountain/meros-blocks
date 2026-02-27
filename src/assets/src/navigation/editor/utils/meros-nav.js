@@ -1,12 +1,6 @@
 import { subscribe, select } from '@wordpress/data';
 import { initMobileMenu, cleanUpMobileMenu } from './mobile-menu.js';
-
-import {
-    enableSubmenuOpenOnClick,
-    disableSubmenuOpenOnClick,
-    enableSubmenuOpenOnHover,
-    disableSubmenuOpenOnHover
-} from '../../listeners.js'
+import { enableSubmenuOpenOnClick } from '../../listeners.js'
 
 function initNav(navBlockId, isMobile, doc, blockEditor) {
     // Get block
@@ -36,13 +30,13 @@ function initNav(navBlockId, isMobile, doc, blockEditor) {
     const submenuType = merosAttributes.submenuSettings?.type || 'default';
 
     // Update custom HTML areas
-    const customMobileHTMLTop = merosAttributes.mobileSettings?.customHTMLTop || '';
-    if (customMobileHTMLTop !== '') {
-        const customHTMLArea = wrapper.querySelector('.meros-mobile-menu-top-content');
-        if (customHTMLArea) {
-            const innerHTML = customHTMLArea.innerHTML;
-            if (innerHTML !== customMobileHTMLTop) {
-                customHTMLArea.innerHTML = customMobileHTMLTop;
+    const customMobileHtmlTop = merosAttributes.mobileSettings?.customHtmlTop || '';
+    if (customMobileHtmlTop !== '') {
+        const customHtmlArea = wrapper.querySelector('.meros-mobile-menu-top-content');
+        if (customHtmlArea) {
+            const innerHTML = customHtmlArea.innerHTML;
+            if (innerHTML !== customMobileHtmlTop) {
+                customHtmlArea.innerHTML = customMobileHtmlTop;
             }
         }
     }

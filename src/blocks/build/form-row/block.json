@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "meros/form-row",
+  "version": "0.1.0",
+  "title": "Form Row",
+  "category": "widgets",
+  "icon": "format-gallery",
+  "description": "A form row block",
+  "textdomain": "meros-theme",
+  "example": {},
+  "editorScript": "file:./index.js",
+  "parent": [
+    "meros/form-section"
+  ],
+  "allowedBlocks": [
+    "meros/form-field"
+  ]
+}

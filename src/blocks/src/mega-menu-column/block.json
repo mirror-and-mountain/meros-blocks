@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "$schema": "https://json.schemastore.org/block.json",
     "apiVersion": 3,
     "name": "meros/mega-menu-column",
     "version": "0.1.0",

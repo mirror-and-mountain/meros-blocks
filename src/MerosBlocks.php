@@ -15,6 +15,10 @@ class MerosBlocks extends Extension {
         $featureFilters = MerosBlocksFilters::init($this->hookPrefix);
         $featureFilters->register();
 
+        // Register actions
+        $featureActions = MerosBlocksActions::init($this->hookPrefix);
+        $featureActions->register();
+
         // Load assets and blocks
         $this->loadAssets();
         $this->loadBlocks();

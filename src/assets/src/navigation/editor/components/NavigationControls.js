@@ -246,7 +246,7 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                     )}
 
                                     {/* Icon Type */}
-                                    <ToolsPanelItem
+                                    {/* <ToolsPanelItem
                                         label={__('Mobile Menu Icon', 'meros-theme')}
                                         isShownByDefault={true}
                                         hasValue={() => mobileSettings?.icon !== 'hamburger-1'}
@@ -262,12 +262,12 @@ export const NavigationControls = createHigherOrderComponent((BlockEdit) => {
                                             ]}
                                             onChange={(value) => setSetting('mobileSettings', 'icon', value)}
                                         />
-                                    </ToolsPanelItem>
+                                    </ToolsPanelItem> */}
 
                                     {/* Custom HTML - Top */}
                                     <ToolsPanelItem
                                         label={__('Custom HTML (Top)', 'meros-theme')}
-                                        isShownByDefault={false}
+                                        isShownByDefault={true}
                                         hasValue={() => mobileSettings?.customHtmlTop !== ''}
                                         onDeselect={() => resetSettings('mobileSettings', 'customHtmlTop')}
                                     >

@@ -64,7 +64,7 @@ export const NavigationWrapper = createHigherOrderComponent(
 
             // Get settings
             const { layout, openSubmenusOnClick, merosMenu } = attributes;
-            const { mobileSettings, submenuSettings, desktopSettings } = merosMenu || {};
+            const { mobileSettings, desktopSettings } = merosMenu || {};
             const mobileStyles = mobileSettings?.styles || {};
             const desktopStyles = desktopSettings?.styles || {};
 

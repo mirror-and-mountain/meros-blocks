@@ -113,6 +113,9 @@ class MerosBlocksFilters extends Filters {
 
         // Block FX filters
         $this->add('render_block', [$this, 'renderBlockFxBlocks'], 10, 2);
+
+        // Form Filters
+        $this->add('allowed_block_types_all', [$this, 'restrictFormBlocks'], 10, 2);
     }
 
     /**
@@ -290,16 +293,15 @@ class MerosBlocksFilters extends Filters {
                 $topContainer = $dom->createElement('div');
                 $topContainer->setAttribute('class', 'meros-mobile-menu-top-container');
 
-                $customHTMLArea = $dom->createElement('div');
-                $customHTMLArea->setAttribute('class', 'meros-mobile-menu-top-content');
-                // dd($merosMobileSettings['customHTML']);
-                if (is_string($merosMobileSettings['customHTMLTop']) && $merosMobileSettings['customHTMLTop'] !== '') {
+                $customHtmlArea = $dom->createElement('div');
+                $customHtmlArea->setAttribute('class', 'meros-mobile-menu-top-content');
+                if (is_string($merosMobileSettings['customHtmlTop']) && $merosMobileSettings['customHtmlTop'] !== '') {
                     $fragment = $dom->createDocumentFragment();
-                    $fragment->appendXML($merosMobileSettings['customHTMLTop']);
-                    $customHTMLArea->appendChild($fragment);
+                    $fragment->appendXML($merosMobileSettings['customHtmlTop']);
+                    $customHtmlArea->appendChild($fragment);
                 }
 
-                $topContainer->appendChild($customHTMLArea);
+                $topContainer->appendChild($customHtmlArea);
 
                 $navBtnWrapper = $dom->createElement('ul');
                 $navBtnWrapper->setAttribute('class', 'meros-navigation-btns');
@@ -617,5 +619,29 @@ class MerosBlocksFilters extends Filters {
         }
 
         return $block_content;
+    }
+
+    /**
+     * Restricts the blocks available for use in the Meros Forms CPT.
+     *
+     * @param bool|string $allowedBlocks
+     * @param object $blockEditorContext
+     * @return array
+     */
+    public function restrictFormBlocks(bool|string $allowedBlocks, object $blockEditorContext): ?array {
+        if (isset($blockEditorContext->post) &&
+            isset($blockEditorContext->post->post_type) &&
+            $blockEditorContext->post->post_type === 'meros_form'
+        ) {
+            $allowedBlocks = [
+                'meros/form',
+                'meros/form-section',
+                'meros/form-row',
+                'meros/form-field'
+            ];
+
+            return $allowedBlocks;
+        }
+        return null;
     }
 }

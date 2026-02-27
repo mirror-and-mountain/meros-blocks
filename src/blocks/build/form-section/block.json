@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "meros/form-section",
+  "version": "0.1.0",
+  "title": "Form Section",
+  "category": "widgets",
+  "icon": "format-gallery",
+  "description": "A form section block",
+  "textdomain": "meros-theme",
+  "example": {},
+  "editorScript": "file:./index.js",
+  "parent": [
+    "meros/form"
+  ],
+  "allowedBlocks": [
+    "meros/form-row"
+  ],
+  "attributes": {
+    "conditions": {
+      "type": "object",
+      "default": {
+        "show": [],
+        "hide": []
+      }
+    }
+  }
+}

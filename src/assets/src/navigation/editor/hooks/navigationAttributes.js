@@ -60,8 +60,8 @@ export function getNavigationAttributes() {
             "direction": "left",
             "underHeader": false,
             "icon": "hamburger-1",
-            "customHTMLTop": '',
-            "customHTMLBottom": '',
+            "customHtmlTop": '',
+            "customHtmlBottom": '',
             "styles": {
                 "width": '80%',
                 "maxWidth": "320px",
