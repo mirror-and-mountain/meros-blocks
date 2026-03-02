@@ -2,30 +2,28 @@
 
 namespace MM\Meros\Blocks;
 
-use DOMDocument;
-use Illuminate\Support\Str;
 use MM\Meros\Helpers\Theme\Actions;
 
 class MerosBlocksActions extends Actions {
     public function register(): void {
-        $this->add('init', [$this, "createFormPostType"]);
+        
     }
 
     public function createFormPostType(): void {
         $labels = [
-            'name' => 'Forms',
-            'singular_name' => 'Form',
-            'menu_name' => 'Forms',
-            'name_admin_bar' => 'Form',
-            'add_new' => 'Add New',
-            'add_new_item' => 'Add New Form',
-            'new_item' => 'New Form',
-            'edit_item' => 'Edit Form',
-            'view_item' => 'View Form',
-            'all_items' => 'All Forms',
-            'search_items' => 'Search Forms',
+            'name'              => 'Forms',
+            'singular_name'     => 'Form',
+            'menu_name'         => 'Forms',
+            'name_admin_bar'    => 'Form',
+            'add_new'           => 'Add New',
+            'add_new_item'      => 'Add New Form',
+            'new_item'          => 'New Form',
+            'edit_item'         => 'Edit Form',
+            'view_item'         => 'View Form',
+            'all_items'         => 'All Forms',
+            'search_items'      => 'Search Forms',
             'parent_item_colon' => 'Parent Forms:',
-            'not_found' => 'No forms found.',
+            'not_found'         => 'No forms found.',
             'not_found_in_trash' => 'No forms found in Trash.',
         ];
 

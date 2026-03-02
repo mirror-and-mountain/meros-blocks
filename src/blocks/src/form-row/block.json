@@ -11,5 +11,12 @@
     "example": {},
     "editorScript": "file:./index.js",
     "parent": ["meros/form-section"],
-    "allowedBlocks": ["meros/form-field"]
+    "allowedBlocks": ["meros/form-field"],
+    "supports": {
+        "allowedBlocks": true,
+        "spacing": {
+            "padding": true,
+            "margin": false
+        }
+    }
 }

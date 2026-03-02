@@ -17,6 +17,7 @@
     "meros/form-section"
   ],
   "supports": {
+    "allowedBlocks": true,
     "layout": {
       "default": {
         "type": "constrained"

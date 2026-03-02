@@ -1,61 +1,39 @@
-import { useBlockProps } from "@wordpress/block-editor";
-import { useEffect, useRef, forwardRef, useState } from '@wordpress/element';
-import { initEditorScripts } from "../../../../assets/src/utils/editor.js";
+import { useEffect, useState, useRef, forwardRef } from '@wordpress/element';
+import { withAdvancedSelect } from '../hooks/withAdvancedSelect.js';
+import { withLookup } from '../hooks/withLookup.js';
 
 export const FormField = {
     Edit: FormFieldEdit,
     Save: FormFieldSave
 };
 
-function injectTomSelect({ win, doc, winRef, docRef, winReady, setWinReady }) {
-    if (winReady) return;
-
-    winRef.current = win;
-    docRef.current = doc;
-
-    const TS_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js';
-    const TS_STYLE_URL = 'https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css';
-
-    const injectScript = () => {
-        const script = doc.head.querySelector(`script[src="${TS_SCRIPT_URL}"]`);
-        if (script) return;
-
-        const newScript = doc.createElement('script');
-        newScript.src = TS_SCRIPT_URL;
-        newScript.onload = () => {
-            win.MerosTomSelect = win.TomSelect;
-        };
-        doc.head.appendChild(newScript);
-    }
-
-    const injectStyle = () => {
-        const style = doc.querySelector(`link[href="${TS_STYLE_URL}"]`);
-        if (style) return;
-
-        const newStyle = doc.createElement('link');
-        newStyle.rel = 'stylesheet';
-        newStyle.href = TS_STYLE_URL;
-        doc.head.appendChild(newStyle);
-    }
-
-    if (!win.MerosTomSelect) {
-        injectStyle();
-        injectScript();
-        setWinReady(true);
-    } else {
-        setWinReady(true);
-    }
-}
-
 function FormFieldEdit({ attributes, setAttributes, clientId }) {
-    const winRef = useRef();
-    const docRef = useRef();
     const fieldRef = useRef();
-    const tomSelectRef = useRef();
     const advancedSelectRef = useRef();
 
-    const { type, multiple, id } = attributes;
-    const [winReady, setWinReady] = useState(false);
+    const { type } = attributes;
+
+    if (type === 'advanced-select' || type === 'lookup') {
+        advancedSelectRef.current = withAdvancedSelect(
+            attributes, fieldRef, advancedSelectRef
+        );
+    }
+
+    const [lookupOptions, setLookupOptions] = useState([]);
+    if (type === 'lookup') {
+        withLookup(attributes, fieldRef, lookupOptions, setLookupOptions);
+    }
+
+    useEffect(() => {
+        if (type !== 'lookup' || !lookupOptions || lookupOptions.length === 0) {
+            return;
+        }
+
+        setAttributes({
+            options: lookupOptions
+        });
+
+    }, [lookupOptions]);
 
     useEffect(() => {
         const Id = `meros-form-field-${clientId}`;
@@ -65,60 +43,8 @@ function FormFieldEdit({ attributes, setAttributes, clientId }) {
 
     }, [clientId]);
 
-    useEffect(() => {
-        if (type !== 'advanced-select') return;
-        if (!fieldRef.current || !id) return;
-
-        if (!winRef.current || !docRef.current) {
-            initEditorScripts(injectTomSelect, {
-                winRef: winRef,
-                docRef: docRef,
-                winReady: winReady,
-                setWinReady: setWinReady
-            });
-            return;
-        }
-
-        const MerosTomSelect = winRef.current.MerosTomSelect;
-        if (!MerosTomSelect) return;
-
-        const field = fieldRef.current.querySelector('.meros-advanced-select-control');
-        if (!field) return;
-
-        advancedSelectRef.current = field;
-
-        if (advancedSelectRef.current.tomselect) {
-            advancedSelectRef.current.tomselect.destroy();
-        }
-
-        tomSelectRef.current = new MerosTomSelect(`#${advancedSelectRef.current.id}`, {
-            plugins: multiple ? {
-                remove_button: {
-                    title: 'Remove',
-                }
-            } : {},
-            create: false,
-            sortField: [{ field: '$order' }, { field: '$score' }],
-            maxItems: multiple ? null : 1,
-            placeholder: 'Select...',
-            onChange: () => {
-                advancedSelectRef.current.tomselect.blur();
-            }
-        });
-
-        return () => {
-            tomSelectRef.current?.destroy();
-            tomSelectRef.current = null;
-        };
-    }, [id, winReady]);
-
-    const blockProps = useBlockProps({
-        className: `meros-form-field meros-form-field-${type} nice-form-group`
-    });
-
     return (
         <FormFieldType
-            blockProps={blockProps}
             attributes={attributes}
             ref={fieldRef}
         />
@@ -126,21 +52,15 @@ function FormFieldEdit({ attributes, setAttributes, clientId }) {
 }
 
 function FormFieldSave({ attributes }) {
-    const { type } = attributes;
-    const blockProps = useBlockProps.save({
-        className: `meros-form-field meros-form-field-${type} nice-form-group`
-    });
-
     return (
         <FormFieldType
-            blockProps={blockProps}
             attributes={attributes}
         />
     );
 }
 
 const FormFieldType = forwardRef(function FormFieldType(
-    { blockProps, attributes },
+    { attributes },
     ref
 ) {
     const {
@@ -166,12 +86,12 @@ const FormFieldType = forwardRef(function FormFieldType(
     const inputTextTypes = ['text', 'email', 'password', 'date', 'time', 'tel'];
     const inputNumberTypes = ['number', 'range'];
     const choiceGroupTypes = ['radio-group', 'checkbox-group'];
-    const safeOptions = Array.isArray(options) ? options : [];
+    const renderedOptions = Array.isArray(options) ? options : [];
 
     return (
         <FieldWrapper
             ref={ref}
-            blockProps={blockProps}
+            type={type}
             label={label}
             required={required}
         >
@@ -182,7 +102,7 @@ const FormFieldType = forwardRef(function FormFieldType(
                     name={name}
                     value={stringValue}
                     placeholder={placeholder}
-                    required={true}
+                    required={required}
                     showIcon={showIcon}
                 />
             )}
@@ -217,19 +137,20 @@ const FormFieldType = forwardRef(function FormFieldType(
                     id={id}
                     name={name}
                     value={stringValue}
-                    options={safeOptions}
+                    options={renderedOptions}
                     required={required}
                 />
             )}
 
-            {type === 'advanced-select' && (
+            {(type === 'advanced-select' || type === 'lookup') && (
                 <FieldAdvancedSelect
                     id={id}
                     name={name}
                     value={stringValue}
-                    options={safeOptions}
+                    options={renderedOptions}
                     multiple={multiple}
                     required={required}
+                    isLookup={type === 'lookup'}
                 />
             )}
 
@@ -238,7 +159,7 @@ const FormFieldType = forwardRef(function FormFieldType(
                     type={type}
                     name={name}
                     value={type === 'checkbox-group' ? selectedOptions : stringValue}
-                    options={safeOptions}
+                    options={renderedOptions}
                     horizontal={horizontal}
                     useSwitch={useSwitch}
                     required={required}
@@ -249,11 +170,11 @@ const FormFieldType = forwardRef(function FormFieldType(
 });
 
 const FieldWrapper = forwardRef(function FieldWrapper(
-    { blockProps, label, children, required = false },
+    { type, label, children, required = false },
     ref
 ) {
     return (
-        <div {...blockProps} ref={ref}>
+        <div className={`meros-form-field meros-form-field-${type} nice-form-group`} ref={ref}>
             <label className="meros-form-field-label">
                 {label}
                 {required && <span className="meros-form-field-required">*</span>}
@@ -273,7 +194,6 @@ function FieldTextInput({
     showIcon = 'left'
 }) {
     const iconCompatibleTypes = ['email', 'password', 'date', 'time', 'tel', 'url'];
-
     return (
         <>
             <input
@@ -282,8 +202,8 @@ function FieldTextInput({
                 {...(name !== undefined && name !== '' && { name })}
                 {...(placeholder !== undefined && placeholder !== '' && { placeholder })}
                 {...(value !== undefined && value !== '' && { value })}
+                {...(iconCompatibleTypes.includes(type) && showIcon ? { className: `icon-${showIcon}` } : {})}
                 required={required}
-                className={`${iconCompatibleTypes.includes(type) && showIcon ? `icon-${showIcon}` : ''}`}
             />
         </>
     );
@@ -370,6 +290,7 @@ function FieldAdvancedSelect({
     options = [],
     multiple = false,
     required = false,
+    isLookup = false
 }) {
     return (
         <>
@@ -378,7 +299,7 @@ function FieldAdvancedSelect({
                 {...(name !== undefined && name !== '' && { name })}
                 multiple={multiple}
                 required={required}
-                className="meros-advanced-select-control"
+                className={`meros-advanced-select-control${isLookup ? ' meros-advanced-select-lookup' : ''}`}
             >
                 {options.map((option, index) => (
                     <option

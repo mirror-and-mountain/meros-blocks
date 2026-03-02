@@ -16,6 +16,13 @@
   "allowedBlocks": [
     "meros/form-row"
   ],
+  "supports": {
+    "allowedBlocks": true,
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
   "attributes": {
     "conditions": {
       "type": "object",

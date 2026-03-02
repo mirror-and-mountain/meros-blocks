@@ -15,6 +15,7 @@
     "viewStyle": "file:./style-index.css",
     "allowedBlocks": ["meros/form-section"],
     "supports": {
+        "allowedBlocks": true,
         "layout": {
             "default": {
                 "type": "constrained"

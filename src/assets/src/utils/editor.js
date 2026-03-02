@@ -63,6 +63,55 @@ export function initEditorScripts(callback, args = {}) {
 }
 
 /**
+ * Returns references to the editor iframe, document, and window. 
+ * If a specific property of the window is requested, that property is included in the returned object.
+ *
+ * @param {string|null} winProperty - The specific property of the window to return. If null, only the iframe, document, and window references are returned.
+ * @returns {Object|null} An object containing the iframe, document, and window references, or null if the iframe is not found.
+ */
+export function getIframeObjects(winProperty = null) {
+    const init = () => {
+        const iframe = getIframe();
+        if (!iframe) return;
+
+        const doc = iframe?.contentDocument;
+        const win = iframe?.contentWindow;
+        if (!doc || !win) return;
+
+        if (winProperty) {
+            return {
+                iframe: iframe,
+                doc: doc,
+                win: win,
+                [winProperty]: win[winProperty]            
+            };
+        }
+
+        return { 
+            iframe: iframe, 
+            doc: doc, 
+            win: win 
+        };
+    }
+
+    if (!isIframeReady()) {
+        const observer = new MutationObserver(() => {
+            if (!isIframeReady()) return;
+
+            init();
+            observer.disconnect();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
+    } else {
+        return init();
+    }
+}
+
+/**
  * Checks if a block is a child of a specified parent block type.
  *
  * @param {string} clientId - The client ID of the block to check.

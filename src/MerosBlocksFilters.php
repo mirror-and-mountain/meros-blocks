@@ -109,7 +109,9 @@ class MerosBlocksFilters extends Filters {
         $this->add('render_block', [$this, 'renderAdvancedNav'], 10, 2);
         $this->add('render_block', [$this, 'renderAdvancedNavSubmenu'], 10, 2);
         $this->add('render_block', [$this, 'renderAdvancedNavLink'], 10, 2);
-        $this->add('register_block_type_args', [$this, 'registerAdvancedNavArgs'], 10, 2);
+
+        // Block args filters
+        $this->add('register_block_type_args', [$this, 'registerAdditionalArgs'], 10, 2);
 
         // Block FX filters
         $this->add('render_block', [$this, 'renderBlockFxBlocks'], 10, 2);
@@ -575,14 +577,13 @@ class MerosBlocksFilters extends Filters {
     }
 
     /**
-     * Registers addition args for navigation-link and submenu blocks for
-     * use in the Advanced Navigation Block Variation.
+     * Registers additional args for navigation-link and submenu blocks.
      *
      * @param array $args The block args.
      * @param string $name The block name.
      * @return array The modified args
      */
-    public function registerAdvancedNavArgs(array $args, string $name): array {
+    public function registerAdditionalArgs(array $args, string $name): array {
          if ( $name === 'core/navigation-link' ) {
             $args['attributes']['merosMenuItem'] = [
                 'type'    => 'object',
@@ -596,6 +597,21 @@ class MerosBlocksFilters extends Filters {
             $args['attributes']['merosSubmenu'] = [
                 'type'    => 'object',
                 'default' => $this->navSubmenuDefaultAttributes
+            ];
+        }
+
+        if ( $name === 'meros/form-field' ) {
+            $args['attributes']['lookupQuery'] = [
+                'type' => 'object',
+                'default' => [
+                    'availablePostTypes' => get_post_types(['public' => true], 'names'),
+                    'postType'           => 'post',
+                    'fields'             => ['id', 'title'],
+                    'taxonomies'         => [],
+                    'metaQuery'          => [],
+                    'search'             => '',
+                    'perPage'            => 10
+                ]
             ];
         }
         

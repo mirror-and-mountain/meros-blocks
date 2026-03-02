@@ -1,4 +1,4 @@
-import { registerBlockType} from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 import dynamicVariation from './dynamic/variation.json';
 import dynamicInnerBlocks from './dynamic/innerBlocks.json';
 

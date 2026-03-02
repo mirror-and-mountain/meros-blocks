@@ -1,43 +1,70 @@
 @use '../../../../node_modules/nice-forms.css/dist/nice-forms.css';
 @use '../../../../node_modules/tom-select/dist/css/tom-select.css';
 
-.meros-form-root-container
-.meros-form-section
+// Editor
+.meros-form-root-container.has-child-selected:has(.block-list-appender),
+.meros-form-section.has-child-selected:has(.block-list-appender),
+.meros-form-row.has-child-selected:has(.block-list-appender) {
+    border: rgb(0, 124, 186) dotted 1px !important;
+}
+
+.meros-form-root-container >
+.block-list-appender {
+    position: relative !important;
+    width: 100% !important;
+    width: -webkit-fill-available !important;
+    margin-top: 20px !important;
+
+}
+
+.meros-form-section >
+.block-list-appender {
+    position: relative !important;
+    width: 100% !important;
+    width: -webkit-fill-available !important;
+    margin-top: 20px !important;
+
+}
+
+.meros-form-row:has(.block-list-appender) {
+    input, textarea, select {
+        pointer-events: none !important;
+    }
+}
+
 .meros-form-row {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
 
-    // For the editor
-    .block-editor-inner-blocks {
-        width: 100%;
-    
-        .block-editor-block-list__layout {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-    }
-
-    .meros-form-field {
+    .meros-form-field-editor,
+    .meros-form-field-wrapper {
+        width: 100% !important;
+        width: -webkit-fill-available !important;
         flex: 1;
+    
+        .meros-form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
 
-        input:not([type="radio"]):not([type="checkbox"]), textarea, select {
-            height: auto !important;
-            width: 100% !important;
-            width: -webkit-fill-available !important; // Fallback
-        }
+            input:not([type="radio"]):not([type="checkbox"]), textarea, select {
+                height: auto !important;
+                width: 100% !important;
+                width: -webkit-fill-available !important; // Fallback
+            }
 
-        fieldset {
-            border: none;
+            fieldset {
+                border: none;
 
-            &.meros-fieldset-horizontal {
-                display: flex;
-                gap: 1rem;
-                flex-wrap: wrap;
+                &.meros-fieldset-horizontal {
+                    display: flex;
+                    gap: 1rem;
+                    flex-wrap: wrap;
 
-                .meros-choice-option label {
-                    white-space: nowrap;
+                    .meros-choice-option label {
+                        white-space: nowrap;
+                    }
                 }
             }
         }

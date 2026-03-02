@@ -15,5 +15,12 @@
   ],
   "allowedBlocks": [
     "meros/form-field"
-  ]
+  ],
+  "supports": {
+    "allowedBlocks": true,
+    "spacing": {
+      "padding": true,
+      "margin": false
+    }
+  }
 }

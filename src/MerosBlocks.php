@@ -17,7 +17,8 @@ class MerosBlocks extends Extension {
 
         // Register actions
         $featureActions = MerosBlocksActions::init($this->hookPrefix);
-        $featureActions->register();
+        // Needs to be called directly as 'init' hook is too late for usage in block registration.
+        $featureActions->createFormPostType();
 
         // Load assets and blocks
         $this->loadAssets();
