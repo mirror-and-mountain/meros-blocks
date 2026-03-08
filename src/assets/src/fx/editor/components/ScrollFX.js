@@ -210,7 +210,8 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                     }
                     update({ 
                         enabled: true,
-                        preset: 'fadeIn'
+                        preset: 'fadeIn',
+                        ...presetsMap['fadeIn'].values
                     });
                 }}
             />

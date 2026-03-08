@@ -254,7 +254,8 @@ export function Color({
     update,
     linkHover = false,
     showControls = true,
-    showTiming = true
+    showTiming = true,
+    selectedControls = ['background', 'text', 'link'],
 }) {
 
     return (
@@ -264,67 +265,75 @@ export function Color({
         >
             {showControls && (
                 <>
-                    <ToolsPanelItem
-                        label={__('Background Colour', 'meros-theme')}
-                        hasValue={() => bg !== ''}
-                        isShownByDefault={true}
-                        onDeselect={() => update({ [`${prefix}AnimateBgColor`]: '' })}
-                    >
-                        <ColorPicker
-                            label={__('Background Colour', 'meros-theme')}
-                            currentColor={bg}
-                            onChange={(color) =>
-                                update({ [`${prefix}AnimateBgColor`]: color })
-                            }
-                            margin={false}
-                        />
-                    </ToolsPanelItem>
-
-                    <ToolsPanelItem
-                        label={__('Text Colour', 'meros-theme')}
-                        hasValue={() => text !== ''}
-                        isShownByDefault={true}
-                        onDeselect={() => update({ [`${prefix}AnimateTextColor`]: '' })}
-                    >
-                        <ColorPicker
-                            label={__('Text Colour', 'meros-theme')}
-                            currentColor={text}
-                            onChange={(color) =>
-                                update({ [`${prefix}AnimateTextColor`]: color })
-                            }
-                        />
-                    </ToolsPanelItem>
-
-                    <ToolsPanelItem
-                        label={__('Link Colour', 'meros-theme')}
-                        hasValue={() => link !== ''}
-                        isShownByDefault={true}
-                        onDeselect={() => update({ [`${prefix}AnimateLinkColor`]: '' })}
-                    >
-                        <ColorPicker
-                            label={__('Link Colour', 'meros-theme')}
-                            currentColor={link}
-                            onChange={(color) =>
-                                update({ [`${prefix}AnimateLinkColor`]: color })
-                            }
-                        />
-                    </ToolsPanelItem>
-
-                    {linkHover !== false && (
+                {selectedControls.includes('background') && (
                         <ToolsPanelItem
-                            label={__('Link Hover Colour', 'meros-theme')}
-                            hasValue={() => linkHover !== ''}
+                            label={__('Background Colour', 'meros-theme')}
+                            hasValue={() => bg !== ''}
                             isShownByDefault={true}
-                            onDeselect={() => update({ [`${prefix}AnimateLinkHoverColor`]: '' })}
+                            onDeselect={() => update({ [`${prefix}AnimateBgColor`]: '' })}
                         >
                             <ColorPicker
-                                label={__('Link Hover Colour', 'meros-theme')}
-                                currentColor={linkHover}
+                                label={__('Background Colour', 'meros-theme')}
+                                currentColor={bg}
                                 onChange={(color) =>
-                                    update({ [`${prefix}AnimateLinkHoverColor`]: color })
+                                    update({ [`${prefix}AnimateBgColor`]: color })
+                                }
+                                margin={false}
+                            />
+                        </ToolsPanelItem>
+                )}
+
+                    {selectedControls.includes('text') && (
+                        <ToolsPanelItem
+                            label={__('Text Colour', 'meros-theme')}
+                            hasValue={() => text !== ''}
+                            isShownByDefault={true}
+                            onDeselect={() => update({ [`${prefix}AnimateTextColor`]: '' })}
+                        >
+                            <ColorPicker
+                                label={__('Text Colour', 'meros-theme')}
+                                currentColor={text}
+                                onChange={(color) =>
+                                    update({ [`${prefix}AnimateTextColor`]: color })
                                 }
                             />
                         </ToolsPanelItem>
+                    )}
+
+                    {selectedControls.includes('link') && (
+                        <>
+                            <ToolsPanelItem
+                                label={__('Link Colour', 'meros-theme')}
+                                hasValue={() => link !== ''}
+                                isShownByDefault={true}
+                                onDeselect={() => update({ [`${prefix}AnimateLinkColor`]: '' })}
+                            >
+                                <ColorPicker
+                                    label={__('Link Colour', 'meros-theme')}
+                                    currentColor={link}
+                                    onChange={(color) =>
+                                        update({ [`${prefix}AnimateLinkColor`]: color })
+                                    }
+                                />
+                            </ToolsPanelItem>
+
+                            {linkHover !== false && (
+                                <ToolsPanelItem
+                                    label={__('Link Hover Colour', 'meros-theme')}
+                                    hasValue={() => linkHover !== ''}
+                                    isShownByDefault={true}
+                                    onDeselect={() => update({ [`${prefix}AnimateLinkHoverColor`]: '' })}
+                                >
+                                    <ColorPicker
+                                        label={__('Link Hover Colour', 'meros-theme')}
+                                        currentColor={linkHover}
+                                        onChange={(color) =>
+                                            update({ [`${prefix}AnimateLinkHoverColor`]: color })
+                                        }
+                                    />
+                                </ToolsPanelItem>
+                            )}
+                        </>
                     )}
                 </>
             )}

@@ -2,18 +2,24 @@ import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
 import { previewFx, updateFx } from '../utils.js';
 import { getFxAttrs } from '../hooks/fxAttributes.js';
-import { Enable, Presets, Transform } from './FX.js';
+import { Enable, Presets, Transform, Color } from './FX.js';
+import { SelectControl } from '../../../components/Controls.js';
 
 export default function HoverFX({ attributes, setAttributes, clientId, setPreview }) {
     const {
         enabled,
+        hoverAnimationType,
         preset,
         hoverAnimateX,
         hoverAnimateY,
         hoverAnimateScaleX,
         hoverAnimateScaleY,
+        hoverAnimateTextColor,
+        hoverAnimateBgColor,
         hoverTransformDuration,
-        hoverTransformDelay
+        hoverTransformDelay,
+        hoverColorDuration,
+        hoverColorDelay
     } = attributes.merosHoverFx;
 
     const presets = [
@@ -78,7 +84,7 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
     }
 
     const defaultValues = getFxAttrs('Hover');
-    const isManual = preset === 'manual';
+    const isManual = preset === 'manual' && hoverAnimationType === 'transform';
     const preview = previewFx.hoverPreviewFx[clientId] || false;
 
     const update = (patch) => {
@@ -88,6 +94,28 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
             attributes.merosHoverFx, 
             patch
         );
+    }
+
+    const changeAnimationType = (type) => {
+        updateFx(
+            setAttributes,
+            'merosHoverFx',
+            attributes.merosHoverFx,
+            {
+                hoverAnimationType: type,
+                hoverAnimateX: 0,
+                hoverAnimateY: 0,
+                hoverAnimateScaleX: 1,
+                hoverAnimateScaleY: 1,
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
+                hoverTransformDuration: 0.3,
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
+            }
+        );
+        setPreview('hover', clientId, false);
     }
 
     const previewAnimation = () => {
@@ -113,25 +141,41 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                     }
                     update({ 
                         enabled: true,
-                        preset: 'grow' 
+                        hoverAnimationType: 'transform',
+                        preset: 'grow',
+                        ...presetsMap['grow'].values 
                     });
                 }}
             />
             
             {enabled && (
                 <>
-                    <Presets
-                        current={preset}
-                        presets={presets}
-                        defaultPreset={'grow'}
+                    <SelectControl
+                        label={__('Animation Type', 'meros-theme')}
+                        value={hoverAnimationType}
+                        options={[
+                            { label: __('Transform', 'meros-theme'), value: 'transform' },
+                            { label: __('Color', 'meros-theme'), value: 'color' }
+                        ]}
                         onChange={(value) => {
-                            const presetValues = presetsMap[value]?.values || {};
-                            update({
-                                preset: value,
-                                ...presetValues
-                            });
+                            changeAnimationType(value);
                         }}
                     />
+
+                    {hoverAnimationType === 'transform' && (
+                        <Presets
+                            current={preset}
+                            presets={presets}
+                            defaultPreset={'grow'}
+                            onChange={(value) => {
+                                const presetValues = presetsMap[value]?.values || {};
+                                update({
+                                    preset: value,
+                                    ...presetValues
+                                });
+                            }}
+                        />
+                    )}
 
                     <Button
                         variant="secondary"
@@ -141,25 +185,46 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                         {__(preview ? 'Stop Previewing in Editor' : 'Preview In Editor', 'meros-theme')}
                     </Button>
 
-                    <Transform
-                        translateX={hoverAnimateX}
-                        translateY={hoverAnimateY}
-                        scalexeX={hoverAnimateScaleX}
-                        scaleY={hoverAnimateScaleY}
-                        duration={hoverTransformDuration}
-                        delay={hoverTransformDelay}
-                        prefix="hover"
-                        defaultValues={{
-                            hoverAnimateX: 0,
-                            hoverAnimateY: 0,
-                            hoverAnimateScaleX: 1,
-                            hoverAnimateScaleY: 1,
-                            hoverTransformDuration: 0.5,
-                            hoverTransformDelay: 0
-                        }}
-                        update={update}
-                        showControls={isManual}
-                    />
+                    {hoverAnimationType === 'transform' && (
+                        <Transform
+                            translateX={hoverAnimateX}
+                            translateY={hoverAnimateY}
+                            scalexeX={hoverAnimateScaleX}
+                            scaleY={hoverAnimateScaleY}
+                            duration={hoverTransformDuration}
+                            delay={hoverTransformDelay}
+                            prefix="hover"
+                            defaultValues={{
+                                hoverAnimateX: 0,
+                                hoverAnimateY: 0,
+                                hoverAnimateScaleX: 1,
+                                hoverAnimateScaleY: 1,
+                                hoverTransformDuration: 0.5,
+                                hoverTransformDelay: 0
+                            }}
+                            update={update}
+                            showControls={isManual}
+                        />
+                    )}
+
+                    {hoverAnimationType === 'color' && (
+                        <Color
+                            bg={hoverAnimateBgColor}
+                            text={hoverAnimateTextColor}
+                            link=""
+                            duration={hoverColorDuration}
+                            delay={hoverColorDelay}
+                            prefix="hover"
+                            defaultValues={{
+                                hoverAnimateTextColor: '',
+                                hoverAnimateBgColor: ''
+                            }}
+                            update={update}
+                            showControls={true}
+                            showTiming={true}
+                            selectedControls={['background', 'text']}
+                        />
+                    )}
                 </>
             )}
         </>

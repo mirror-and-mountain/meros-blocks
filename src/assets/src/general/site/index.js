@@ -1,4 +1,5 @@
 import { merosSetHeaderHeight } from '../../utils/general.js';
+import './style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
     merosSetHeaderHeight({

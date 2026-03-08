@@ -54,13 +54,18 @@ export function getFxAttrs(fxType) {
         case 'Hover':
             return {
                 enabled: false,
+                hoverAnimationType: 'transform',
                 preset: 'grow',
                 hoverAnimateX: 0,
                 hoverAnimateY: 0,
                 hoverAnimateScaleX: 1,
                 hoverAnimateScaleY: 1,
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
                 hoverTransformDuration: 0.3,
-                hoverTransformDelay: 0
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
             };
         case 'Header':
             return {

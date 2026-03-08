@@ -11,7 +11,8 @@ import { isChildOf } from '../../../utils/editor.js';
 // Classes used on blocks with fx enabled
 export const AnimationClasses = [
     'meros-has-scroll-animation',
-    'meros-has-hover-animation',
+    'meros-has-hover-transform-animation',
+    'meros-has-hover-color-animation',
     'meros-has-header-animation',
     'meros-has-animated-logo',
     'meros-has-animated-bg-color',
@@ -72,7 +73,11 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
     }
 
     if (isHoverFxBlock(blockName, attrs.merosHoverFx)) {
-        classes.push('meros-has-hover-animation');
+        if (attrs.merosHoverFx.hoverAnimationType === 'transform') {
+            classes.push('meros-has-hover-transform-animation');
+        } else if (attrs.merosHoverFx.hoverAnimationType === 'color') {
+            classes.push('meros-has-hover-color-animation');
+        }
     }
 
     if (isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {

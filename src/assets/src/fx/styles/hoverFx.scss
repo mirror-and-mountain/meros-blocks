@@ -1,5 +1,5 @@
 /* Base styles */
-.meros-has-hover-animation:not(.meros-animating) {
+.meros-has-hover-transform-animation:not(.meros-animating) {
     transition:
         transform
             var(--meros-hover-transform-duration, 0.8s)
@@ -7,9 +7,21 @@
             var(--meros-hover-transform-delay, 0s),
 }
 
+.meros-has-hover-color-animation:not(.meros-animating) {
+    transition:
+        background-color
+            var(--meros-hover-color-duration, 0.8s)
+            ease
+            var(--meros-hover-color-delay, 0s),
+        color
+            var(--meros-hover-color-duration, 0.8s)
+            ease
+            var(--meros-hover-color-delay, 0s);
+}
+
 /* Animating states */
-.editor-styles-wrapper .meros-has-hover-animation.meros-preview-hover-fx:not(.meros-animating):hover,
-.wp-site-blocks:not(.is-root-container) .meros-has-hover-animation:not(.meros-animating):hover {
+.editor-styles-wrapper .meros-has-hover-transform-animation.meros-preview-hover-fx:not(.meros-animating):hover,
+.wp-site-blocks:not(.is-root-container) .meros-has-hover-transform-animation:not(.meros-animating):hover {
     transform:
         translateX(var(--meros-hover-animate-x, 0px))
         translateY(var(--meros-hover-animate-y, 0px))
@@ -17,5 +29,12 @@
             var(--meros-hover-animate-scale-x, 1),
             var(--meros-hover-animate-scale-y, 1)
         );
+    cursor: default !important;
+}
+
+.editor-styles-wrapper .meros-has-hover-color-animation.meros-preview-hover-fx:not(.meros-animating):hover,
+.wp-site-blocks:not(.is-root-container) .meros-has-hover-color-animation:not(.meros-animating):hover {
+    background-color: var(--meros-hover-animate-bg-color, inherit);
+    color: var(--meros-hover-animate-text-color, inherit);
     cursor: default !important;
 }
