@@ -1,15 +1,18 @@
 import {
     isEnabled,
+    isTriggerFxBlock,
+    isTriggerableFxBlock,
     isScrollFxBlock,
     isHoverFxBlock,
     isHeaderFxBlock
 } from '../utils.js';
 
-import { useEffect } from '@wordpress/element';
 import { isChildOf } from '../../../utils/editor.js';
 
 // Classes used on blocks with fx enabled
 export const AnimationClasses = [
+    'meros-is-animation-trigger',
+    'meros-has-triggerable-animation',
     'meros-has-scroll-animation',
     'meros-has-hover-transform-animation',
     'meros-has-hover-color-animation',
@@ -20,11 +23,14 @@ export const AnimationClasses = [
     'meros-has-animated-link-color',
     'meros-has-animated-link-hover-color',
     'meros-animate-on-slide-change',
+    'meros-start-hidden',
     'meros-animating',
     'meros-animated',
     'meros-preview-hover-fx',
     'meros-preview-header-fx',
-    'meros-preview-logo-fx'
+    'meros-preview-logo-fx',
+    'meros-preview-trigger-fx',
+    'meros-preview-triggered-fx'
 ];
 
 // Classes used for sticky blocks
@@ -61,6 +67,18 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
         );
     };
 
+    if (isTriggerFxBlock(blockName, attrs.merosTriggerFx)) {
+        classes.push('meros-is-animation-trigger');
+    }
+
+    if (isTriggerableFxBlock(blockName, attrs.merosTriggerableFx)) {
+        classes.push('meros-has-triggerable-animation');
+
+        if (attrs.merosTriggerableFx.triggeredAnimateOpacity === 0) {
+            classes.push('meros-start-hidden');
+        }
+    }
+
     if (isScrollFxBlock(blockName, attrs.merosScrollFx)) {
         classes.push('meros-has-scroll-animation');
         if (
@@ -69,6 +87,10 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
             attrs.merosScrollFx.animateOnSlideChange
         ) {
             classes.push('meros-animate-on-slide-change');
+        }
+
+        if (attrs.merosScrollFx.scrollAnimateOpacity === 0) {
+            classes.push('meros-start-hidden');
         }
     }
 

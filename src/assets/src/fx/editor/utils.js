@@ -1,4 +1,3 @@
-
 import { isDirectChildOf, isChildOf } from "../../utils/editor"; 
 
 // Blocks compatible with scroll fx
@@ -20,10 +19,33 @@ export const HeaderFxBlocks = [
     'core/group'
 ];
 
+// Blocks able to trigger other blocks with triggerable fx enabled
+export const TriggerFxBlocks = [
+    'core/group',
+    'core/button'
+];
+
+// Blocks able to be triggered by other blocks with trigger fx enabled
+export const TriggerableFxBlocks = [
+    'core/group'
+];
+
 // Stores block client IDs with active preview in the editor
 export const previewFx = {
     hoverPreviewFx: {},
-    headerPreviewFx: {}
+    headerPreviewFx: {},
+    triggerPreviewFx: {},
+    triggeredPreviewFx: {}
+};
+
+// Helper to determine if the block is a trigger for other blocks with triggerable fx enabled
+export const isTriggerFxBlock = (blockName, attrs) => {
+    return TriggerFxBlocks.includes(blockName) && attrs?.enabled;
+};
+
+// Helper to determine if the block is triggerable by other blocks with trigger fx enabled
+export const isTriggerableFxBlock = (blockName, attrs) => {
+    return TriggerableFxBlocks.includes(blockName) && attrs?.enabled;
 };
 
 // Helper to determine if the block is compatible with scroll fx and has it enabled
@@ -85,20 +107,24 @@ export function hasSiteLogo(clientId) {
 
 // Helper to determine whether the block is compatible with any fx
 export const isCompatible = (blockName) => {
+    const isTriggerAnimate = TriggerFxBlocks.includes(blockName);
+    const isTriggerableAnimate = TriggerableFxBlocks.includes(blockName);
     const isScrollAnimate = ScrollFxBlocks.includes(blockName)
     const isHoverAnimate = HoverFxBlocks.includes(blockName)
     const isHeaderAnimate = HeaderFxBlocks.includes(blockName)
 
-    return isScrollAnimate || isHoverAnimate || isHeaderAnimate;
+    return isTriggerAnimate || isTriggerableAnimate || isScrollAnimate || isHoverAnimate || isHeaderAnimate;
 };
 
 // Helper to detemine whether the block has any fx enabled
 export const isEnabled = (attributes) => {
+    const triggerEnabled = attributes.merosTriggerFx?.enabled;
+    const triggerableEnabled = attributes.merosTriggerableFx?.enabled;
     const scrollEnabled = attributes.merosScrollFx?.enabled;
     const hoverEnabled = attributes.merosHoverFx?.enabled;
     const headerEnabled = attributes.merosHeaderFx?.enabled;
 
-    return scrollEnabled || hoverEnabled || headerEnabled;
+    return triggerEnabled || triggerableEnabled || scrollEnabled || hoverEnabled || headerEnabled;
 };
 
 // Adds block client ID to previewFx list for the given fx type

@@ -32,7 +32,7 @@ wp.domReady(() => {
     addFilter('blocks.getSaveContent.extraProps', 'meros/block-sticky-classes', saveStickyStyles);
 
     // Process fx in the editor
-    function processFxAnimations(headerEl, win) {
+    function processHeaderFxAnimations(headerEl, win) {
         if (headerEl.dataset.merosFxProcessed === 'true') return;
         headerEl.dataset.merosFxProcessed = 'true';
 
@@ -163,7 +163,7 @@ wp.domReady(() => {
         const observer = new MutationObserver(() => {
             const header = doc.querySelector('.meros-has-header-animation');
             if (header) {
-                processFxAnimations(header, win);
+                processHeaderFxAnimations(header, win);
             }
         });
 
@@ -176,11 +176,126 @@ wp.domReady(() => {
 
         const initialHeader = doc.querySelector('.meros-has-header-animation');
         if (initialHeader) {
-            processFxAnimations(initialHeader, win);
+            processHeaderFxAnimations(initialHeader, win);
         }
     }
 
+    function observeCompatibleTriggerBlocks({ doc }) {
+        const getTriggerables = (triggeredIds) => {
+            const triggerables = [];
+            triggeredIds.forEach(id => {
+                const triggerable = doc.querySelector(`[data-meros-trigger-id="${id}"]`);
+                if (triggerable) {
+                    triggerables.push(triggerable);
+                }
+            });
+            return triggerables;
+        };
+
+        const getReversables = () => {
+            const reversables = doc.querySelectorAll(
+                '[data-meros-trigger-reverse-on-new-selection="true"].meros-preview-trigger-fx'
+            );
+            return reversables;
+        };
+
+        const triggerListener = (e) => {
+            const trigger = e.currentTarget;
+            if (!trigger.classList.contains('meros-is-animation-trigger')) return;
+            if (!trigger.classList.contains('meros-preview-trigger-fx')) return;
+
+            const toggle = trigger.dataset.merosTriggerType === 'toggle';
+            const active = trigger.dataset.merosTriggerActive === 'true';
+
+            if (!active) {
+                const reversables = getReversables();
+                if (reversables.length > 0) {
+                    reversables.forEach(trig => {
+                        if (trig === trigger) return;
+
+                        const isActive = trig.dataset.merosTriggerActive === 'true';
+                        if (!isActive) return;
+                        
+                        const trigTriggerableIds = trig.dataset.merosTriggeredIds?.split(' ') || [];
+                        const trigTriggerables = getTriggerables(trigTriggerableIds);
+                        trigTriggerables.forEach(triggerable => {
+                            triggerable.dataset.merosAnimated = 'false';
+                        });
+                        trig.dataset.merosTriggerActive = 'false';
+                    });
+                }
+            }
+
+            const triggerableIds = trigger.dataset.merosTriggeredIds?.split(' ') || [];
+            const triggerables = getTriggerables(triggerableIds);
+            triggerables.forEach(triggerable => {
+                if (toggle && active) {
+                    triggerable.dataset.merosAnimated = 'false';
+                } else if (!active) {
+                    triggerable.dataset.merosAnimated = 'true';
+                }
+            }); 
+
+            if (toggle && active) {
+                trigger.dataset.merosTriggerActive = 'false';
+            } else if (!active) {
+                trigger.dataset.merosTriggerActive = 'true';
+            }
+        };
+
+        const triggerObservers = new WeakMap();
+
+        const setupTrigger = (trigger) => {
+            if (triggerObservers.has(trigger)) return;
+
+            const triggerObserver = new MutationObserver(() => {
+                if (trigger.classList.contains('meros-preview-trigger-fx') &&
+                    trigger.dataset.merosTriggerPreviewInitialised !== 'true'
+                ) {
+                    trigger.addEventListener('click', triggerListener);
+                    trigger.dataset.merosTriggerPreviewInitialised = 'true';
+                } 
+                
+                else if (
+                    !trigger.classList.contains('meros-preview-trigger-fx') &&
+                    trigger.dataset.merosTriggerPreviewInitialised === 'true'
+                ) {
+                    const triggeredIds = trigger.dataset.merosTriggeredIds?.split(' ') || [];
+                    const triggerables = getTriggerables(triggeredIds);
+                    
+                    triggerables.forEach(triggerable => {
+                        triggerable.dataset.merosAnimated = 'false';
+                    });
+
+                    trigger.classList.remove('meros-active');
+                    trigger.removeEventListener('click', triggerListener);
+                    trigger.dataset.merosTriggerPreviewInitialised = 'false';
+                }
+            });
+
+            triggerObserver.observe(trigger, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            triggerObservers.set(trigger, triggerObserver);
+        };
+
+        const observer = new MutationObserver(() => {
+            const triggers = doc.querySelectorAll('.meros-is-animation-trigger');
+            triggers.forEach(setupTrigger);
+        });
+
+        observer.observe(doc, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+
     initEditorScripts(observeCompatibleHeaderBlocks);
+    initEditorScripts(observeCompatibleTriggerBlocks);
 });
 
 

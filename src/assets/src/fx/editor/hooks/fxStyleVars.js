@@ -1,8 +1,36 @@
-import { isScrollFxBlock, isHoverFxBlock, isHeaderFxBlock } from '../utils.js';
+import {
+    isTriggerFxBlock,
+    isTriggerableFxBlock,
+    isScrollFxBlock, 
+    isHoverFxBlock, 
+    isHeaderFxBlock 
+} from '../utils.js';
+
 import { getFxAttrs } from './fxAttributes';
 
 // CSS variables used for blocks with fx enabled
 export const AnimationStyleVars = [
+    // Triggers and Triggerable FX
+    '--meros-trigger-hover-bg-color',
+    '--meros-trigger-hover-text-color',
+    '--meros-trigger-hover-link-color',
+    '--meros-trigger-active-bg-color',
+    '--meros-trigger-active-text-color',
+    '--meros-trigger-active-link-color',
+    '--meros-triggered-animate-x',
+    '--meros-triggered-animate-y',
+    '--meros-triggered-animate-scale-x',
+    '--meros-triggered-animate-scale-y',
+    '--meros-triggered-animate-opacity',
+    '--meros-triggered-animate-height',
+    '--meros-triggered-transform-duration',
+    '--meros-triggered-transform-delay',
+    '--meros-triggered-opacity-duration',
+    '--meros-triggered-opacity-delay',
+    '--meros-triggered-height-duration',
+    '--meros-triggered-height-delay',
+
+    // Scroll FX
     '--meros-scroll-animate-x',
     '--meros-scroll-animate-y',
     '--meros-scroll-transform-duration',
@@ -18,12 +46,20 @@ export const AnimationStyleVars = [
     '--meros-scroll-animate-link-hover-color',
     '--meros-scroll-color-duration',
     '--meros-scroll-color-delay',
+
+    // Hover FX
     '--meros-hover-animate-x',
     '--meros-hover-animate-y',
     '--meros-hover-animate-scale-x',
     '--meros-hover-animate-scale-y',
     '--meros-hover-transform-duration',
     '--meros-hover-transform-delay',
+    '--meros-hover-animate-bg-color',
+    '--meros-hover-animate-text-color',
+    '--meros-hover-color-duration',
+    '--meros-hover-color-delay',
+
+    // Header FX
     '--meros-header-animate-bg-color-start',
     '--meros-header-animate-bg-color-end',
     '--meros-header-animate-text-color-start',
@@ -34,9 +70,9 @@ export const AnimationStyleVars = [
     '--meros-header-animate-link-hover-color-end',
     '--meros-header-color-duration',
     '--meros-header-color-delay',
-    '--meros-animated-logo-width',
-    '--meros-logo-width-duration',
-    '--meros-logo-width-delay'
+    '--meros-header-animated-logo-width',
+    '--meros-header-logo-width-duration',
+    '--meros-header-logo-width-delay'
 ];
 
 // CSS variables used for sticky blocks
@@ -46,6 +82,27 @@ export const StickyStyleVars = [
 
 // Maps fx attributes to CSS variables
 export const FxVarMap = {
+    // Triggers and Triggerable FX
+    triggerHoverAnimateBgColor: v => ({ '--meros-trigger-hover-bg-color': v }),
+    triggerHoverAnimateTextColor: v => ({ '--meros-trigger-hover-text-color': v }),
+    triggerHoverAnimateLinkColor: v => ({ '--meros-trigger-hover-link-color': v }),
+    triggerActiveAnimateBgColor: v => ({ '--meros-trigger-active-bg-color': v }),
+    triggerActiveAnimateTextColor: v => ({ '--meros-trigger-active-text-color': v }),
+    triggerActiveAnimateLinkColor: v => ({ '--meros-trigger-active-link-color': v }),
+    triggeredAnimateX: v => ({ '--meros-triggered-animate-x': `${v}%` }),
+    triggeredAnimateY: v => ({ '--meros-triggered-animate-y': `${v}%` }),
+    triggeredAnimateScaleX: v => ({ '--meros-triggered-animate-scale-x': v }),
+    triggeredAnimateScaleY: v => ({ '--meros-triggered-animate-scale-y': v }),
+    triggeredAnimateOpacity: v => ({ '--meros-triggered-animate-opacity': v }),
+    triggeredAnimateHeight: v => ({ '--meros-triggered-animate-height': `${v}px` }),
+    triggeredTransformDuration: v => ({ '--meros-triggered-transform-duration': `${v}s` }),
+    triggeredTransformDelay: v => ({ '--meros-triggered-transform-delay': `${v}s` }),
+    triggeredOpacityDuration: v => ({ '--meros-triggered-opacity-duration': `${v}s` }),
+    triggeredOpacityDelay: v => ({ '--meros-triggered-opacity-delay': `${v}s` }),
+    triggeredHeightDuration: v => ({ '--meros-triggered-height-duration': `${v}s` }),
+    triggeredHeightDelay: v => ({ '--meros-triggered-height-delay': `${v}s` }),
+
+    // Scroll FX
     scrollAnimateX: v => ({ '--meros-scroll-animate-x': `${v}%` }),
     scrollAnimateY: v => ({ '--meros-scroll-animate-y': `${v}%` }),
     scrollTransformDuration: v => ({ '--meros-scroll-transform-duration': `${v}s` }),
@@ -61,6 +118,8 @@ export const FxVarMap = {
     scrollAnimateLinkHoverColor: v => ({ '--meros-scroll-animate-link-hover-color': v }),
     scrollColorDuration: v => ({ '--meros-scroll-color-duration': `${v}s` }),
     scrollColorDelay: v => ({ '--meros-scroll-color-delay': `${v}s` }),
+
+    // Hover FX
     hoverAnimateX: v => ({ '--meros-hover-animate-x': `${v}px` }),
     hoverAnimateY: v => ({ '--meros-hover-animate-y': `${v}px` }),
     hoverAnimateScaleX: v => ({ '--meros-hover-animate-scale-x': v }),
@@ -71,6 +130,8 @@ export const FxVarMap = {
     hoverTransformDelay: v => ({ '--meros-hover-transform-delay': `${v}s` }),
     hoverColorDuration: v => ({ '--meros-hover-color-duration': `${v}s` }),
     hoverColorDelay: v => ({ '--meros-hover-color-delay': `${v}s` }),
+
+    // Header FX
     headerAnimateBgColor: v => ({ '--meros-header-animate-bg-color-start': v }),
     headerAnimateBgColorEnd: v => ({ '--meros-header-animate-bg-color-end': v }),
     headerAnimateTextColor: v => ({ '--meros-header-animate-text-color-start': v }),
@@ -79,7 +140,9 @@ export const FxVarMap = {
     headerAnimateLinkColorEnd: v => ({ '--meros-header-animate-link-color-end': v }),
     headerAnimateLinkHoverColor: v => ({ '--meros-header-animate-link-hover-color-start': v }),
     headerAnimateLinkHoverColorEnd: v => ({ '--meros-header-animate-link-hover-color-end': v }),
-    headerAnimateLogoWidth: v => ({ '--meros-header-animated-logo-width': v })
+    headerAnimateLogoWidth: v => ({ '--meros-header-animated-logo-width': v }),
+    headerLogoWidthDuration: v => ({ '--meros-header-logo-width-duration': `${v}s` }),
+    headerLogoWidthDelay: v => ({ '--meros-header-logo-width-delay': `${v}s` })
 };
 
 export function useFxStyleVars(blockName, attrs, clientId = '', save = false) {
@@ -110,6 +173,20 @@ export function useFxStyleVars(blockName, attrs, clientId = '', save = false) {
     };
 
     const styleVars = {};
+
+    if (isTriggerFxBlock(blockName, attrs.merosTriggerFx)) {
+        Object.assign(
+            styleVars,
+            fxToStyleVars(diffAttrs(attrs.merosTriggerFx, getFxAttrs('Trigger')))
+        );
+    }
+
+    if (isTriggerableFxBlock(blockName, attrs.merosTriggerableFx)) {
+        Object.assign(
+            styleVars,
+            fxToStyleVars(diffAttrs(attrs.merosTriggerableFx, getFxAttrs('Triggerable')))
+        );
+    }
 
     if (isScrollFxBlock(blockName, attrs.merosScrollFx)) {
         Object.assign(

@@ -28,11 +28,19 @@ export const AnimationWrapper = createHigherOrderComponent(
             const scrollPreview = attributes?.merosScrollFx?.scrollPreviewFx || false;
             const hoverPreview = previewFx.hoverPreviewFx[clientId] || false;
             const headerPreview = previewFx.headerPreviewFx[clientId] || false;
+            const triggerPreview = previewFx.triggerPreviewFx[clientId] || false;
+            const triggerablePreview = previewFx.triggeredPreviewFx[clientId] || false;
+            const triggerId = attributes?.merosTriggerableFx?.triggerId || null;
+            const triggeredBlocks = attributes?.merosTriggerFx?.triggeredBlocks || [];
+            const triggerType = attributes?.merosTriggerFx?.triggerType || 'toggle';
+            const reverseOnNewSelection = attributes?.merosTriggerFx?.reverseOnNewSelection || false;
 
             const [isScrollAnimating, setIsScrollAnimating] = useState(false);
             const [isScrollAnimated, setIsScrollAnimated] = useState(false);
             const [hoverPreviewClasses, setHoverPreviewClasses] = useState([]);
             const [headerPreviewClasses, setHeaderPreviewClasses] = useState([]);
+            const [triggerPreviewClasses, setTriggerPreviewClasses] = useState([]);
+            const [triggerablePreviewClasses, setTriggerablePreviewClasses] = useState([]);
 
             useEffect(() => {
                 if (!scrollPreview) return;
@@ -74,7 +82,24 @@ export const AnimationWrapper = createHigherOrderComponent(
                 } else {
                     setHeaderPreviewClasses([]);
                 }
-            }, [hoverPreview, headerPreview]);
+
+                if (triggerPreview) {
+                    setTriggerPreviewClasses([
+                        'meros-preview-trigger-fx'
+                    ]);
+                } else {
+                    setTriggerPreviewClasses([]);
+                }
+
+                if (triggerablePreview) {
+                    setTriggerablePreviewClasses([
+                        'meros-preview-triggered-fx'
+                    ]);
+                } else {
+                    setTriggerablePreviewClasses([]);
+                }
+
+            }, [hoverPreview, headerPreview, triggerPreview, triggerablePreview]);
 
             if (!isEnabled(attributes)) {
                 return (
@@ -98,6 +123,34 @@ export const AnimationWrapper = createHigherOrderComponent(
                 ]
                 : [];
 
+
+            let dataAttrs = {};
+            if (attributes?.merosTriggerFx?.enabled) {
+                if (triggeredBlocks.length > 0) {
+                    const triggeredIds = triggeredBlocks.map(triggerLabel => {
+                        return triggerLabel.replace(/.*\(Trigger: (\w{8})\)$/, '$1');
+                    });
+                    dataAttrs['data-meros-triggered-ids'] = triggeredIds.join(' ');
+                }
+
+                if (
+                    triggerType === 'toggle' ||
+                    triggerType === 'once'
+                ) {
+                    dataAttrs['data-meros-trigger-type'] = triggerType;
+                }
+
+                if (reverseOnNewSelection === true) {
+                    dataAttrs['data-meros-trigger-reverse-on-new-selection'] = 'true';
+                }
+            }
+
+            if (attributes?.merosTriggerableFx?.enabled) {
+                if (triggerId && triggerId !== '') {
+                    dataAttrs['data-meros-trigger-id'] = triggerId;
+                }
+            }
+
             return (
                 <BlockListBlock
                     {...props}
@@ -108,6 +161,8 @@ export const AnimationWrapper = createHigherOrderComponent(
                             ...scrollPreviewClasses,
                             ...hoverPreviewClasses,
                             ...headerPreviewClasses,
+                            ...triggerPreviewClasses,
+                            ...triggerablePreviewClasses,
                             baseClassName,
                         ]
                             .filter(Boolean)
@@ -116,6 +171,7 @@ export const AnimationWrapper = createHigherOrderComponent(
                             ...baseStyle,
                             ...useFxStyleVars(name, attributes, clientId),
                         },
+                        ...dataAttrs
                     }}
                 />
             );

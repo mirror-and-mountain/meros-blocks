@@ -256,6 +256,12 @@ export function Color({
     showControls = true,
     showTiming = true,
     selectedControls = ['background', 'text', 'link'],
+    bgLabel = __('Background Colour', 'meros-theme'),
+    textLabel = __('Text Colour', 'meros-theme'),
+    linkLabel = __('Link Colour', 'meros-theme'),
+    linkHoverLabel = __('Link Hover Colour', 'meros-theme'),
+    durationLabel = 'Colour',
+    delayLabel = 'Colour'
 }) {
 
     return (
@@ -267,13 +273,13 @@ export function Color({
                 <>
                 {selectedControls.includes('background') && (
                         <ToolsPanelItem
-                            label={__('Background Colour', 'meros-theme')}
+                            label={bgLabel}
                             hasValue={() => bg !== ''}
                             isShownByDefault={true}
                             onDeselect={() => update({ [`${prefix}AnimateBgColor`]: '' })}
                         >
                             <ColorPicker
-                                label={__('Background Colour', 'meros-theme')}
+                                label={bgLabel}
                                 currentColor={bg}
                                 onChange={(color) =>
                                     update({ [`${prefix}AnimateBgColor`]: color })
@@ -285,13 +291,13 @@ export function Color({
 
                     {selectedControls.includes('text') && (
                         <ToolsPanelItem
-                            label={__('Text Colour', 'meros-theme')}
+                            label={textLabel}
                             hasValue={() => text !== ''}
                             isShownByDefault={true}
                             onDeselect={() => update({ [`${prefix}AnimateTextColor`]: '' })}
                         >
                             <ColorPicker
-                                label={__('Text Colour', 'meros-theme')}
+                                label={textLabel}
                                 currentColor={text}
                                 onChange={(color) =>
                                     update({ [`${prefix}AnimateTextColor`]: color })
@@ -303,13 +309,13 @@ export function Color({
                     {selectedControls.includes('link') && (
                         <>
                             <ToolsPanelItem
-                                label={__('Link Colour', 'meros-theme')}
+                                label={linkLabel}
                                 hasValue={() => link !== ''}
                                 isShownByDefault={true}
                                 onDeselect={() => update({ [`${prefix}AnimateLinkColor`]: '' })}
                             >
                                 <ColorPicker
-                                    label={__('Link Colour', 'meros-theme')}
+                                    label={linkLabel}
                                     currentColor={link}
                                     onChange={(color) =>
                                         update({ [`${prefix}AnimateLinkColor`]: color })
@@ -319,13 +325,13 @@ export function Color({
 
                             {linkHover !== false && (
                                 <ToolsPanelItem
-                                    label={__('Link Hover Colour', 'meros-theme')}
+                                    label={linkHoverLabel}
                                     hasValue={() => linkHover !== ''}
                                     isShownByDefault={true}
                                     onDeselect={() => update({ [`${prefix}AnimateLinkHoverColor`]: '' })}
                                 >
                                     <ColorPicker
-                                        label={__('Link Hover Colour', 'meros-theme')}
+                                        label={linkHoverLabel}
                                         currentColor={linkHover}
                                         onChange={(color) =>
                                             update({ [`${prefix}AnimateLinkHoverColor`]: color })
@@ -341,7 +347,7 @@ export function Color({
             {showTiming && (
                 <>
                     <Duration
-                        label="Colour"
+                        label={durationLabel}
                         current={duration}
                         defaultValue={0.8}
                         prop={`${prefix}ColorDuration`}
@@ -349,7 +355,7 @@ export function Color({
                     />
 
                     <Delay
-                        label="Colour"
+                        label={delayLabel}
                         current={delay}
                         defaultValue={0}
                         prop={`${prefix}ColorDelay`}

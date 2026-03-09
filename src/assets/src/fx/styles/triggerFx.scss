@@ -1,0 +1,87 @@
+.meros-is-animation-trigger {
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.meros-has-triggerable-animation:not(.meros-start-hidden) {
+    transition:
+        transform
+            var(--meros-triggered-transform-duration, 0.8s)
+            ease
+            var(--meros-triggered-transform-delay, 0s),
+        opacity
+            var(--meros-triggered-opacity-duration, 0.8s)
+            ease
+            var(--meros-triggered-opacity-delay, 0s);
+}
+
+.meros-has-triggerable-animation.meros-start-hidden {
+    transition:
+        transform
+            var(--meros-triggered-transform-duration, 0.8s)
+            ease
+            var(--meros-triggered-transform-delay, 0s),
+        opacity
+            var(--meros-triggered-opacity-duration, 0.8s)
+            ease
+            var(--meros-triggered-opacity-delay, 0s),
+        visibility 
+            0s 
+            ease 
+            var(--meros-triggered-opacity-duration, 0.8s);
+}
+
+.wp-site-blocks:not(.is-root-container) .meros-is-animation-trigger {
+    cursor: pointer;
+}
+
+.editor-styles-wrapper .meros-is-animation-trigger.meros-preview-trigger-fx,
+.wp-site-blocks:not(.is-root-container) .meros-is-animation-trigger {
+    &:hover:not([data-meros-trigger-active="true"]) {
+        background-color: var(--meros-trigger-hover-bg-color, inherit) !important;
+        color: var(--meros-trigger-hover-text-color, inherit) !important;
+    }
+
+    &[data-meros-trigger-active="true"] {
+        background-color: var(--meros-trigger-active-bg-color, inherit) !important;
+        color: var(--meros-trigger-active-text-color, inherit) !important;
+    }
+}
+
+.editor-styles-wrapper .meros-has-triggerable-animation.meros-preview-triggered-fx,
+.wp-site-blocks:not(.is-root-container) .meros-has-triggerable-animation {
+    &:not([data-meros-animated="true"]) {
+        transform:
+            translateX(var(--meros-triggered-animate-x, 0px))
+            translateY(var(--meros-triggered-animate-y, 0px))
+            scale(
+                var(--meros-triggered-animate-scale-x, 1),
+                var(--meros-triggered-animate-scale-y, 1)
+            );
+
+        opacity: var(--meros-triggered-animate-opacity, 1);
+    }
+
+    &:not([data-meros-animated="true"]).meros-start-hidden {
+        visibility: hidden !important;
+    }
+
+    &[data-meros-animated="true"].meros-start-hidden {
+        transition: 
+            transform
+                var(--meros-triggered-transform-duration, 0.8s)
+                ease
+                var(--meros-triggered-transform-delay, 0s),
+            opacity
+                var(--meros-triggered-opacity-duration, 0.8s)
+                ease
+                var(--meros-triggered-opacity-delay, 0s),
+            visibility
+                0s
+                ease
+                0s !important;
+
+        visibility: visible !important;
+    }
+}

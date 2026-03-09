@@ -169,7 +169,6 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
 
     const defaultValues = getFxAttrs('Scroll');
     const isTransformPreset = preset !== 'manual' && preset !== 'fadeIn';
-
     const isManual = preset === 'manual';
 
     const update = (patch) => {
@@ -250,7 +249,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                         {__('Preview Animation', 'meros-theme')}
                     </Button>
                 
-                    { (isTransformPreset || isManual) && (
+                    {(isTransformPreset || isManual) && (
                         <Transform
                             translateX={scrollAnimateX}
                             translateY={scrollAnimateY}

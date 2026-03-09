@@ -10,6 +10,7 @@ import {
     SelectControl as BaseSelectControl,
     RangeControl as BaseRangeControl,
     FontSizePicker as BaseFontSizePicker,
+    FormTokenField as BaseFormTokenField,
     Button as BaseButton,
     Modal as BaseModal,
     __experimentalUnitControl as BaseUnitControl,
@@ -80,12 +81,13 @@ export function ToggleControl({ label, checked, onChange, disabled = false }) {
     );
 }
 
-export function SelectControl({ label, value, options, onChange }) {
+export function SelectControl({ label, value, options, onChange, multiple = false }) {
     return (
         <BaseSelectControl
             label={label}
             value={value}
             options={options}
+            multiple={multiple}
             onChange={onChange}
             __nextHasNoMarginBottom={true}
             __next40pxDefaultSize={true}
@@ -114,6 +116,18 @@ export function FontSizePicker({ fontSizes, value, onChange }) {
             fontSizes={fontSizes}
             value={value}
             onChange={onChange}
+        />
+    );
+}
+
+export function FormTokenField({ label, value, onChange, suggestions }) {
+    return (
+        <BaseFormTokenField
+            label={label}
+            value={value}
+            onChange={onChange}
+            suggestions={suggestions}
+            __next40pxDefaultSize={true}
         />
     );
 }

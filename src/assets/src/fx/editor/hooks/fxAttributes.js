@@ -19,7 +19,8 @@ export const useFxAttributes = (settings, name) => {
         ...settings,
         attributes: {
             ...settings.attributes,
-            merosClidentId: { type: 'string', default: '' },
+            merosTriggerFx: { type: 'object', default: getFxAttrs('Trigger') },
+            merosTriggerableFx: { type: 'object', default: getFxAttrs('Triggerable') },
             merosScrollFx: { type: 'object', default: getFxAttrs('Scroll') },
             merosHoverFx: { type: 'object', default: getFxAttrs('Hover') },
             merosHeaderFx: { type: 'object', default: getFxAttrs('Header') },
@@ -66,6 +67,38 @@ export function getFxAttrs(fxType) {
                 hoverTransformDelay: 0,
                 hoverColorDuration: 0.3,
                 hoverColorDelay: 0
+            };
+        case 'Triggerable':
+            return {
+                enabled: false,
+                triggerId: '',
+                preset: 'fadeIn',
+                triggeredAnimateX: 0,
+                triggeredAnimateY: 0,
+                triggeredAnimateScaleX: 1,
+                triggeredAnimateScaleY: 1,
+                triggeredAnimateOpacity: 1,
+                triggeredAnimateHeight: 0,
+                triggeredTransformDuration: 0.8,
+                triggeredTransformDelay: 0,
+                triggeredOpacityDuration: 0.8,
+                triggeredOpacityDelay: 0,
+                triggeredHeightDuration: 0.8,
+                triggeredHeightDelay: 0,
+                triggeredPreviewFx: false
+            };
+        case 'Trigger':
+            return {
+                enabled: false,
+                triggeredBlocks: [],
+                triggerType: 'toggle',
+                reverseOnNewSelection: false,
+                triggerHoverAnimateBgColor: '',
+                triggerHoverAnimateTextColor: '',
+                triggerHoverAnimateLinkColor: '',
+                triggerActiveAnimateBgColor: '',
+                triggerActiveAnimateTextColor: '',
+                triggerActiveAnimateLinkColor: '',
             };
         case 'Header':
             return {

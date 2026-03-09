@@ -27,6 +27,34 @@ export const saveFxStyles = (extraProps, blockType, attributes) => {
         };
     }
 
+    let dataAttrs = {};
+    if (attributes?.merosTriggerFx?.enabled) {
+        const triggeredBlocks = attributes?.merosTriggerFx?.triggeredBlocks || [];
+        if (triggeredBlocks.length > 0) {
+            const triggeredIds = triggeredBlocks.map(triggerLabel => {
+                return triggerLabel.replace(/.*\(Trigger: (\w{8})\)$/, '$1');
+            });
+            dataAttrs['data-meros-triggered-ids'] = triggeredIds.join(' ');
+        }
+
+        const triggerType = attributes?.merosTriggerFx?.triggerType || 'toggle';
+        if (triggerType === 'toggle' || triggerType === 'once') {
+            dataAttrs['data-meros-trigger-type'] = triggerType;
+        }
+
+        const reverseOnNewSelection = attributes?.merosTriggerFx?.reverseOnNewSelection || false;
+        if (reverseOnNewSelection === true) {
+            dataAttrs['data-meros-trigger-reverse-on-new-selection'] = 'true';
+        }
+    }
+
+    if (attributes?.merosTriggerableFx?.enabled) {
+        const triggerId = attributes?.merosTriggerableFx?.triggerId || '';
+        if (triggerId && triggerId !== '') {
+            dataAttrs['data-meros-trigger-id'] = triggerId;
+        }
+    }
+
     // Animation enabled → add classes & vars cleanly
     return {
         ...extraProps,
@@ -39,5 +67,6 @@ export const saveFxStyles = (extraProps, blockType, attributes) => {
             ...baseStyle,
             ...useFxStyleVars(blockType.name, attributes, '', true),
         },
+        ...dataAttrs
     };
 };
