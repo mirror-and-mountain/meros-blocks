@@ -17,18 +17,19 @@ export const AnimationStyleVars = [
     '--meros-trigger-active-bg-color',
     '--meros-trigger-active-text-color',
     '--meros-trigger-active-link-color',
+
+    '--meros-triggered-animate-rotation',
     '--meros-triggered-animate-x',
     '--meros-triggered-animate-y',
     '--meros-triggered-animate-scale-x',
     '--meros-triggered-animate-scale-y',
     '--meros-triggered-animate-opacity',
-    '--meros-triggered-animate-height',
     '--meros-triggered-transform-duration',
     '--meros-triggered-transform-delay',
     '--meros-triggered-opacity-duration',
     '--meros-triggered-opacity-delay',
-    '--meros-triggered-height-duration',
-    '--meros-triggered-height-delay',
+    '--meros-triggered-rotation-duration',
+    '--meros-triggered-rotation-delay',
 
     // Scroll FX
     '--meros-scroll-animate-x',
@@ -89,6 +90,8 @@ export const FxVarMap = {
     triggerActiveAnimateBgColor: v => ({ '--meros-trigger-active-bg-color': v }),
     triggerActiveAnimateTextColor: v => ({ '--meros-trigger-active-text-color': v }),
     triggerActiveAnimateLinkColor: v => ({ '--meros-trigger-active-link-color': v }),
+
+    triggeredAnimateRotation: v => ({ '--meros-triggered-animate-rotation': `${v}deg` }),
     triggeredAnimateX: v => ({ '--meros-triggered-animate-x': `${v}%` }),
     triggeredAnimateY: v => ({ '--meros-triggered-animate-y': `${v}%` }),
     triggeredAnimateScaleX: v => ({ '--meros-triggered-animate-scale-x': v }),
@@ -99,8 +102,8 @@ export const FxVarMap = {
     triggeredTransformDelay: v => ({ '--meros-triggered-transform-delay': `${v}s` }),
     triggeredOpacityDuration: v => ({ '--meros-triggered-opacity-duration': `${v}s` }),
     triggeredOpacityDelay: v => ({ '--meros-triggered-opacity-delay': `${v}s` }),
-    triggeredHeightDuration: v => ({ '--meros-triggered-height-duration': `${v}s` }),
-    triggeredHeightDelay: v => ({ '--meros-triggered-height-delay': `${v}s` }),
+    triggeredRotationDuration: v => ({ '--meros-triggered-rotation-duration': `${v}s` }),
+    triggeredRotationDelay: v => ({ '--meros-triggered-rotation-delay': `${v}s` }),
 
     // Scroll FX
     scrollAnimateX: v => ({ '--meros-scroll-animate-x': `${v}%` }),

@@ -78,13 +78,13 @@ export function getFxAttrs(fxType) {
                 triggeredAnimateScaleX: 1,
                 triggeredAnimateScaleY: 1,
                 triggeredAnimateOpacity: 1,
-                triggeredAnimateHeight: 0,
+                triggeredAnimateRotation: 0,
                 triggeredTransformDuration: 0.8,
                 triggeredTransformDelay: 0,
                 triggeredOpacityDuration: 0.8,
                 triggeredOpacityDelay: 0,
-                triggeredHeightDuration: 0.8,
-                triggeredHeightDelay: 0,
+                triggeredRotationDuration: 0.8,
+                triggeredRotationDelay: 0,
                 triggeredPreviewFx: false
             };
         case 'Trigger':

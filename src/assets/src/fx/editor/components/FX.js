@@ -5,7 +5,8 @@ import {
     ToolsPanelItem,
     ToggleControl,
     RangeControl,
-    SelectControl
+    SelectControl,
+    NumberControl
 } from '../../../components/Controls.js';
 
 export function Duration({ label, current, defaultValue, prop, update }) {
@@ -235,6 +236,61 @@ export function Opacity({
                         current={delay}
                         defaultValue={0}
                         prop={`${prefix}OpacityDelay`}
+                        update={update}
+                    />
+                </>
+            )}
+        </ToolsPanel>
+    );
+}
+
+export function Rotation({
+    current,
+    duration,
+    delay,
+    prefix,
+    defaultValues,
+    update,
+    showTiming = true
+}) {
+    return (
+        <ToolsPanel
+            label={__('Rotation', 'meros-theme')}
+            resetAll={() => update(defaultValues)}
+        >
+            <ToolsPanelItem
+                label={__('Rotation (degrees)', 'meros-theme')}
+                hasValue={() => current !== 0}
+                isShownByDefault={true}
+                onDeselect={() => update({ [`${prefix}AnimateRotation`]: 0 })}
+            >
+                <NumberControl
+                    label={__('Rotation (degrees)', 'meros-theme')}
+                    value={current}
+                    onChange={(value) =>
+                        update({ [`${prefix}AnimateRotation`]: value })
+                    }
+                    min={-360}
+                    max={360}
+                    step={1}
+                />
+            </ToolsPanelItem>
+
+            {showTiming && (
+                <>
+                    <Duration
+                        label="Rotation"
+                        current={duration}
+                        defaultValue={0.8}
+                        prop={`${prefix}RotationDuration`}
+                        update={update}
+                    />
+
+                    <Delay
+                        label="Rotation"
+                        current={delay}
+                        defaultValue={0}
+                        prop={`${prefix}RotationDelay`}
                         update={update}
                     />
                 </>

@@ -1,12 +1,10 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import { useSelect, dispatch } from '@wordpress/data';
-import { Button } from '@wordpress/components';
-import { ToggleControl } from '../../../components/Controls.js';
 
 import { updateFx } from '../utils.js';
 import { getFxAttrs } from '../hooks/fxAttributes.js';
-import { Enable, Presets, Transform, Opacity, Color } from './FX.js';
+import { Enable, Presets, Transform, Opacity, Rotation } from './FX.js';
 
 export default function TriggerableFX({ attributes, setAttributes, clientId }) {
     const {
@@ -18,13 +16,13 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
         triggeredAnimateScaleX,
         triggeredAnimateScaleY,
         triggeredAnimateOpacity,
-        triggeredAnimateHeight,
+        triggeredAnimateRotation,
         triggeredTransformDuration,
         triggeredTransformDelay,
         triggeredOpacityDuration,
         triggeredOpacityDelay,
-        triggeredHeightDuration,
-        triggeredHeightDelay
+        triggeredRotationDuration,
+        triggeredRotationDelay
     } = attributes.merosTriggerableFx;
 
     const metadata = attributes?.metadata || {};
@@ -233,6 +231,19 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
                         }}
                         update={update}
                         showControls={isManual}
+                    />
+
+                    <Rotation
+                        current={triggeredAnimateRotation}
+                        duration={triggeredRotationDuration}
+                        delay={triggeredRotationDelay}
+                        prefix="triggered"
+                        defaultValues={{
+                            triggeredAnimateRotation: 0,
+                            triggeredRotationDuration: 0.8,
+                            triggeredRotationDelay: 0
+                        }}
+                        update={update}
                     />
                 </>
             )}

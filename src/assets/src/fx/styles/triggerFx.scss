@@ -13,7 +13,11 @@
         opacity
             var(--meros-triggered-opacity-duration, 0.8s)
             ease
-            var(--meros-triggered-opacity-delay, 0s);
+            var(--meros-triggered-opacity-delay, 0s),
+        rotate
+            var(--meros-triggered-rotation-duration, 0.8s)
+            ease
+            var(--meros-triggered-rotation-delay, 0s);
 }
 
 .meros-has-triggerable-animation.meros-start-hidden {
@@ -26,6 +30,10 @@
             var(--meros-triggered-opacity-duration, 0.8s)
             ease
             var(--meros-triggered-opacity-delay, 0s),
+        rotate
+            var(--meros-triggered-rotation-duration, 0.8s)
+            ease
+            var(--meros-triggered-rotation-delay, 0s),
         visibility 
             0s 
             ease 
@@ -61,6 +69,7 @@
             );
 
         opacity: var(--meros-triggered-animate-opacity, 1);
+        rotate: 0deg;
     }
 
     &:not([data-meros-animated="true"]).meros-start-hidden {
@@ -77,11 +86,16 @@
                 var(--meros-triggered-opacity-duration, 0.8s)
                 ease
                 var(--meros-triggered-opacity-delay, 0s),
+            rotate
+                var(--meros-triggered-rotation-duration, 0.8s)
+                ease
+                var(--meros-triggered-rotation-delay, 0s),
             visibility
                 0s
                 ease
                 0s !important;
 
         visibility: visible !important;
+        rotate: var(--meros-triggered-animate-rotation, 0deg);
     }
 }
