@@ -299,6 +299,16 @@ export function Rotation({
     );
 }
 
+export function OccupySpace({ current, update, prefix }) {
+    return (
+        <ToggleControl
+            label={__('Occupy Space When Invisible', 'meros-theme')}
+            checked={current}
+            onChange={(value) => update({ [`${prefix}InvisibleOccupySpace`]: value })}
+        />
+    );
+}
+
 export function Color({
     bg,
     text,

@@ -1,4 +1,4 @@
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { NavigationSets } from './navigation/navigation-sets.js';
 
 export default function Save({ attributes }) {
@@ -27,8 +27,15 @@ export default function Save({ attributes }) {
         breakpoints
     } = attributes;
 
-    if (showNavigation !== true) navigation.enabled = false;
-    if (showPagination !== true) pagination.enabled = false;
+    const navigationData = {
+        ...navigation,
+        enabled: showNavigation === true
+    };
+
+    const paginationData = {
+        ...pagination,
+        enabled: showPagination === true
+    };
 
     const navStyle = showNavigation ? {
         '--swiper-navigation-color': navigationStyle.color || '#000000',
@@ -41,9 +48,11 @@ export default function Save({ attributes }) {
         '--swiper-pagination-fraction-color': paginationStyle.activeColor || '#000000',
     } : {};
 
+    const blockProps = useBlockProps.save({ className: 'meros-swiper swiper' });
+    const wrapperProps = useInnerBlocksProps.save({ className: 'swiper-wrapper' });
+
     return (
-        <div 
-            {...useBlockProps.save({ className: 'meros-swiper swiper' })}
+        <div {...blockProps}
             data-dynamic={dynamic ? 'true' : 'false'}
             data-slides-per-view={parseFloat(slidesPerView)}
             data-space-between={spaceBetween}
@@ -55,13 +64,11 @@ export default function Save({ attributes }) {
             data-autoplay-delay={autoplayDelay}
             data-free-mode={JSON.stringify(freeMode)}
             data-mousewheel={JSON.stringify(mousewheel)}
-            data-navigation={JSON.stringify(navigation)}
-            data-pagination={JSON.stringify(pagination)}
-            data-breakpoints={Array.isArray(breakpoints) ? '{}' : JSON.stringify(breakpoints)}
+            data-navigation={JSON.stringify(navigationData)}
+            data-pagination={JSON.stringify(paginationData)}
+            data-breakpoints={JSON.stringify(breakpoints)}
         >
-            <div className="swiper-wrapper">
-                <InnerBlocks.Content />
-            </div>
+            <div {...wrapperProps} />
             { showNavigation && (
                 <>
                     <div className="swiper-button-prev" style={navStyle}>

@@ -84,7 +84,7 @@ export default function NavigationControls({ attributes, setAttributes }) {
                             newBreakpoints[String(breakPointDesktopWidth)].navigation.enabled = value;
                             setAttributes({ breakpoints: newBreakpoints });
                         }
-                        setAttributes({ showNavigation: value })
+                        setAttributes({ showNavigation: value });
                     }}
                 />
             </ToolsPanelItem>
@@ -120,7 +120,7 @@ export default function NavigationControls({ attributes, setAttributes }) {
                             newBreakpoints[String(breakPointDesktopWidth)].pagination.enabled = value;
                             setAttributes({ breakpoints: newBreakpoints });
                         }
-                        setAttributes({ showPagination: value })
+                        setAttributes({ showPagination: value });
                     }}
                 />
             </ToolsPanelItem>

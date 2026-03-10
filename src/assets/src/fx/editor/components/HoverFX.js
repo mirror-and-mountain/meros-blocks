@@ -37,8 +37,12 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                 hoverAnimateScaleY: 1.05,
                 hoverAnimateX: 0,
                 hoverAnimateY: 0,
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
                 hoverTransformDuration: 0.3,
-                hoverTransformDelay: 0
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
             }
         },
         shrink: {
@@ -47,8 +51,12 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                 hoverAnimateScaleY: 0.95,
                 hoverAnimateX: 0,
                 hoverAnimateY: 0,
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
                 hoverTransformDuration: 0.3,
-                hoverTransformDelay: 0
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
             }
         },
         liftUp: {
@@ -57,8 +65,12 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                 hoverAnimateY: -10,
                 hoverAnimateScaleX: 1,
                 hoverAnimateScaleY: 1,
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
                 hoverTransformDuration: 0.3,
-                hoverTransformDelay: 0
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
             }
         },
         sinkDown: {
@@ -67,8 +79,12 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                 hoverAnimateY: 10,
                 hoverAnimateScaleX: 1,
                 hoverAnimateScaleY: 1,
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
                 hoverTransformDuration: 0.3,
-                hoverTransformDelay: 0
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
             }
         },
         manual: {
@@ -77,8 +93,12 @@ export default function HoverFX({ attributes, setAttributes, clientId, setPrevie
                 hoverAnimateY: 0,
                 hoverAnimateScaleX: 1,
                 hoverAnimateScaleY: 1,
-                hoverTransformDuration: 0,
-                hoverTransformDelay: 0
+                hoverAnimateTextColor: '',
+                hoverAnimateBgColor: '',
+                hoverTransformDuration: 0.3,
+                hoverTransformDelay: 0,
+                hoverColorDuration: 0.3,
+                hoverColorDelay: 0
             }
         }
     }

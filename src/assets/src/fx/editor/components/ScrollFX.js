@@ -24,6 +24,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
         scrollOpacityDelay,
         scrollColorDuration,
         scrollColorDelay,
+        scrollInvisibleOccupySpace, // To be implemented
         animateOnSlideChange,
         scrollPreviewFx
     } = attributes.merosScrollFx;
@@ -71,7 +72,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                 scrollTransformDelay: 0,
                 scrollOpacityDuration: 0.8,
                 scrollOpacityDelay: 0,
-                scrollColorDuration: 0,
+                scrollColorDuration: 0.8,
                 scrollColorDelay: 0
             }
         },
@@ -89,7 +90,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                 scrollTransformDelay: 0,
                 scrollOpacityDuration: 0.8,
                 scrollOpacityDelay: 0,
-                scrollColorDuration: 0,
+                scrollColorDuration: 0.8,
                 scrollColorDelay: 0
             }
         },
@@ -107,7 +108,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                 scrollTransformDelay: 0,
                 scrollOpacityDuration: 0.8,
                 scrollOpacityDelay: 0,
-                scrollColorDuration: 0,
+                scrollColorDuration: 0.8,
                 scrollColorDelay: 0
             }
         },
@@ -125,7 +126,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                 scrollTransformDelay: 0,
                 scrollOpacityDuration: 0.8,
                 scrollOpacityDelay: 0,
-                scrollColorDuration: 0,
+                scrollColorDuration: 0.8,
                 scrollColorDelay: 0
             }
         },
@@ -143,7 +144,7 @@ export default function ScrollFX({ attributes, setAttributes, isInSwiper }) {
                 scrollTransformDelay: 0,
                 scrollOpacityDuration: 0.8,
                 scrollOpacityDelay: 0,
-                scrollColorDuration: 0,
+                scrollColorDuration: 0.8,
                 scrollColorDelay: 0
             }
         },

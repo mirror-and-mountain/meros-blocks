@@ -24,6 +24,7 @@ export const AnimationClasses = [
     'meros-has-animated-link-hover-color',
     'meros-animate-on-slide-change',
     'meros-start-hidden',
+    'meros-occupy-space',
     'meros-animating',
     'meros-animated',
     'meros-preview-hover-fx',
@@ -76,6 +77,10 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
 
         if (attrs.merosTriggerableFx.triggeredAnimateOpacity === 0) {
             classes.push('meros-start-hidden');
+
+            if (attrs.merosTriggerableFx.triggeredInvisibleOccupySpace) {
+                classes.push('meros-occupy-space');
+            }
         }
     }
 
@@ -91,6 +96,10 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
 
         if (attrs.merosScrollFx.scrollAnimateOpacity === 0) {
             classes.push('meros-start-hidden');
+
+            if (attrs.merosScrollFx.scrollInvisibleOccupySpace) {
+                classes.push('meros-occupy-space');
+            }
         }
     }
 

@@ -49,6 +49,7 @@ export function getFxAttrs(fxType) {
                 scrollOpacityDelay: 0,
                 scrollColorDuration: 0.8,
                 scrollColorDelay: 0,
+                scrollInvisibleOccupySpace: true,
                 animateOnSlideChange: false,
                 scrollPreviewFx: false
             };
@@ -79,12 +80,13 @@ export function getFxAttrs(fxType) {
                 triggeredAnimateScaleY: 1,
                 triggeredAnimateOpacity: 1,
                 triggeredAnimateRotation: 0,
-                triggeredTransformDuration: 0.8,
+                triggeredTransformDuration: 0.3,
                 triggeredTransformDelay: 0,
-                triggeredOpacityDuration: 0.8,
+                triggeredOpacityDuration: 0.3,
                 triggeredOpacityDelay: 0,
-                triggeredRotationDuration: 0.8,
+                triggeredRotationDuration: 0.3,
                 triggeredRotationDelay: 0,
+                triggeredInvisibleOccupySpace: true,
                 triggeredPreviewFx: false
             };
         case 'Trigger':

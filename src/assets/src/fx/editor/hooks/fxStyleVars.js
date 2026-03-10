@@ -97,7 +97,6 @@ export const FxVarMap = {
     triggeredAnimateScaleX: v => ({ '--meros-triggered-animate-scale-x': v }),
     triggeredAnimateScaleY: v => ({ '--meros-triggered-animate-scale-y': v }),
     triggeredAnimateOpacity: v => ({ '--meros-triggered-animate-opacity': v }),
-    triggeredAnimateHeight: v => ({ '--meros-triggered-animate-height': `${v}px` }),
     triggeredTransformDuration: v => ({ '--meros-triggered-transform-duration': `${v}s` }),
     triggeredTransformDelay: v => ({ '--meros-triggered-transform-delay': `${v}s` }),
     triggeredOpacityDuration: v => ({ '--meros-triggered-opacity-duration': `${v}s` }),

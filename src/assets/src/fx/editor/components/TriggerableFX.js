@@ -4,7 +4,7 @@ import { useSelect, dispatch } from '@wordpress/data';
 
 import { updateFx } from '../utils.js';
 import { getFxAttrs } from '../hooks/fxAttributes.js';
-import { Enable, Presets, Transform, Opacity, Rotation } from './FX.js';
+import { Enable, Presets, Transform, Opacity, Rotation, OccupySpace } from './FX.js';
 
 export default function TriggerableFX({ attributes, setAttributes, clientId }) {
     const {
@@ -22,7 +22,8 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
         triggeredOpacityDuration,
         triggeredOpacityDelay,
         triggeredRotationDuration,
-        triggeredRotationDelay
+        triggeredRotationDelay,
+        triggeredInvisibleOccupySpace
     } = attributes.merosTriggerableFx;
 
     const metadata = attributes?.metadata || {};
@@ -42,29 +43,13 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
                 triggeredAnimateScaleY: 1,
                 triggeredAnimateX: 0,
                 triggeredAnimateY: 0,
-                triggeredAnimateHeight: 0,
-                triggeredTransformDuration: 0.8,
+                triggeredAnimateRotation: 0,
+                triggeredTransformDuration: 0.3,
                 triggeredTransformDelay: 0,
-                triggeredOpacityDuration: 0.8,
+                triggeredOpacityDuration: 0.3,
                 triggeredOpacityDelay: 0,
-                triggeredHeightDuration: 0.8,
-                triggeredHeightDelay: 0
-            }
-        },
-        liftUp: {
-            values: {
-                triggeredAnimateOpacity: 0,
-                triggeredAnimateScaleX: 1,
-                triggeredAnimateScaleY: 1,
-                triggeredAnimateX: 0,
-                triggeredAnimateY: -10,
-                triggeredAnimateHeight: 0,
-                triggeredTransformDuration: 0.8,
-                triggeredTransformDelay: 0,
-                triggeredOpacityDuration: 0.8,
-                triggeredOpacityDelay: 0,
-                triggeredHeightDuration: 0.8,
-                triggeredHeightDelay: 0
+                triggeredRotationDuration: 0.3,
+                triggeredRotationDelay: 0
             }
         },
         sinkDown: {
@@ -73,14 +58,30 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
                 triggeredAnimateScaleX: 1,
                 triggeredAnimateScaleY: 1,
                 triggeredAnimateX: 0,
-                triggeredAnimateY: 10,
-                triggeredAnimateHeight: 0,
-                triggeredTransformDuration: 0.8,
+                triggeredAnimateY: -10,
+                triggeredAnimateRotation: 0,
+                triggeredTransformDuration: 0.3,
                 triggeredTransformDelay: 0,
-                triggeredOpacityDuration: 0.8,
+                triggeredOpacityDuration: 0.3,
                 triggeredOpacityDelay: 0,
-                triggeredHeightDuration: 0.8,
-                triggeredHeightDelay: 0
+                triggeredRotationDuration: 0.3,
+                triggeredRotationDelay: 0
+            }
+        },
+        liftUp: {
+            values: {
+                triggeredAnimateOpacity: 0,
+                triggeredAnimateScaleX: 1,
+                triggeredAnimateScaleY: 1,
+                triggeredAnimateX: 0,
+                triggeredAnimateY: 10,
+                triggeredAnimateRotation: 0,
+                triggeredTransformDuration: 0.3,
+                triggeredTransformDelay: 0,
+                triggeredOpacityDuration: 0.3,
+                triggeredOpacityDelay: 0,
+                triggeredRotationDuration: 0.3,
+                triggeredRotationDelay: 0
             }
         }
     };
@@ -183,6 +184,12 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
 
             {enabled && (
                 <>
+                    <OccupySpace
+                        current={triggeredInvisibleOccupySpace}
+                        update={update}
+                        prefix="triggered"
+                    />
+
                     <Presets
                         current={preset}
                         presets={presets}
@@ -233,18 +240,20 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
                         showControls={isManual}
                     />
 
-                    <Rotation
-                        current={triggeredAnimateRotation}
-                        duration={triggeredRotationDuration}
-                        delay={triggeredRotationDelay}
-                        prefix="triggered"
-                        defaultValues={{
-                            triggeredAnimateRotation: 0,
-                            triggeredRotationDuration: 0.8,
-                            triggeredRotationDelay: 0
-                        }}
-                        update={update}
-                    />
+                    {isManual && (
+                        <Rotation
+                            current={triggeredAnimateRotation}
+                            duration={triggeredRotationDuration}
+                            delay={triggeredRotationDelay}
+                            prefix="triggered"
+                            defaultValues={{
+                                triggeredAnimateRotation: 0,
+                                triggeredRotationDuration: 0.8,
+                                triggeredRotationDelay: 0
+                            }}
+                            update={update}
+                        />
+                    )}
                 </>
             )}
         </>

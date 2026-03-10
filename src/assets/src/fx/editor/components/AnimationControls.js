@@ -19,7 +19,8 @@ import {
     ScrollFxBlocks,
     HoverFxBlocks,
     HeaderFxBlocks,
-    TriggerFxBlocks
+    TriggerFxBlocks,
+    TriggerableFxBlocks
 } from '../utils.js';
 
 export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
@@ -100,28 +101,28 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                 <BlockEdit {...props} />
                 <InspectorControls>
                     {TriggerFxBlocks.includes(name) && !hasHoverFx && (
-                        <>
-                            <PanelBody title={__('Trigger Animation', 'meros-theme')} initialOpen={false}>
-                                <TriggerFX
-                                    name={name}
-                                    attributes={attributes}
-                                    setAttributes={setAttributes}
-                                    clientId={clientId}
-                                    setPreview={setPreviewFx}
-                                />
-                            </PanelBody>
-
-                            <PanelBody title={__('Triggerable Animation', 'meros-theme')} initialOpen={false}>
-                                <TriggerableFX
-                                    attributes={attributes}
-                                    setAttributes={setAttributes}
-                                    clientId={clientId}
-                                />
-                            </PanelBody>
-                        </>
+                        <PanelBody title={__('Trigger Animation', 'meros-theme')} initialOpen={false}>
+                            <TriggerFX
+                                name={name}
+                                attributes={attributes}
+                                setAttributes={setAttributes}
+                                clientId={clientId}
+                                setPreview={setPreviewFx}
+                            />
+                        </PanelBody>
                     )}
 
-                    {ScrollFxBlocks.includes(name) && !isHeader && !isInHeader && (
+                    {TriggerableFxBlocks.includes(name) && !hasHoverFx && !hasScrollFx && (
+                        <PanelBody title={__('Triggerable Animation', 'meros-theme')} initialOpen={false}>
+                            <TriggerableFX
+                                attributes={attributes}
+                                setAttributes={setAttributes}
+                                clientId={clientId}
+                            />
+                        </PanelBody>
+                    )}
+
+                    {ScrollFxBlocks.includes(name) && !isHeader && !isInHeader && !hasTriggerableFx && (
                         <PanelBody title={__('Scroll Animation', 'meros-theme')} initialOpen={false}>
                             <ScrollFX
                                 attributes={attributes}
@@ -131,7 +132,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                         </PanelBody>
                     )}
 
-                    {HoverFxBlocks.includes(name) && !isHeader && !hasTriggerFx && (
+                    {HoverFxBlocks.includes(name) && !isHeader && !hasTriggerFx && !hasTriggerableFx && (
                         <PanelBody title={__('Hover Animation', 'meros-theme')} initialOpen={false}>
                             <HoverFX
                                 attributes={attributes}

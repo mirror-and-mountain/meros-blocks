@@ -278,7 +278,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                 {showSwiper && (
                     <>
                         <div {...wrapperProps} />
-
                         <div className="swiper-button-prev" style={navStyle}>
                             <PrevIcon 
                                 className="swiper-button-prev-icon"
@@ -291,7 +290,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
                                 style={navDisplay}
                             />
                         </div>
-
                         <div 
                             className="swiper-pagination"
                             style={{ ...pagStyle, ...pagDisplay }}
