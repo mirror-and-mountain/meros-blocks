@@ -4,6 +4,7 @@ import { Navigation, Pagination, Scrollbar, Autoplay, FreeMode, Mousewheel} from
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import './view.scss';
 
 const ANIMATED = 'meros-animated';
 const REANIMATE = 'meros-animate-on-slide-change';

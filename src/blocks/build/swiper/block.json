@@ -120,7 +120,8 @@
       "type": "object",
       "default": {
         "activeColor": "#000000",
-        "inactiveColor": "#888888"
+        "inactiveColor": "#888888",
+        "top": "auto"
       }
     },
     "enableBreakPoints": {

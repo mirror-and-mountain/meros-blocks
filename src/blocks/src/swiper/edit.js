@@ -264,6 +264,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         '--swiper-pagination-color': paginationStyle.activeColor || '#000000',
         '--swiper-pagination-bullet-inactive-color': paginationStyle.inactiveColor || '#888888',
         '--swiper-pagination-fraction-color': paginationStyle.activeColor || '#000000',
+        '--swiper-pagination-top': paginationStyle.top || 'auto',
     };
 
     return (

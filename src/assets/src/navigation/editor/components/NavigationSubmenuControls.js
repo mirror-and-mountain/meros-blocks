@@ -171,7 +171,7 @@ export const NavigationSubmenuControls = createHigherOrderComponent((BlockEdit) 
                                         />
                                     </ToolsPanelItem>
 
-                                    <ToolsPanelItem
+                                    {/* <ToolsPanelItem
                                         label={__('Fill Space', 'meros-theme')}
                                         isShownByDefault={true}
                                         hasValue={() => submenuStyles.megaMenuFillSpace !== false}
@@ -182,7 +182,7 @@ export const NavigationSubmenuControls = createHigherOrderComponent((BlockEdit) 
                                             checked={submenuStyles.megaMenuFillSpace}
                                             onChange={(value) => setStyle('megaMenuFillSpace', value)}
                                         />
-                                    </ToolsPanelItem>
+                                    </ToolsPanelItem> */}
 
                                     <ToolsPanelItem
                                         label={__('Column Alignment', 'meros-theme')}

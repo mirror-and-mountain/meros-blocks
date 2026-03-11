@@ -18,3 +18,7 @@
 .meros-swiper-slide.has-child-selected {
     display: block;
 }
+
+.swiper-pagination {
+    z-index: 100;
+}

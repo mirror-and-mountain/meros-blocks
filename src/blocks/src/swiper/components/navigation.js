@@ -45,7 +45,8 @@ export default function NavigationControls({ attributes, setAttributes }) {
             },
             paginationStyle: {
                 activeColor: '#000000',
-                inactiveColor: '#888888'
+                inactiveColor: '#888888',
+                top: 'auto'
             }
         });
     };
@@ -270,6 +271,32 @@ export default function NavigationControls({ attributes, setAttributes }) {
                                     }
                                 })}
                                 margin={true}
+                            />
+                        </ToolsPanelItem>
+                    )}
+                    { showPagination && pagination.type !== 'progressbar' && (
+                        <ToolsPanelItem
+                            label={__('Pagination Position from Top (%)', 'meros-theme')}
+                            hasValue={() => (paginationStyle.top || 'auto') !== 'auto'}
+                            isShownByDefault={true}
+                            onDeselect={() => setAttributes({
+                                paginationStyle: {
+                                    ...paginationStyle,
+                                    top: 'auto'
+                                }
+                            })}
+                        >
+                            <RangeControl
+                                label={__('Pagination Position from Top (%)', 'meros-theme')}
+                                value={paginationStyle.top === 'auto' ? 0 : parseInt(paginationStyle.top)}
+                                onChange={(value) => setAttributes({
+                                    paginationStyle: {
+                                        ...paginationStyle,
+                                        top: value === 0 ? 'auto' : `${value}%`
+                                    }
+                                })}
+                                min={0}
+                                max={200}
                             />
                         </ToolsPanelItem>
                     )}
