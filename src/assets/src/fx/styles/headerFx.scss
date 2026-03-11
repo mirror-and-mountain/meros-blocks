@@ -1,5 +1,5 @@
-.meros-has-header-animation,
-.editor-styles-wrapper .meros-has-header-animation.meros-preview-header-fx {
+.editor-styles-wrapper .meros-has-header-animation.meros-preview-header-fx,
+.wp-site-blocks:not(.is-root-container) .meros-has-header-animation {
     --bg-start: var(--meros-header-animate-bg-color-start);
     --bg-end: var(--meros-header-animate-bg-color-end);
     --color-start: var(--meros-header-animate-text-color-start);
@@ -24,10 +24,18 @@
             var(--color-start) calc(100% - (var(--fx-progress) * 100%)),
             var(--color-end) calc(var(--fx-progress) * 100%)
         ) !important;
+
+        .meros-navigation-mobile-toggle svg {
+            fill: color-mix(
+                in srgb,
+                var(--color-start) calc(100% - (var(--fx-progress) * 100%)),
+                var(--color-end) calc(var(--fx-progress) * 100%)
+            ) !important;
+        }
     }
 
     &.meros-has-animated-link-color {
-        a {
+        .wp-block-site-title a {
             color: color-mix(
                 in srgb,
                 var(--link-start) calc(100% - (var(--fx-progress) * 100%)),
@@ -37,7 +45,7 @@
     }
 
     &.meros-has-animated-link-hover-color {
-        a:hover {
+        .wp-block-site-title a:hover {
             color: color-mix(
                 in srgb,
                 var(--link-hover-start) calc(100% - (var(--fx-progress) * 100%)),
@@ -61,7 +69,8 @@
     }
 }
 
-.meros-has-header-animation.meros-has-animated-logo-width {
+.editor-styles-wrapper .meros-has-header-animation.meros-has-animated-logo-width.meros-preview-header-fx,
+.wp-site-blocks:not(.is-root-container) .meros-has-header-animation.meros-has-animated-logo-width {
     --logo-width-start: 0px;
     --logo-width-end: 0px;
     --fx-progress: 0;

@@ -52,7 +52,7 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
 
     const hasClassAttr = (blockName, attr, attrs) => {
         if (!isScrollFxBlock(blockName, attrs.merosScrollFx) &&
-            !isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
+            !isHeaderFxBlock(blockName, attrs, clientId, save)) {
             return false;
         }
 
@@ -111,7 +111,7 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
         }
     }
 
-    if (isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
+    if (isHeaderFxBlock(blockName, attrs, clientId, save)) {
         classes.push('meros-has-header-animation');
         if (attrs.merosHeaderFx.headerAnimateLogoWidth !== 100) {
             classes.push('meros-has-animated-logo-width');

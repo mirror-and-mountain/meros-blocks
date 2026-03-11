@@ -197,7 +197,7 @@ export function useFxStyleVars(blockName, attrs, clientId = '', save = false) {
         );
     }
 
-    if (clientId !== '' && isHeaderFxBlock(blockName, attrs.merosHeaderFx, clientId, save)) {
+    if (isHeaderFxBlock(blockName, attrs, clientId, save)) {
         Object.assign(
             styleVars,
             fxToStyleVars(diffAttrs(attrs.merosHeaderFx, getFxAttrs('Header')))

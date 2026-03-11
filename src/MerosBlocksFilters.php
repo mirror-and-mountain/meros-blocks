@@ -168,6 +168,10 @@ class MerosBlocksFilters extends Filters {
         $desktopItemHighlightType = $desktopStyles['itemHighlightType'] ?? 'none';
         $wrapperClasses[] = 'meros-desktop-menu-highlight-' . esc_attr($desktopItemHighlightType);
 
+        if ($desktopItemHighlightType !== 'none') {
+            $wrapperClasses[] = 'meros-has-desktop-highlight';
+        }
+
         foreach ($desktopStyles as $key => $value) {
             if (in_array($key, array_keys($merosDefaultSettings['desktopSettings']['styles']), true)) {
                 if ($value === '' ||

@@ -20,7 +20,8 @@ import {
     HoverFxBlocks,
     HeaderFxBlocks,
     TriggerFxBlocks,
-    TriggerableFxBlocks
+    TriggerableFxBlocks,
+    resolveWPColor
 } from '../utils.js';
 
 export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
@@ -59,25 +60,41 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
             if (!isHeader) return;
             if (!attributes.merosHeaderFx?.enabled) return;
 
-            const headerBgColor =
+            let headerBgColor =
                 attributes.backgroundColor
                     ? `var(--wp--preset--color--${attributes.backgroundColor})`
                     : attributes?.style?.color?.background ?? '#FFFFFF00';
 
-            const headerTextColor =
+            let headerTextColor =
                 attributes.textColor
                     ? `var(--wp--preset--color--${attributes.textColor})`
                     : attributes?.style?.color?.text ?? '#000000';
 
-            const headerLinkColor =
+            let headerLinkColor =
                 attributes?.style?.elements?.link?.color?.text
                     ? attributes.style.elements.link.color.text
-                    : '#0000EE';
+                    : '';
 
-            const headerLinkHoverColor =
+            let headerLinkHoverColor =
                 attributes?.style?.elements?.link?.[':hover']?.color?.text
                     ? attributes.style.elements.link[':hover'].color.text
-                    : '#551A8B';
+                    : '';
+
+            if (headerBgColor.startsWith('var:')) {
+                headerBgColor = resolveWPColor(headerBgColor);
+            }
+
+            if (headerTextColor.startsWith('var:')) {
+                headerTextColor = resolveWPColor(headerTextColor);
+            }
+
+            if (headerLinkColor.startsWith('var:')) {
+                headerLinkColor = resolveWPColor(headerLinkColor);
+            }
+
+            if (headerLinkHoverColor.startsWith('var:')) {
+                headerLinkHoverColor = resolveWPColor(headerLinkHoverColor);
+            }
 
             setAttributes({
                 merosHeaderFx: {
@@ -100,7 +117,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
             <Fragment>
                 <BlockEdit {...props} />
                 <InspectorControls>
-                    {TriggerFxBlocks.includes(name) && !hasHoverFx && (
+                    {TriggerFxBlocks.includes(name) && !isHeader && !hasHoverFx && (
                         <PanelBody title={__('Trigger Animation', 'meros-theme')} initialOpen={false}>
                             <TriggerFX
                                 name={name}
@@ -112,7 +129,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                         </PanelBody>
                     )}
 
-                    {TriggerableFxBlocks.includes(name) && !hasHoverFx && !hasScrollFx && (
+                    {TriggerableFxBlocks.includes(name) && !isHeader && !hasHoverFx && !hasScrollFx && (
                         <PanelBody title={__('Triggerable Animation', 'meros-theme')} initialOpen={false}>
                             <TriggerableFX
                                 attributes={attributes}

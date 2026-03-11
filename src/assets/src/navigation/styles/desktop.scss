@@ -5,6 +5,33 @@
         border: none !important;
     }
 
+    // Fix dynamic header colours
+    header.meros-has-header-animation.meros-has-animated-link-color
+    .meros-navigation-wrapper {
+        .wp-block-navigation__container
+        .meros-top-level-item,
+        .meros-submenu-wrapper {
+            color: color-mix(
+                in srgb,
+                var(--meros-header-animate-link-color-start) calc(100% - (var(--fx-progress) * 100%)),
+                var(--meros-header-animate-link-color-end) calc(var(--fx-progress) * 100%)
+            ) !important;
+        }
+    }
+
+    header.meros-has-header-animation.meros-has-animated-link-hover-color
+    .meros-navigation-wrapper:not(.meros-desktop-menu-highlight-background) {
+        .wp-block-navigation__container
+        .meros-top-level-item:hover,
+        .meros-submenu-wrapper:hover {
+            color: color-mix(
+                in srgb,
+                var(--meros-header-animate-link-hover-color-start) calc(100% - (var(--fx-progress) * 100%)),
+                var(--meros-header-animate-link-hover-color-end) calc(var(--fx-progress) * 100%)
+            ) !important;
+        }
+    }
+
     .meros-navigation-wrapper {
         .wp-block-navigation__container
         .meros-top-level-item:not(.current-menu-item),

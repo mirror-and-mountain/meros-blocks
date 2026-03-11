@@ -144,19 +144,31 @@ export default function TriggerableFX({ attributes, setAttributes, clientId }) {
 
     useEffect(() => {
         if (!enabled) return;
-        if (triggerId !== '') return;
+        if (triggerId === '' || triggerId === undefined || triggerId === null) { 
+            update({
+                triggerId: clientId.slice(-8)
+            });
 
-        update({
-            triggerId: clientId.slice(-8)
-        });
+            const editorName = metadata?.name || 'Group';
+            setAttributes({
+                metadata: {
+                    ...metadata,
+                    name: `${editorName} (Trigger: ${clientId.slice(-8)})`
+                }
+            });
 
-        const editorName = metadata?.name || 'Group';
-        setAttributes({
-            metadata: {
-                ...metadata,
-                name: `${editorName} (Trigger: ${clientId.slice(-8)})`
-            }
-        })
+            return;
+        }
+
+        if (metadata?.name && !metadata.name.endsWith(`(Trigger: ${triggerId})`)) {
+            const editorName = metadata.name.replace(/ \(Trigger: \w{8}\)$/, '');
+            setAttributes({
+                metadata: {
+                    ...metadata,
+                    name: `${editorName} (Trigger: ${triggerId})`
+                }
+            });
+        }
 
     }, [enabled, triggerId, metadata, clientId]);
 

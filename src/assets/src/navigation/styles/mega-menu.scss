@@ -94,6 +94,7 @@
         overflow: hidden;
 
         background-color: var(--meros-nav-submenu-bg-color, #FFFFFF);
+        border-top: solid var(--meros-nav-submenu-border-width, 0px) var(--meros-nav-submenu-border-color, #FFFFFF00);
         border-bottom: solid var(--meros-nav-submenu-border-width, 0px) var(--meros-nav-submenu-border-color, #FFFFFF00);
 
         .wp-block-navigation__submenu-container,

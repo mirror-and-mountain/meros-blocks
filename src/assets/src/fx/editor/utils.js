@@ -1,4 +1,4 @@
-import { isDirectChildOf, isChildOf } from "../../utils/editor"; 
+import { getIframeObjects, isChildOf } from "../../utils/editor";
 
 // Blocks compatible with scroll fx
 export const ScrollFxBlocks = [
@@ -61,16 +61,31 @@ export const isHoverFxBlock = (blockName, attrs) => {
 // Helper to determine if the block is compatible with header fx, has it enabled, and is within a header template part
 export const isHeaderFxBlock = (blockName, attrs, clientId = '', save = false) => {
     if (!save && clientId !== '') {
-        const isInHeader = isDirectChildOf(
-            clientId, 
-            'core/template-part', 
-            block => block.attributes?.slug === 'header'
+        // Check whether the block is an element with a <header> tag
+        const isHeader = blockName === 'core/template-part' && attrs?.slug === 'header' ||
+            blockName === 'core/group' && attrs?.tagName === 'header';
+
+        if (isHeader) {
+            return HeaderFxBlocks.includes(blockName) && attrs?.merosHeaderFx?.enabled;
+        }
+
+        // Check whether the block is inside an element with a <header> tag
+        const isInHeader = isChildOf(
+            clientId,
+            ['core/template-part', 'core/group'],
+            function (block) {
+                if (block.name === 'core/template-part') {
+                    return block.attributes?.slug === 'header';
+                } else if (block.name === 'core/group') {
+                    return block.attributes?.tagName === 'header';
+                }
+            }
         );
-        
-        return isInHeader && HeaderFxBlocks.includes(blockName) && attrs?.enabled;
+
+        return isInHeader && HeaderFxBlocks.includes(blockName) && attrs?.merosHeaderFx?.enabled;
     }
 
-    return HeaderFxBlocks.includes(blockName) && attrs?.enabled;
+    return HeaderFxBlocks.includes(blockName) && attrs?.merosHeaderFx?.enabled;
 };
 
 // Helper to determine if the block is within a swiper block
@@ -133,36 +148,45 @@ export function setPreviewFx(fxType, clientId, value) {
 }
 
 // Patches the given fx attribute
-export function updateFx(setAttributes, attribute, fx, patch) { 
+export function updateFx(setAttributes, attribute, fx, patch) {
     setAttributes({
         [attribute]: {
             ...fx,
             ...patch
         }
-    }); 
+    });
 };
 
 // Resolves a WordPress color value, supporting preset references and raw slugs
-export function resolveWPColor(input, scope = document.documentElement) {
-  if (!input || typeof input !== 'string') return null;
+export function resolveWPColor(input, scope = 'editor') {
+    if (!input || typeof input !== 'string') return null;
 
-  let value = input.trim();
+    if (scope === 'editor') {
+        // Handle iframe scope by accessing the iframe's document
+        scope = getIframeObjects()?.doc?.documentElement;
+    } else {
+        scope = document.documentElement;
+    }
 
-  // Case 1: Gutenberg preset reference
-  if (value.startsWith('var:preset|color|')) {
-    const slug = value.split('|').pop();
-    const cssVar = `--wp--preset--color--${slug}`;
-    const resolved = getComputedStyle(scope).getPropertyValue(cssVar).trim();
-    return resolved || null;
-  }
+    if (!scope) return null;
 
-  // Case 2: Raw preset slug
-  if (!value.startsWith('#') && !value.startsWith('rgb') && !value.startsWith('hsl') && !value.startsWith('var(')) {
-    const cssVar = `--wp--preset--color--${value}`;
-    const resolved = getComputedStyle(scope).getPropertyValue(cssVar).trim();
-    if (resolved) return resolved;
-  }
+    let value = input.trim();
 
-  // Case 3: Already a concrete CSS colour → pass through
-  return value;
+    // Case 1: Gutenberg preset reference
+    if (value.startsWith('var:preset|color|')) {
+        const slug = value.split('|').pop();
+        const cssVar = `--wp--preset--color--${slug}`;
+        const resolved = getComputedStyle(scope).getPropertyValue(cssVar).trim();
+        return resolved || null;
+    }
+
+    // Case 2: Raw preset slug
+    if (!value.startsWith('#') && !value.startsWith('rgb') && !value.startsWith('hsl') && !value.startsWith('var(')) {
+        const cssVar = `--wp--preset--color--${value}`;
+        const resolved = getComputedStyle(scope).getPropertyValue(cssVar).trim();
+        if (resolved) return resolved;
+    }
+
+    // Case 3: Already a concrete CSS colour → pass through
+    return value;
 }

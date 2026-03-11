@@ -24,6 +24,14 @@ export function useNavigationWrapperClasses(
 
     // Desktop classes
     classes.push('meros-desktop-menu-highlight-' + desktopHighlightType);
+    if (desktopHighlightType !== 'none') {
+        classes.push('meros-has-desktop-highlight');
+    } else {
+        const index = classes.indexOf('meros-has-desktop-highlight');
+        if (index !== -1) {
+            classes.splice(index, 1);
+        }
+    }
 
     // Mobile classes
     if (mobileEnabled) {

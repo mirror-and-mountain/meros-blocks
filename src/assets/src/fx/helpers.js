@@ -28,7 +28,6 @@ export function merosResolveLogoWidths(logoContainer, logoImg, headerElement) {
 
 export function merosUpdateHeaderFxOnScroll(headerElement, win) {
     if (!headerElement) return;
-
     const scrollY = win.scrollY || win.pageYOffset;
     const headerHeight = headerElement.offsetHeight || 1;
     const t = Math.min(scrollY / headerHeight, 1);
