@@ -2,14 +2,8 @@
 
 namespace MM\Meros\Blocks;
 
-use MM\Meros\Helpers\Theme\Actions;
-
-class MerosBlocksActions extends Actions {
-    public function register(): void {
-        
-    }
-
-    public function createFormPostType(): void {
+class Actions {
+    public static function createFormPostType(): void {
         $labels = [
             'name'              => 'Forms',
             'singular_name'     => 'Form',

@@ -4,16 +4,15 @@ namespace MM\Meros\Blocks;
 
 use DOMDocument;
 use Illuminate\Support\Str;
-use MM\Meros\Helpers\Theme\Filters;
 
-class MerosBlocksFilters extends Filters {
+class Filters {
     /**
      * The default attributes used by navigation blocks in 
      * Advanced Nav.
      *
      * @var array
      */
-    private array $navDefaultAttribitutes = [
+    private static array $navDefaultAttribitutes = [
         'submenuSettings' => [
             'type' => 'default'
         ],
@@ -66,7 +65,7 @@ class MerosBlocksFilters extends Filters {
      *
      * @var array
      */
-    private array $navSubmenuDefaultAttributes = [
+    private static array $navSubmenuDefaultAttributes = [
         'type' => 'default',
         'styles' => [
             'topOffset' => '100%',
@@ -96,44 +95,19 @@ class MerosBlocksFilters extends Filters {
     ];
 
     /**
-     * Registers filters for this feature.
-     *
-     * @return void
-     */
-    public function register(): void {
-        // Feature filters
-        $this->add($this->hookPrefix . '_mega_menu_column_is_switchable', '__return_false');
-        $this->add($this->hookPrefix . '_swiper_slide_is_switchable', '__return_false');
-
-        // Nav filters
-        $this->add('render_block', [$this, 'renderAdvancedNav'], 10, 2);
-        $this->add('render_block', [$this, 'renderAdvancedNavSubmenu'], 10, 2);
-        $this->add('render_block', [$this, 'renderAdvancedNavLink'], 10, 2);
-
-        // Block args filters
-        $this->add('register_block_type_args', [$this, 'registerAdditionalArgs'], 10, 2);
-
-        // Block FX filters
-        $this->add('render_block', [$this, 'renderBlockFxBlocks'], 10, 2);
-
-        // Form Filters
-        $this->add('allowed_block_types_all', [$this, 'restrictFormBlocks'], 10, 2);
-    }
-
-    /**
      * Renders the Advanced Navigation Block Variation
      *
      * @param string $block_content The content of the block.
      * @param array $block The block data.
      * @return string The modified block content.
      */
-    public function renderAdvancedNav(string $block_content, array $block): string {
+    public static function renderAdvancedNav(string $block_content, array $block): string {
         if ($block['blockName'] !== 'core/navigation') {
             return $block_content;
         }
 
         // Default settings
-        $merosDefaultSettings = $this->navDefaultAttribitutes;
+        $merosDefaultSettings = self::$navDefaultAttribitutes;
 
         // Get main settings
         $merosMenuSettings = isset($block['attrs']['merosMenu'])
@@ -363,12 +337,12 @@ class MerosBlocksFilters extends Filters {
      * @param array $block The block data.
      * @return string The modified block content.
      */
-    public function renderAdvancedNavSubmenu(string $block_content, array $block): string {
+    public static function renderAdvancedNavSubmenu(string $block_content, array $block): string {
         if ($block['blockName'] !== 'core/navigation-submenu') {
             return $block_content;
         }
 
-        $merosDefaultSettings = $this->navSubmenuDefaultAttributes;
+        $merosDefaultSettings = self::$navSubmenuDefaultAttributes;
 
         // Get Settings
         $url = $block['attrs']['url'] ?? '';
@@ -524,7 +498,7 @@ class MerosBlocksFilters extends Filters {
      * @param array $block The block data.
      * @return string The modified block content.
      */
-    public function renderAdvancedNavLink(string $block_content, array $block): string {
+    public static function renderAdvancedNavLink(string $block_content, array $block): string {
         if ($block['blockName'] !== 'core/navigation-link') {
             return $block_content;
         }
@@ -587,7 +561,7 @@ class MerosBlocksFilters extends Filters {
      * @param string $name The block name.
      * @return array The modified args
      */
-    public function registerAdditionalArgs(array $args, string $name): array {
+    public static function registerAdditionalArgs(array $args, string $name): array {
          if ( $name === 'core/navigation-link' ) {
             $args['attributes']['merosMenuItem'] = [
                 'type'    => 'object',
@@ -600,7 +574,7 @@ class MerosBlocksFilters extends Filters {
         if ( $name === 'core/navigation-submenu' ) {
             $args['attributes']['merosSubmenu'] = [
                 'type'    => 'object',
-                'default' => $this->navSubmenuDefaultAttributes
+                'default' => self::$navSubmenuDefaultAttributes
             ];
         }
 
@@ -629,7 +603,7 @@ class MerosBlocksFilters extends Filters {
      * @param array $block
      * @return string The modified block content.
      */
-    public function renderBlockFxBlocks(string $block_content, array $block): string {
+    public static function renderBlockFxBlocks(string $block_content, array $block): string {
         $hasScrollFx = isset($block['attrs']['merosScrollFx']['enabled']) &&
         $block['attrs']['merosScrollFx']['enabled'] === true;
 
@@ -648,7 +622,7 @@ class MerosBlocksFilters extends Filters {
      * @param object $blockEditorContext
      * @return array
      */
-    public function restrictFormBlocks(bool|string $allowedBlocks, object $blockEditorContext): ?array {
+    public static function restrictFormBlocks(bool|string $allowedBlocks, object $blockEditorContext): ?array {
         if (isset($blockEditorContext->post) &&
             isset($blockEditorContext->post->post_type) &&
             $blockEditorContext->post->post_type === 'meros_form'

@@ -2,23 +2,37 @@
 
 namespace MM\Meros\Blocks;
 
-use MM\Meros\Contracts\Extension;
+use MM\Meros\App\Services\Theme\Package;
 
-class MerosBlocks extends Extension {
+class MerosBlocks extends Package {
     protected string $authorName = "Meros";
     protected string $authorUrl = "https://merosblocks.com";
     protected string $authorSupportUrl = "https://merosblocks.com/support";
     protected string $description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
 
-    protected function boot(): void {
-        // Register filters    
-        $featureFilters = MerosBlocksFilters::init($this->hookPrefix);
-        $featureFilters->register();
+    protected function addFilters(): void {
+        // Feature Filters
+        $this->addFilter($this->prefix, '_mega_menu_column_is_switchable', '__return_false');
+        $this->addFilter($this->prefix . '_swiper_slide_is_switchable', '__return_false');
+        
+        // Nav filters
+        $this->addFilter('render_block', [Filters::class, 'renderAdvancedNav'], 10, 2);
+        $this->addFilter('render_block', [Filters::class, 'renderAdvancedNavSubmenu'], 10, 2);
+        $this->addFilter('render_block', [Filters::class, 'renderAdvancedNavLink'], 10, 2);
 
-        // Register actions
-        $featureActions = MerosBlocksActions::init($this->hookPrefix);
-        // Needs to be called directly as 'init' hook is too late for usage in block registration.
-        $featureActions->createFormPostType();
+        // Block args filters
+        $this->addFilter('register_block_type_args', [Filters::class, 'registerAdditionalArgs'], 10, 2);
+
+        // Block FX filters
+        $this->addFilter('render_block', [Filters::class, 'renderBlockFxBlocks'], 10, 2);
+
+        // Form Filters
+        $this->addFilter('allowed_block_types_all', [Filters::class, 'restrictFormBlocks'], 10, 2);
+    }
+
+    protected function loadFeatures(): void {
+        // Register Form Post Type
+        Actions::createFormPostType();
 
         // Load assets and blocks
         $this->loadAssets();
