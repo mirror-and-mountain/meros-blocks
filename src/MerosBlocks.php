@@ -10,10 +10,9 @@ class MerosBlocks extends Package {
     protected string $authorSupportUrl = "https://merosblocks.com/support";
     protected string $description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
 
-    protected function addFilters(): void {
-        // Feature Filters
-        $this->addFilter($this->prefix, '_mega_menu_column_is_switchable', '__return_false');
-        $this->addFilter($this->prefix . '_swiper_slide_is_switchable', '__return_false');
+    protected function configure(): void {
+        $this->addFilter($this->prefix . '_blocks_mega_menu_column_is_switchable', '__return_false');
+        $this->addFilter($this->prefix . '_blocks_swiper_slide_is_switchable', '__return_false');
         
         // Nav filters
         $this->addFilter('render_block', [Filters::class, 'renderAdvancedNav'], 10, 2);

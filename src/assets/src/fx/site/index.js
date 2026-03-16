@@ -205,7 +205,9 @@ function processTriggeredFx(triggers, doc) {
     };
 
     triggers.forEach(trigger => {
+        if (trigger.dataset.merosTriggerInitialised === 'true') return;
         trigger.addEventListener('click', triggerListener);
+        trigger.dataset.merosTriggerInitialised = 'true';
     });
 }
 
