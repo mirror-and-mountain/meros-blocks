@@ -18,8 +18,7 @@
     },
     "extra": {
         "meros": {
-            "loader": "MerosBlocks",
-            "namespace": "MM\\Meros\\Blocks"
+            "provider": "MM\\Meros\\Blocks\\ServiceProvider"
         }
     },
     "minimum-stability": "stable",

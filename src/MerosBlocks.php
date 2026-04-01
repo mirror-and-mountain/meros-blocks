@@ -14,8 +14,11 @@ class MerosBlocks extends Package {
     protected bool $discoverAssets = true;
 
     protected function configure(): void {
-        // add_filter($this->prefix . '_blocks_mega_menu_column_is_switchable', '__return_false');
-        // add_filter($this->prefix . '_blocks_swiper_slide_is_switchable', '__return_false');
+        add_filter('meros_form_field_block_is_switchable', '__return_false');
+        add_filter('meros_form_row_block_is_switchable', '__return_false');
+        add_filter('meros_form_section_block_is_switchable', '__return_false');
+        add_filter('meros_mega_menu_column_block_is_switchable', '__return_false');
+        add_filter('meros_swiper_slide_block_is_switchable', '__return_false');
         
         // // Nav filters
         add_filter('render_block', [Filters::class, 'renderAdvancedNav'], 10, 2);
