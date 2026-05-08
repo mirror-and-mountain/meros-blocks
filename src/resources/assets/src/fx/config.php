@@ -1,6 +1,6 @@
 <?php 
 
 return [
-    'name' => 'Block FX',
-    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod'
+    'label' => 'Block FX',
+    'description' => 'Provides tools in the block editor to add animation FX to blocks.'
 ];

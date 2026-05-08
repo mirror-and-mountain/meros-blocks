@@ -2,5 +2,5 @@
 
 return [
     'label' => 'Block FX',
-    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod'
+    'description' => 'Provides tools in the block editor to add animation FX to blocks.'
 ];

@@ -365,7 +365,7 @@ class Filters {
         $wrapperStyles = [];
 
         // Classes
-        $wrapperClasses[] = 'meros-submenu-highlight-' . esc_attr($styles['itemHighlightType']);
+        $wrapperClasses[] = 'meros-submenu-highlight-' . esc_attr($styles['itemHighlightType'] ?? 'none');
         
         if ($submenuType === 'mega-menu') {
             $wrapperClasses[] = 'meros-mega-menu-wrapper';

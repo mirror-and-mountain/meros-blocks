@@ -12,6 +12,7 @@ import { NavigationLinkWrapper } from './components/NavigationLinkWrapper.js';
 
 import { subscribeToNavChanges } from './utils/meros-nav.js';
 import { initEditorScripts } from '../../utils/editor.js';
+import { merosSetHeaderHeight } from '../helpers.js';
 import './style.scss';
 
 // Constants
@@ -76,6 +77,9 @@ wp.domReady(() => {
 
     // Wrap the navigation link block
     addFilter('editor.BlockListBlock', 'meros/navigation-link-wrapper', NavigationLinkWrapper);
+
+    // Set the header height CSS variable for the editor
+    initEditorScripts(merosSetHeaderHeight);
 
     // Subscribe to menu changes
     initEditorScripts(subscribeToNavChanges);

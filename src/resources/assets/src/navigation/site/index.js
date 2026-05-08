@@ -5,6 +5,7 @@ import {
     disableSubmenuOpenOnHover 
 } from '../listeners.js';
 
+import { merosSetHeaderHeight } from '../helpers.js';
 import './styles.scss';
 
 function stripWPDataAttributes(element) {
@@ -196,6 +197,10 @@ function initNavigationBlocks(livewireNavigated = false) {
 }
 
 function initAdvancedNav(livewireNavigated = false) {
+    merosSetHeaderHeight({
+        doc: document,
+        win: window
+    });
     const width = window.innerWidth;
     initNavigationBlocks(livewireNavigated);
     setMobileMenus(width);
