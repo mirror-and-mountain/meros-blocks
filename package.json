@@ -19,8 +19,6 @@
         "@wordpress/i18n": "^5.20.0",
         "@wordpress/scripts": "^30.13.0",
         "codemirror": "^6.0.2",
-        "nice-forms.css": "^0.1.7",
-        "swiper": "^12.0.3",
-        "tom-select": "^2.5.2"
+        "swiper": "^12.0.3"
     }
 }
