@@ -27,7 +27,7 @@ class MerosBlocks extends Package {
         // Block FX filters
         add_filter('render_block', [Filters::class, 'renderBlockFxBlocks'], 10, 2);
 
-        // Form Filters
-        add_filter('allowed_block_types_all', [Filters::class, 'restrictFormBlocks'], 10, 2);
+        // Enqueue HTML editor
+        add_action('enqueue_block_editor_assets', [Actions::class, 'enqueueHtmlEditor']);
     }
 }

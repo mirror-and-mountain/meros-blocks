@@ -614,28 +614,4 @@ class Filters {
 
         return $block_content;
     }
-
-    /**
-     * Restricts the blocks available for use in the Meros Forms CPT.
-     *
-     * @param bool|string $allowedBlocks
-     * @param object $blockEditorContext
-     * @return array
-     */
-    public static function restrictFormBlocks(bool|string $allowedBlocks, object $blockEditorContext): ?array {
-        if (isset($blockEditorContext->post) &&
-            isset($blockEditorContext->post->post_type) &&
-            $blockEditorContext->post->post_type === 'meros_form'
-        ) {
-            $allowedBlocks = [
-                'meros/form',
-                'meros/form-section',
-                'meros/form-row',
-                'meros/form-field'
-            ];
-
-            return $allowedBlocks;
-        }
-        return null;
-    }
 }
