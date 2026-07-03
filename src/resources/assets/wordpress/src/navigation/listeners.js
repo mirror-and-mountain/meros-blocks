@@ -3,6 +3,46 @@ import { dispatch } from '@wordpress/data';
 let merosNavDoc = null;
 let merosNavCursorInsideWrapperOrSubmenu = false;
 let merosNavLastClosestElement = null;
+let merosNavHoverTimeout = null;
+let merosNavActiveInnerWrapper = null;
+let merosNavHoverWindowLeaveBindings = 0;
+let merosNavHoverScheduleToken = 0;
+let merosNavPointerX = null;
+let merosNavPointerY = null;
+let merosNavPointerLastMoveAt = 0;
+
+function clearHoverTimeout() {
+    merosNavHoverScheduleToken += 1;
+
+    if (merosNavHoverTimeout) {
+        clearTimeout(merosNavHoverTimeout);
+        merosNavHoverTimeout = null;
+    }
+}
+
+function clearHoverStateOnViewportExit() {
+    merosNavCursorInsideWrapperOrSubmenu = false;
+    clearHoverTimeout();
+
+    if (merosNavActiveInnerWrapper) {
+        resetSubmenuStates(merosNavActiveInnerWrapper);
+    }
+}
+
+function handleWindowMouseOut(e) {
+    if (e.relatedTarget !== null) return;
+    clearHoverStateOnViewportExit();
+}
+
+function handleWindowBlur() {
+    clearHoverStateOnViewportExit();
+}
+
+function trackPointerMove(e) {
+    merosNavPointerX = e.clientX;
+    merosNavPointerY = e.clientY;
+    merosNavPointerLastMoveAt = Date.now();
+}
 
 function preventClickThrough(e) {
     e.preventDefault();
@@ -109,6 +149,7 @@ function wrapperHoverLeave(e) {
     if (to && to.contains(innerWrapper)) return;
 
     merosNavCursorInsideWrapperOrSubmenu = false;
+    clearHoverTimeout();
 
     // Reset state
     resetSubmenuStates(innerWrapper);
@@ -127,9 +168,46 @@ function submenuHoverLeave(e) {
     if (to && to.contains(innerWrapper)) return;
 
     merosNavCursorInsideWrapperOrSubmenu = false;
+    clearHoverTimeout();
 
     // Reset state
     resetSubmenuStates(innerWrapper);
+}
+
+function scheduleSubmenuOpenOnHover(e) {
+    trackPointerMove(e);
+    clearHoverTimeout();
+    const scheduleToken = merosNavHoverScheduleToken;
+
+    merosNavHoverTimeout = setTimeout(() => {
+        if (scheduleToken !== merosNavHoverScheduleToken) return;
+
+        const innerWrapper = merosNavActiveInnerWrapper || e.currentTarget;
+        if (!innerWrapper) return;
+        if (Date.now() - merosNavPointerLastMoveAt < 300) return;
+        if (merosNavPointerX === null || merosNavPointerY === null) return;
+
+        const doc = merosNavDoc || document;
+        const currentElements = doc.elementsFromPoint(merosNavPointerX, merosNavPointerY);
+        const pointerInsideNavOrSubmenu = currentElements.some(el => {
+            if (innerWrapper.contains(el)) return true;
+            const submenu = el.closest('.meros-submenu-wrapper');
+            return submenu && innerWrapper.contains(submenu);
+        });
+
+        if (!pointerInsideNavOrSubmenu) {
+            merosNavCursorInsideWrapperOrSubmenu = false;
+            resetSubmenuStates(innerWrapper);
+            return;
+        }
+
+        merosNavCursorInsideWrapperOrSubmenu = true;
+        handleSubmenuOpenOnHover({
+            clientX: merosNavPointerX,
+            clientY: merosNavPointerY,
+            currentTarget: innerWrapper,
+        });
+    }, 300);
 }
 
 function handleSubmenuOpenOnHover(e) {
@@ -292,11 +370,20 @@ export function enableSubmenuOpenOnHover(doc, wrapper) {
     merosNavDoc = doc;
     const innerWrapper = wrapper.querySelector('.wp-block-navigation__container');
     if (!innerWrapper) return;
+    merosNavActiveInnerWrapper = innerWrapper;
 
     const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
     innerWrapper.addEventListener('mouseenter', wrapperHoverEnter);
     innerWrapper.addEventListener('mouseleave', wrapperHoverLeave);
-    innerWrapper.addEventListener('mousemove', handleSubmenuOpenOnHover);
+    innerWrapper.addEventListener('mousemove', scheduleSubmenuOpenOnHover);
+
+    merosNavHoverWindowLeaveBindings += 1;
+
+    if (merosNavHoverWindowLeaveBindings === 1) {
+        doc.addEventListener('mousemove', trackPointerMove);
+        doc.addEventListener('mouseout', handleWindowMouseOut);
+        window.addEventListener('blur', handleWindowBlur);
+    }
 
     submenus.forEach(submenu => {
         if (submenu.classList.contains('open-on-hover-click')) {
@@ -310,6 +397,7 @@ export function enableSubmenuOpenOnHover(doc, wrapper) {
     });
 
     document.addEventListener('livewire:navigated', () => {
+        clearHoverTimeout();
         merosNavCursorInsideWrapperOrSubmenu = false;
         merosNavLastClosestElement = null;
     });
@@ -322,7 +410,21 @@ export function disableSubmenuOpenOnHover(wrapper) {
     const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
     innerWrapper.removeEventListener('mouseenter', wrapperHoverEnter);
     innerWrapper.removeEventListener('mouseleave', wrapperHoverLeave);
-    innerWrapper.removeEventListener('mousemove', handleSubmenuOpenOnHover);
+    innerWrapper.removeEventListener('mousemove', scheduleSubmenuOpenOnHover);
+    clearHoverTimeout();
+
+    if (merosNavActiveInnerWrapper === innerWrapper) {
+        merosNavActiveInnerWrapper = null;
+    }
+
+    merosNavHoverWindowLeaveBindings = Math.max(0, merosNavHoverWindowLeaveBindings - 1);
+
+    if (merosNavHoverWindowLeaveBindings === 0) {
+        const doc = merosNavDoc || document;
+        doc.removeEventListener('mousemove', trackPointerMove);
+        doc.removeEventListener('mouseout', handleWindowMouseOut);
+        window.removeEventListener('blur', handleWindowBlur);
+    }
 
     submenus.forEach(submenu => {
         submenu.removeEventListener('mouseenter', submenuHoverEnter);

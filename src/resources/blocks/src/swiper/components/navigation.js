@@ -5,9 +5,9 @@ import {
     ToggleControl,
     SelectControl,
     RangeControl
-} from '../../../../assets/src/components/Controls.js';
+} from '../../../../assets/wordpress/src/components/Controls.js';
 
-import { ColorPicker } from '../../../../assets/src/components/ColorPicker.js';
+import { ColorPicker } from '../../../../assets/wordpress/src/components/ColorPicker.js';
 import { NavigationSets } from '../navigation/navigation-sets.js';
 
 export default function NavigationControls({ attributes, setAttributes }) {

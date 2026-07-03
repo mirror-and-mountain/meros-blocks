@@ -5,7 +5,7 @@ import {
     ToolsPanel,
     ToolsPanelItem,
     ToggleControl
-} from '../../../../assets/src/components/Controls.js';
+} from '../../../../assets/wordpress/src/components/Controls.js';
 
 import BreakpointControls from "./breakpoint.js";
 

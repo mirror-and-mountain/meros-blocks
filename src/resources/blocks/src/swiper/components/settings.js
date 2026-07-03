@@ -5,7 +5,7 @@ import {
     NumberControl,
     ToggleControl,
     RangeControl
-} from '../../../../assets/src/components/Controls.js';
+} from '../../../../assets/wordpress/src/components/Controls.js';
 
 export default function SettingsControls({ attributes, setAttributes, slideCount }) {
     const {

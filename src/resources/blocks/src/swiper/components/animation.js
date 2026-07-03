@@ -4,7 +4,7 @@ import {
     ToolsPanelItem,
     ToggleControl,
     RangeControl
-} from '../../../../assets/src/components/Controls.js';
+} from '../../../../assets/wordpress/src/components/Controls.js';
 
 export default function AnimationControls({ attributes, setAttributes }) {
     const {

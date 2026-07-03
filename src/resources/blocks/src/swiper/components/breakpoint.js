@@ -3,7 +3,7 @@ import {
     ToolsPanelItem,
     NumberControl,
     ToggleControl
-} from '../../../../assets/src/components/Controls.js';
+} from '../../../../assets/wordpress/src/components/Controls.js';
 
 export default function BreakpointControls({
     label,
