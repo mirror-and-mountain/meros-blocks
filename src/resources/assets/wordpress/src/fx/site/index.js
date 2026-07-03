@@ -1,4 +1,8 @@
-import { merosResolveLogoWidths, merosUpdateHeaderFxOnScroll } from '../helpers.js';
+import {
+    merosResolveLogoWidths,
+    merosUpdateHeaderFxOnScroll,
+    merosUpdateHeaderHeightVar
+} from '../helpers.js';
 import './style.scss';
 
 function merosProcessHeaderFx(headerEl, doc, win) {
@@ -9,6 +13,7 @@ function merosProcessHeaderFx(headerEl, doc, win) {
 
     const update = () => {
         merosUpdateHeaderFxOnScroll(headerEl, win);
+        merosUpdateHeaderHeightVar(headerEl, doc);
         ticking = false;
     };
 
@@ -29,6 +34,13 @@ function merosProcessHeaderFx(headerEl, doc, win) {
             headerEl.style.removeProperty('--logo-width-end');
             headerEl.classList.remove('meros-has-animated-logo-width');
         }
+
+        win.addEventListener('resize', () => {
+            if (!merosResolveLogoWidths(logoImgContainer, logoImg, headerEl)) {
+                return;
+            }
+            update();
+        });
     }
 
     /* Process */

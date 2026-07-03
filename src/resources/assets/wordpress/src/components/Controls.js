@@ -95,7 +95,7 @@ export function SelectControl({ label, value, options, onChange, multiple = fals
     );
 }
 
-export function RangeControl({ label, value, onChange, min, max, step }) {
+export function RangeControl({ label, value, onChange, min, max, step, help }) {
     return (
         <BaseRangeControl
             label={label}
@@ -104,6 +104,7 @@ export function RangeControl({ label, value, onChange, min, max, step }) {
             min={min}
             max={max}
             step={step}
+            help={help}
             __nextHasNoMarginBottom={true}
             __next40pxDefaultSize={true}
         />

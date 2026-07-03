@@ -38,6 +38,18 @@ export const previewFx = {
     triggeredPreviewFx: {}
 };
 
+// Normalise stored logo width values.
+// Legacy values are ratios (e.g. 1.2), newer editor values are percentages (e.g. 120).
+export const normalizeLogoWidthFactor = (value) => {
+    const raw = parseFloat(value);
+
+    if (!Number.isFinite(raw) || raw <= 0) {
+        return 1;
+    }
+
+    return raw > 10 ? raw / 100 : raw;
+};
+
 // Helper to determine if the block is a trigger for other blocks with triggerable fx enabled
 export const isTriggerFxBlock = (blockName, attrs) => {
     return TriggerFxBlocks.includes(blockName) && attrs?.enabled;

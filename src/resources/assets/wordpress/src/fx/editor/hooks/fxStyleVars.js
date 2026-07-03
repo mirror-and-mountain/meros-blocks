@@ -3,7 +3,8 @@ import {
     isTriggerableFxBlock,
     isScrollFxBlock, 
     isHoverFxBlock, 
-    isHeaderFxBlock 
+    isHeaderFxBlock,
+    normalizeLogoWidthFactor
 } from '../utils.js';
 
 import { getFxAttrs } from './fxAttributes';
@@ -142,7 +143,7 @@ export const FxVarMap = {
     headerAnimateLinkColorEnd: v => ({ '--meros-header-animate-link-color-end': v }),
     headerAnimateLinkHoverColor: v => ({ '--meros-header-animate-link-hover-color-start': v }),
     headerAnimateLinkHoverColorEnd: v => ({ '--meros-header-animate-link-hover-color-end': v }),
-    headerAnimateLogoWidth: v => ({ '--meros-header-animated-logo-width': v }),
+    headerAnimateLogoWidth: v => ({ '--meros-header-animated-logo-width': normalizeLogoWidthFactor(v) }),
     headerLogoWidthDuration: v => ({ '--meros-header-logo-width-duration': `${v}s` }),
     headerLogoWidthDelay: v => ({ '--meros-header-logo-width-delay': `${v}s` })
 };

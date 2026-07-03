@@ -10,7 +10,11 @@ import { StickyElementWrapper } from './components/StickyElementWrapper.js';
 import { saveFxStyles } from './hooks/saveFxStyles.js';
 import { saveStickyStyles } from './hooks/saveStickyStyles.js';
 
-import { merosResolveLogoWidths, merosUpdateHeaderFxOnScroll } from '../helpers.js';
+import {
+    merosResolveLogoWidths,
+    merosUpdateHeaderFxOnScroll,
+    merosUpdateHeaderHeightVar
+} from '../helpers.js';
 
 import { initEditorScripts } from '../../utils/editor.js';
 
@@ -52,6 +56,7 @@ wp.domReady(() => {
         const update = () => {
             if (!isActive) return;
             merosUpdateHeaderFxOnScroll(headerEl, win);
+            merosUpdateHeaderHeightVar(headerEl, headerEl.ownerDocument);
             ticking = false;
         };
 

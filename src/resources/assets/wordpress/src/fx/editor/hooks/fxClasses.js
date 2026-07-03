@@ -4,7 +4,8 @@ import {
     isTriggerableFxBlock,
     isScrollFxBlock,
     isHoverFxBlock,
-    isHeaderFxBlock
+    isHeaderFxBlock,
+    normalizeLogoWidthFactor
 } from '../utils.js';
 
 import { isChildOf } from '../../../utils/editor.js';
@@ -113,7 +114,7 @@ export function useFxClasses(blockName, attrs, clientId = '', save = false) {
 
     if (isHeaderFxBlock(blockName, attrs, clientId, save)) {
         classes.push('meros-has-header-animation');
-        if (attrs.merosHeaderFx.headerAnimateLogoWidth !== 100) {
+        if (Math.abs(normalizeLogoWidthFactor(attrs.merosHeaderFx.headerAnimateLogoWidth) - 1) > 0.0001) {
             classes.push('meros-has-animated-logo-width');
         }
     }

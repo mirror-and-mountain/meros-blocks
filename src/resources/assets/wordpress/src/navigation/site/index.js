@@ -8,26 +8,6 @@ import {
 import { merosSetHeaderHeight } from '../helpers.js';
 import './styles.scss';
 
-function stripWPDataAttributes(element) {
-    const wpDataAttributes = [
-        'data-wp-context',
-        'data-wp-on--focusout',
-        'data-wp-on--keydown',
-        'data-wp-on--mouseenter',
-        'data-wp-on--mouseleave',
-        'data-wp-watch',
-        'data-wp-bind--aria-expanded',
-        'data-wp-on--click',
-        'data-wp-on--focus',
-    ];
-
-    wpDataAttributes.forEach((attr) => {
-        if (element.hasAttribute(attr)) {
-            element.removeAttribute(attr);
-        }
-    });
-}
-
 function setMobileMenus(width) {
     const navWrappers = document.querySelectorAll('.meros-navigation-wrapper.meros-has-mobile-menu');
     navWrappers.forEach(wrapper => {
@@ -160,23 +140,6 @@ function initNavigationBlocks(livewireNavigated = false) {
 
     wrappers.forEach(wrapper => {
         const isPersisted = wrapper.closest('header')?.parentElement?.hasAttribute('x-persist') || false;
-
-        // Strip WP data attributes from submenu elements
-        const submenus = wrapper.querySelectorAll('.meros-submenu-wrapper');
-        submenus.forEach(submenu => {
-            stripWPDataAttributes(submenu);
-
-            const button = submenu.querySelector('button');
-            const innerContainer = submenu.querySelector('.wp-block-navigation__submenu-container');
-            
-            if (button) {
-                stripWPDataAttributes(button);
-            }
-            
-            if (innerContainer) {
-                stripWPDataAttributes(innerContainer);
-            }
-        });
 
         if (livewireNavigated && isPersisted) {
             resetCurrentMenuItem(wrapper);

@@ -86,7 +86,7 @@ export default function HeaderFX({ attributes, setAttributes, clientId, setPrevi
                         <SiteLogo
                             width={headerAnimateLogoWidth}
                             defaultValues={{
-                                headerAnimateLogoWidth: 100
+                                headerAnimateLogoWidth: 1
                             }}
                             update={update}
                         />

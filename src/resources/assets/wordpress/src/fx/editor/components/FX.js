@@ -8,6 +8,7 @@ import {
     SelectControl,
     NumberControl
 } from '../../../components/Controls.js';
+import { normalizeLogoWidthFactor } from '../utils.js';
 
 export function Duration({ label, current, defaultValue, prop, update }) {
     return (
@@ -438,22 +439,25 @@ export function SiteLogo({
     defaultValues,
     update
 }) {
+    const widthFactor = normalizeLogoWidthFactor(width);
+
     return (
-        <ToolsPanel label={__('Site Logo Animation', 'meros-theme')} resetAll={() => update(defaultValues)}>
+        <ToolsPanel label={__('Site Logo Shrink On Scroll', 'meros-theme')} resetAll={() => update(defaultValues)}>
             <ToolsPanelItem
-                label={__('Logo Width', 'meros-theme')}
-                hasValue={() => width !== 1}
+                label={__('Logo Scale At Scroll End', 'meros-theme')}
+                hasValue={() => widthFactor !== 1}
                 isShownByDefault={true}
                 onDeselect={() => update({ headerAnimateLogoWidth: 1 })}
             >
                 <RangeControl
-                    label={__('Animate Logo Width (%)', 'meros-theme')}
-                    value={width}
+                    label={__('Scroll End Scale (0 = hidden, 1 = original size)', 'meros-theme')}
+                    help={__('The logo starts at its current size and scales toward this value as you scroll.', 'meros-theme')}
+                    value={widthFactor}
                     onChange={(value) =>
                         update({ headerAnimateLogoWidth: value })
                     }
-                    min={1}
-                    max={2}
+                    min={0}
+                    max={1}
                     step={0.01}
                 />
             </ToolsPanelItem>
