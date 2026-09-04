@@ -36,8 +36,7 @@ const merosNavAttributes = getNavigationAttributes();
 //         }
 //     }
 // });
-
-// Register Advanced Navigation with Mega Menu Submenu Type
+// Register after WordPress has loaded the core navigation block.
 registerBlockVariation('core/navigation', {
     name: 'advanced-navigation-mega-menu',
     title: __('Advanced Navigation With Mega Menu', 'meros'),
