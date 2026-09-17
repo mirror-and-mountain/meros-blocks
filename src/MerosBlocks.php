@@ -15,8 +15,9 @@ final class MerosBlocks extends Package {
 
     public function configure(): void {
         $this->initialise(AssetsOrchestrator::class);
+
         $this->blocks()->make(function ($block) {
-            $block->path($this->getPath('resources/blocks/build/mega-menu-column'));
+            $block->path('mega-menu-column');
         });
 
         $this->applyNavFilters();
