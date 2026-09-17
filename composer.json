@@ -13,7 +13,8 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "MM\\Meros\\Blocks\\": "src/"
+            "MM\\Meros\\Blocks\\": "src/",
+            "MM\\Meros\\Blocks\\App\\": "src/app/"
         }
     },
     "extra": {
