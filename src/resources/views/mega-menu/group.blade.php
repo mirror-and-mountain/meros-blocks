@@ -34,8 +34,12 @@
             </div>
         </details>
     </li>
-@elseif($url !== '')
+@else
     <li {!! \MM\Meros\Blocks\Support\MegaMenuStyles::wrapper('meros-dynamic-mega-menu__group', $attributes) !!}>
-        <a class="meros-dynamic-mega-menu__trigger" href="{!! $url !!}" @if($newTab) target="_blank" rel="noopener" @endif>{{ $label }}</a>
+        @if($url !== '')
+            <a class="meros-dynamic-mega-menu__trigger" href="{!! $url !!}" @if($newTab) target="_blank" rel="noopener" @endif>{{ $label }}</a>
+        @else
+            <span class="meros-dynamic-mega-menu__trigger meros-dynamic-mega-menu__summary-label">{{ $label }}</span>
+        @endif
     </li>
 @endif

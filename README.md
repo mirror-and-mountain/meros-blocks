@@ -11,17 +11,20 @@ Leave **Link label** blank to use the linked post's title. If the link doesn't
 resolve to a publicly viewable post with a title, the URL is shown instead.
 You can also insert **Paragraph** and **Image** blocks inside a column; they
 appear below its links, or on their own if the column has no links.
+Columns with only a title still render. Completely empty columns are omitted,
+but their group's label remains visible without an empty submenu.
 Existing custom links columns
 keep their settings under the new name. The separate **Mega Menu Link Column**
 that accepted native Navigation Link blocks is no longer registered.
 
 An optional **Group link** makes the top-level label a link. If the group has
-columns, hover mode opens the panel on hover and follows the link on click;
+submenu content, hover mode opens the panel on hover and follows the link on click;
 click mode opens the panel on the first pointer click and follows the link on
 the next. Keyboard users can focus the label to follow the link directly or
 focus the separate chevron to toggle the panel. In the mobile drawer, the label opens
 the group screen, where a **Visit …** link leads to the destination. Groups
-without columns link directly in either layout. Group links and individual
+without submenu content link directly in either layout if a URL is set, or
+show a plain label otherwise. Group links and individual
 links in **Edit Column Links** can each be set to open in a new tab.
 On any group with a submenu, turn on **Settings → Hide group chevron (desktop only)**.
 The label opens the submenu whether or not a group link is set. The mobile

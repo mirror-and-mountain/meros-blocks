@@ -41,7 +41,7 @@
             @endforeach
         </ul>
     @endif
-@elseif($links !== [] || trim($content) !== '')
+@elseif($title !== '' || $links !== [] || trim($content) !== '')
     <div {!! \MM\Meros\Blocks\Support\MegaMenuStyles::wrapper('meros-dynamic-mega-menu__column', $attributes) !!}>
         @if($title !== '')
             <p class="meros-dynamic-mega-menu__column-title">{{ $title }}</p>
