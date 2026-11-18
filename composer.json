@@ -14,7 +14,8 @@
     "autoload": {
         "psr-4": {
             "MM\\Meros\\Blocks\\": "src/",
-            "MM\\Meros\\Blocks\\App\\": "src/app/"
+            "MM\\Meros\\Blocks\\App\\": "src/app/",
+            "MM\\Meros\\Blocks\\Support\\": "src/support/"
         }
     },
     "extra": {

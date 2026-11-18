@@ -16,8 +16,12 @@ export const HoverFxBlocks = [
 
 // Blocks compatible with header fx
 export const HeaderFxBlocks = [
-    'core/group'
+    'core/group',
+    'core/template-part'
 ];
+
+export const isHeaderBlock = (name, attributes) =>
+    HeaderFxBlocks.includes(name) && attributes?.tagName === 'header';
 
 // Blocks able to trigger other blocks with triggerable fx enabled
 export const TriggerFxBlocks = [
@@ -72,10 +76,13 @@ export const isHoverFxBlock = (blockName, attrs) => {
 
 // Helper to determine if the block is compatible with header fx, has it enabled, and is within a header template part
 export const isHeaderFxBlock = (blockName, attrs, clientId = '', save = false) => {
+    if (blockName === 'core/template-part') {
+        return isHeaderBlock(blockName, attrs) && attrs?.merosHeaderFx?.enabled;
+    }
+
     if (!save && clientId !== '') {
         // Check whether the block is an element with a <header> tag
-        const isHeader = blockName === 'core/template-part' && attrs?.slug === 'header' ||
-            blockName === 'core/group' && attrs?.tagName === 'header';
+        const isHeader = isHeaderBlock(blockName, attrs);
 
         if (isHeader) {
             return HeaderFxBlocks.includes(blockName) && attrs?.merosHeaderFx?.enabled;

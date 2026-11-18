@@ -3,7 +3,9 @@
 namespace MM\Meros\Blocks;
 
 use MM\Meros\App\Package;
+
 use MM\Meros\Blocks\App\Assets\Orchestrator as AssetsOrchestrator;
+use MM\Meros\Blocks\App\Components\Orchestrator as ComponentsOrchestrator;
 
 final class MerosBlocks extends Package {
     protected function init(): void {
@@ -15,25 +17,13 @@ final class MerosBlocks extends Package {
 
     public function configure(): void {
         $this->initialise(AssetsOrchestrator::class);
-
-        $this->blocks()->make(function ($block) {
-            $block->path('mega-menu-column');
-        });
-
-        $this->applyNavFilters();
+        $this->initialise(ComponentsOrchestrator::class);
         $this->applyFxFilters();
     }
 
-    private function applyNavFilters(): void {
-        add_filter('render_block', [Filters::class, 'renderAdvancedNav'], 10, 2);
-        add_filter('render_block', [Filters::class, 'renderAdvancedNavSubmenu'], 10, 2);
-        add_filter('render_block', [Filters::class, 'renderAdvancedNavLink'], 10, 2);
-
-        // Block args filters
-        add_filter('register_block_type_args', [Filters::class, 'registerAdditionalArgs'], 10, 2);
-    }
-
     private function applyFxFilters(): void {
+        add_filter('register_block_type_args', [Filters::class, 'registerTemplatePartFxAttributes'], 10, 2);
+        add_filter('render_block_core/template-part', [Filters::class, 'renderTemplatePartFx'], 10, 2);
         add_filter('render_block', [Filters::class, 'renderBlockFxBlocks'], 10, 2);
         add_action('enqueue_block_editor_assets', [Actions::class, 'enqueueHtmlEditor']);
     }

@@ -8,6 +8,6 @@ class Orchestrator extends AssetsOrchestrator {
 
     protected function configure(): void {
         $this->assets()->group(FX::class)->make()->enqueue();
-        $this->assets()->group(Navigation::class)->make()->enqueue();
+        $this->assets()->group(MegaMenu::class)->make()->enqueue();
     }
 }

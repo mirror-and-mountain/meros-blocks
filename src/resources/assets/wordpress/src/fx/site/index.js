@@ -1,7 +1,7 @@
 import {
     merosResolveLogoWidths,
     merosUpdateHeaderFxOnScroll,
-    merosUpdateHeaderHeightVar
+    observeStickyHeaderHeight
 } from '../helpers.js';
 import './style.scss';
 
@@ -13,7 +13,6 @@ function merosProcessHeaderFx(headerEl, doc, win) {
 
     const update = () => {
         merosUpdateHeaderFxOnScroll(headerEl, win);
-        merosUpdateHeaderHeightVar(headerEl, doc);
         ticking = false;
     };
 
@@ -289,5 +288,6 @@ function merosFxInit() {
     win.addEventListener('resize', check);
 }
 
+observeStickyHeaderHeight({ doc: document, win: window });
 document.addEventListener('DOMContentLoaded', merosFxInit);
 document.addEventListener('livewire:navigated', merosFxInit);

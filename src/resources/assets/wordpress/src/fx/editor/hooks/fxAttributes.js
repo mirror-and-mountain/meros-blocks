@@ -3,8 +3,7 @@ import { isCompatible } from '../utils.js';
 export const useFxAttributes = (settings, name) => {
     if (!isCompatible(name)) return settings;
 
-    // Add sticky attributes to group block
-    if (name === 'core/group') {
+    if (name === 'core/group' || name === 'core/template-part') {
         settings = {
             ...settings,
             attributes: {

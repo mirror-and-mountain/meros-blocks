@@ -13,7 +13,7 @@ import { saveStickyStyles } from './hooks/saveStickyStyles.js';
 import {
     merosResolveLogoWidths,
     merosUpdateHeaderFxOnScroll,
-    merosUpdateHeaderHeightVar
+    observeStickyHeaderHeight
 } from '../helpers.js';
 
 import { initEditorScripts } from '../../utils/editor.js';
@@ -56,7 +56,6 @@ wp.domReady(() => {
         const update = () => {
             if (!isActive) return;
             merosUpdateHeaderFxOnScroll(headerEl, win);
-            merosUpdateHeaderHeightVar(headerEl, headerEl.ownerDocument);
             ticking = false;
         };
 
@@ -404,6 +403,8 @@ wp.domReady(() => {
         });
     }
 
+    observeStickyHeaderHeight({ doc: document, win: window });
+    initEditorScripts(observeStickyHeaderHeight);
     initEditorScripts(observeCompatibleHeaderBlocks);
     initEditorScripts(observeCompatibleTriggerBlocks);
 });

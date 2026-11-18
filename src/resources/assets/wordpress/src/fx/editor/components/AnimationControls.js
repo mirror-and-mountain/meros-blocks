@@ -18,7 +18,7 @@ import {
     isCompatible,
     ScrollFxBlocks,
     HoverFxBlocks,
-    HeaderFxBlocks,
+    isHeaderBlock,
     TriggerFxBlocks,
     TriggerableFxBlocks,
     resolveWPColor
@@ -38,8 +38,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
         const hasTriggerFx = attributes.merosTriggerFx?.enabled || false;
         const hasTriggerableFx = attributes.merosTriggerableFx?.enabled || false;
 
-        const isHeader = name === 'core/template-part' && attributes?.slug === 'header' ||
-            name === 'core/group' && attributes?.tagName === 'header';
+        const isHeader = isHeaderBlock(name, attributes);
 
         const isInHeader = isChildOf(
             clientId, 
@@ -117,7 +116,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
             <Fragment>
                 <BlockEdit {...props} />
                 <InspectorControls>
-                    {TriggerFxBlocks.includes(name) && !isHeader && !hasHoverFx && (
+                    {/* {TriggerFxBlocks.includes(name) && !isHeader && !hasHoverFx && (
                         <PanelBody title={__('Trigger Animation', 'meros-theme')} initialOpen={false}>
                             <TriggerFX
                                 name={name}
@@ -137,7 +136,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                                 clientId={clientId}
                             />
                         </PanelBody>
-                    )}
+                    )} */}
 
                     {ScrollFxBlocks.includes(name) && !isHeader && !isInHeader && !hasTriggerableFx && (
                         <PanelBody title={__('Scroll Animation', 'meros-theme')} initialOpen={false}>
@@ -160,7 +159,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                         </PanelBody>
                     )}
 
-                    {HeaderFxBlocks.includes(name) && isHeader && (
+                    {isHeader && (
                         <PanelBody title={__('Header Animation', 'meros-theme')} initialOpen={false}>
                             <HeaderFX
                                 attributes={attributes}
@@ -171,8 +170,8 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                         </PanelBody>
                     )}
 
-                    {name === 'core/group' && !isInSwiper && !isInHeader && (
-                        <PanelBody title={__('Sicky Element', 'meros-theme')} initialOpen={false}>
+                    {(isHeader || name === 'core/group' && !isInHeader) && !isInSwiper && (
+                        <PanelBody title={__('Sticky Element', 'meros-theme')} initialOpen={false}>
                             <StickyControls
                                 attributes={attributes}
                                 setAttributes={setAttributes}

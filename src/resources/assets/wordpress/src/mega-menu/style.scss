@@ -1,0 +1,522 @@
+@mixin panel-surface {
+    padding: var(--meros-mega-menu-panel-padding, clamp(1rem, 3.5vw, 2.5rem));
+    background: var(--meros-menu-panel-background, #fff);
+    color: var(--meros-menu-panel-text, #000);
+    border-block-start: var(--meros-mega-menu-panel-border-width, 1px) solid var(--meros-mega-menu-panel-border-color, #ddd);
+}
+
+@mixin column-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+    gap: var(--meros-mega-menu-column-gap, 1.5rem);
+}
+
+@mixin panel-content {
+    max-inline-size: var(--wp--style--global--wide-size, 100%);
+    margin-inline: auto;
+}
+
+@mixin chevron {
+    content: '';
+    flex: none;
+    width: 0.4em;
+    height: 0.4em;
+    border: solid currentColor;
+    border-width: 0 1px 1px 0;
+    transform: rotate(var(--meros-menu-chevron-angle, 45deg));
+}
+
+.meros-dynamic-mega-menu {
+    --meros-menu-animation-duration: 240ms;
+    --meros-menu-mobile-icon-slot: 44px;
+
+    position: relative;
+
+    &__groups,
+    &__links {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__groups {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.5rem 1.5rem;
+    }
+
+    &__trigger {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding-block: 0.75rem;
+        overflow-wrap: anywhere;
+    }
+
+    &__drawer &__group-link {
+        display: none;
+    }
+
+    &__drawer &__overview {
+        display: block;
+    }
+
+    @supports (grid-template-columns: subgrid) and selector(details::details-content) {
+        &:not([data-mobile-active]) &__group:has(> &__group-link) {
+            display: grid;
+            grid-template-columns: minmax(0, auto) max-content;
+
+            > .meros-dynamic-mega-menu__group-link {
+                grid-area: 1 / 1;
+                z-index: 1;
+            }
+
+            > .meros-dynamic-mega-menu__disclosure {
+                display: grid;
+                grid-template-columns: subgrid;
+                grid-template-rows: subgrid;
+                grid-area: 1 / 1 / span 2 / -1;
+
+                > summary {
+                    grid-area: 1 / 2;
+                    padding-inline: 0.75rem;
+                }
+
+                &::details-content {
+                    grid-area: 2 / 1 / auto / -1;
+                }
+            }
+
+            .meros-dynamic-mega-menu__summary-label {
+                display: none;
+            }
+        }
+    }
+
+    summary#{&}__trigger {
+        cursor: pointer;
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &:is(:not(.meros-dynamic-mega-menu__trigger--no-chevron), .meros-dynamic-mega-menu__drawer *)::after {
+            @include chevron;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            &:not(.meros-dynamic-mega-menu__drawer *)::after {
+                transition: transform var(--meros-menu-animation-duration) ease;
+            }
+        }
+    }
+
+    details[open] > &__trigger:not(.meros-dynamic-mega-menu__drawer *)::after {
+        --meros-menu-chevron-angle: 225deg;
+    }
+
+    &__slide {
+        display: grid;
+        grid-template-rows: 0fr;
+        pointer-events: none;
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition: grid-template-rows var(--meros-menu-animation-duration) ease;
+        }
+    }
+
+    &__disclosure::details-content {
+        @media (prefers-reduced-motion: no-preference) {
+            transition: content-visibility var(--meros-menu-animation-duration) allow-discrete;
+        }
+    }
+
+    details[open] > &__slide {
+        grid-template-rows: 1fr;
+        pointer-events: auto;
+
+        @starting-style {
+            grid-template-rows: 0fr;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &:not([data-mobile-active]) &__disclosure[open] :is(&__columns, &__overview) {
+            animation: meros-menu-panel-reveal var(--meros-menu-animation-duration) ease both;
+        }
+
+        &:not([data-mobile-active]) &__disclosure[open][data-panel-switch="in"] :is(&__columns, &__overview) {
+            animation-name: meros-menu-group-fade;
+        }
+
+        &:not([data-mobile-active]) &__disclosure[open] :is(&__columns, &__overview):focus-within {
+            animation-duration: 0s;
+        }
+    }
+
+    &__clip {
+        min-block-size: 0;
+        overflow: clip;
+    }
+
+    &__panel {
+        @include panel-surface;
+    }
+
+    &__columns {
+        @include column-grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    &__column-title {
+        margin: 0 0 0.5rem;
+    }
+
+    &__links li > a,
+    &__overview {
+        padding-block: var(--meros-mega-menu-link-padding-block, 0.5rem);
+        overflow-wrap: anywhere;
+    }
+
+    &__links li > a {
+        display: block;
+    }
+
+    &__overview {
+        display: none;
+        margin-bottom: 0.75rem;
+    }
+
+    &__overview--always {
+        display: block;
+    }
+
+    @media (width > 640px) {
+        // Keep the panel surface open while changing which disclosure supplies it.
+        &:not(&--vertical, [data-mobile-active]) &__disclosure:is([open][data-panel-switch="in"], :not([open])[data-panel-switch="out"]) {
+            &::details-content,
+            > .meros-dynamic-mega-menu__slide {
+                transition-duration: 0s;
+            }
+        }
+
+        &:not(&--vertical, [data-mobile-active]) &__groups {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: flex-end;
+        }
+
+        &:not(&--vertical, [data-mobile-active]) &__slide {
+            position: absolute;
+            inset-block-start: calc(100% + var(--meros-mega-menu-header-gap, 0px));
+            left: var(--meros-mega-menu-panel-left, 0);
+            right: var(--meros-mega-menu-panel-right, 0);
+            z-index: 20;
+            box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+        }
+
+        &:not(&--vertical, [data-mobile-active]) &__panel {
+            min-block-size: 12.5rem;
+        }
+
+        &:not(&--vertical, [data-mobile-active]) :is(&__columns, &__overview) {
+            @include panel-content;
+        }
+
+        &:not(&--vertical, [data-mobile-active]) &__columns {
+            @include column-grid;
+        }
+    }
+}
+
+html:has(.meros-dynamic-mega-menu__drawer[open]),
+html:has(.meros-dynamic-mega-menu__drawer[open]) body {
+    overflow: hidden;
+}
+
+.meros-dynamic-mega-menu {
+    &__mobile-toggle,
+    &__mobile-close,
+    &__mobile-back {
+        display: inline-grid;
+        place-items: center;
+        inline-size: var(--meros-menu-mobile-icon-slot);
+        block-size: var(--meros-menu-mobile-icon-slot);
+        box-sizing: border-box;
+        padding: 0;
+        border: 0;
+        color: inherit;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    &:not([data-mobile-active]) > &__mobile-toggle,
+    &__mobile-back[hidden] {
+        display: none;
+    }
+
+    &__drawer {
+        box-sizing: border-box;
+        position: fixed;
+        inset: 0 0 0 auto;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: min(100%, max(66.667%, var(--meros-menu-mobile-min-width, 0px)));
+        max-width: none;
+        height: 100%;
+        max-height: 100%;
+        overflow: auto;
+        overscroll-behavior: contain;
+        background: var(--meros-menu-panel-background, #fff);
+        color: var(--meros-menu-panel-text, #000);
+        transform: translateX(100%);
+
+        &[data-direction="left"] {
+            inset: 0 auto 0 0;
+            transform: translateX(-100%);
+        }
+
+        &[data-direction="top"] {
+            inset: 0 0 auto;
+            width: 100%;
+            height: auto;
+            transform: translateY(-100%);
+        }
+
+        &[open] {
+            transform: translate(0);
+        }
+
+        &::backdrop {
+            background: rgb(0 0 0 / 25%);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition:
+                transform var(--meros-menu-animation-duration) ease,
+                display var(--meros-menu-animation-duration) allow-discrete,
+                overlay var(--meros-menu-animation-duration) allow-discrete;
+
+            @starting-style {
+                &[open] { transform: translateX(100%); }
+                &[data-direction="left"][open] { transform: translateX(-100%); }
+                &[data-direction="top"][open] { transform: translateY(-100%); }
+            }
+        }
+    }
+
+    &__drawer-body {
+        box-sizing: border-box;
+        min-height: 100%;
+        padding: 0 max(1.25rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
+    }
+
+    &__drawer-bar {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: flex-end;
+        padding-block-start: env(safe-area-inset-top);
+        background-color: var(--meros-menu-panel-background, #fff);
+    }
+
+    &__drawer &__trigger {
+        justify-content: space-between;
+        padding-inline: 0;
+        min-block-size: var(--meros-menu-mobile-icon-slot);
+        box-sizing: border-box;
+    }
+
+    &__drawer summary#{&}__trigger::after {
+        --meros-menu-chevron-angle: -45deg;
+        box-sizing: border-box;
+        margin-inline: calc((var(--meros-menu-mobile-icon-slot) - 0.4em) / 2);
+    }
+
+    &__drawer:dir(rtl) summary#{&}__trigger::after {
+        --meros-menu-chevron-angle: 135deg;
+    }
+
+    &__drawer:dir(rtl) &__mobile-back svg {
+        transform: scaleX(-1);
+    }
+
+    &__drawer[data-subpage] &__group:not(:has(> &__disclosure[open])),
+    &__drawer[data-subpage] &__disclosure[open] > summary {
+        display: none;
+    }
+
+    &__drawer &__slide {
+        transition: none;
+    }
+
+    &__drawer &__panel {
+        padding: 0;
+        border: 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &__drawer[data-subpage] &__disclosure[open] &__panel {
+            animation: meros-menu-group-fade var(--meros-menu-animation-duration) ease-out;
+        }
+    }
+}
+
+@keyframes meros-menu-group-fade {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+}
+
+@keyframes meros-menu-panel-reveal {
+    0%, 75% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+:where(.meros-dynamic-mega-menu__column-title) {
+    font-size: var(--meros-mega-menu-column-title-size, 1.125em);
+}
+
+:where(.meros-dynamic-mega-menu__group-link, a.meros-dynamic-mega-menu__trigger,
+    .meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview) {
+    color: inherit;
+}
+
+:where(.meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview):where(:hover, :focus-visible) {
+    color: #444;
+    text-decoration: underline;
+}
+
+[data-meros-menu-color-group-label] .meros-dynamic-mega-menu__trigger {
+    color: var(--meros-menu-group-label);
+}
+
+[data-meros-menu-color-column-heading] .meros-dynamic-mega-menu__column-title {
+    color: var(--meros-menu-column-heading);
+}
+
+[data-meros-menu-color-link] :is(.meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview) {
+    color: var(--meros-menu-link);
+}
+
+:is([data-meros-menu-color-link-hover], [data-meros-menu-color-link])
+    :is(.meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview):is(:hover, :focus-visible) {
+    color: var(--meros-menu-link-hover, #444);
+}
+
+[data-meros-menu-font-size-column-heading] .meros-dynamic-mega-menu__column-title {
+    font-size: var(--meros-menu-column-heading-font-size, var(--meros-mega-menu-column-title-size, 1.125em));
+}
+
+[data-meros-menu-font-size-link] .meros-dynamic-mega-menu__links li > a {
+    font-size: var(--meros-menu-link-font-size, inherit);
+}
+
+[data-meros-menu-decoration-text] :is(
+    .meros-dynamic-mega-menu__summary-label,
+    p.meros-dynamic-mega-menu__group-preview,
+    .meros-dynamic-mega-menu__column-title
+) {
+    text-decoration-line: var(--meros-menu-text-decoration);
+}
+
+[data-meros-menu-decoration-link] :is(
+    a.meros-dynamic-mega-menu__trigger,
+    .meros-dynamic-mega-menu__links li > a,
+    .meros-dynamic-mega-menu__overview
+) {
+    text-decoration-line: var(--meros-menu-link-decoration);
+}
+
+.meros-mega-menu-editor--menu {
+    min-inline-size: 0;
+}
+
+.meros-mega-menu-editor--menu > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem 1.5rem;
+
+    > :is(.meros-mega-menu-editor--group, .block-list-appender) {
+        margin: 0;
+    }
+}
+
+.meros-mega-menu-editor--group {
+    position: relative;
+
+    .meros-dynamic-mega-menu__group-preview {
+        margin: 0;
+    }
+
+    &:has(> .block-editor-inner-blocks .meros-mega-menu-editor--column) .meros-dynamic-mega-menu__group-preview:not(.meros-dynamic-mega-menu__trigger--no-chevron)::after {
+        @include chevron;
+    }
+
+    &:is(.is-selected, .has-child-selected) .meros-dynamic-mega-menu__group-preview::after {
+        --meros-menu-chevron-angle: 225deg;
+    }
+
+    &:not(.is-selected, .has-child-selected, :has(.block-list-appender .block-editor-inserter__toggle[aria-expanded="true"])) > .block-editor-inner-blocks {
+        display: none;
+    }
+
+    > .block-editor-inner-blocks {
+        @include panel-surface;
+    }
+
+    > .block-editor-inner-blocks > .block-editor-block-list__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--meros-mega-menu-column-gap, 1.5rem);
+
+        > :is(.meros-mega-menu-editor--column, .block-list-appender) {
+            min-inline-size: 0;
+            margin: 0;
+        }
+
+        > .block-list-appender {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+:is(.meros-mega-menu-editor--menu, .meros-mega-menu-editor--group) > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-list-appender {
+    position: static;
+    justify-self: start;
+
+    .block-editor-button-block-appender {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        box-shadow: none;
+    }
+}
+
+@media (width > 640px) {
+    .meros-mega-menu-editor--horizontal > .block-editor-inner-blocks > .block-editor-block-list__layout {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: flex-end;
+    }
+
+    .meros-mega-menu-editor--horizontal .meros-mega-menu-editor--group > .block-editor-inner-blocks {
+        position: absolute;
+        box-sizing: border-box;
+        inset-block-start: var(--meros-editor-panel-top, 100%);
+        left: var(--meros-editor-panel-left, 0px);
+        width: var(--meros-editor-panel-width, max(100%, 16rem));
+        z-index: 20;
+        min-block-size: 12.5rem;
+        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+
+        > .block-editor-block-list__layout {
+            @include panel-content;
+            @include column-grid;
+        }
+    }
+}

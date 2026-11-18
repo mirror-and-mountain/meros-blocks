@@ -2,13 +2,14 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 
 import { removeClasses, StickyClasses } from '../hooks/fxClasses.js';
 import { removeStyleVars, StickyStyleVars } from '../hooks/fxStyleVars.js';
+import { isHeaderBlock } from '../utils.js';
 
 export const StickyElementWrapper = createHigherOrderComponent(
     (BlockListBlock) => {
         return (props) => {
             const { name, attributes } = props;
 
-            if (name !== 'core/group') {
+            if (name !== 'core/group' && !isHeaderBlock(name, attributes)) {
                 return <BlockListBlock {...props} />;
             }
 

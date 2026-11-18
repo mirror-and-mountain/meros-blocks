@@ -59,13 +59,29 @@ export function merosResolveLogoWidths(logoContainer, logoImg, headerElement) {
     return true;
 }
 
-export function merosUpdateHeaderHeightVar(headerElement, doc) {
-    if (!headerElement || !doc?.documentElement) return;
+export function observeStickyHeaderHeight({ doc, win }) {
+    const root = doc.documentElement;
+    let header = null;
+    const measure = () => {
+        if (header) root.style.setProperty('--meros-header-height', `${header.offsetHeight}px`);
+    };
+    const resizeObserver = new win.ResizeObserver(measure);
+    const syncHeader = () => {
+        const next = doc.querySelector('header.meros-sticky-element.meros-header-offset');
+        if (next === header) return;
 
-    doc.documentElement.style.setProperty(
-        '--meros-header-height',
-        `${headerElement.offsetHeight}px`
-    );
+        resizeObserver.disconnect();
+        header = next;
+        if (header) {
+            resizeObserver.observe(header, { box: 'border-box' });
+            measure();
+        } else {
+            root.style.removeProperty('--meros-header-height');
+        }
+    };
+    const observer = new win.MutationObserver(syncHeader);
+    observer.observe(root, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+    syncHeader();
 }
 
 export function merosUpdateHeaderFxOnScroll(headerElement, win) {
