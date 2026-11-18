@@ -162,6 +162,7 @@ export const AnimationControls = createHigherOrderComponent((BlockEdit) => {
                     {isHeader && (
                         <PanelBody title={__('Header Animation', 'meros-theme')} initialOpen={false}>
                             <HeaderFX
+                                name={name}
                                 attributes={attributes}
                                 setAttributes={setAttributes}
                                 clientId={clientId}

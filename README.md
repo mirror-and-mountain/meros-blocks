@@ -98,10 +98,12 @@ FX preview.
 
 For a header template part, set the **Template Part** block's HTML element to
 **Header** and enable **Sticky Element → Enable Sticky Header** on that block.
-**Header Animation** is also available on the template part itself. Use a
-`div` for the Group inside it to avoid nested `<header>` elements. If the Group
-previously held the sticky or animation settings, configure them on the
-Template Part block before changing the Group's tag.
+Select the header **Template Part** block in the template and enable
+**Header Animation**. Use **Site Logo Shrink On Scroll** in that same panel
+to set the logo's final scale. Use a `div` for the Group inside the template
+part to avoid nested `<header>` elements. If the Group previously held the
+sticky or animation settings, configure them on the Template Part block
+before changing the Group's tag.
 
 ### License 
 The Meros Framework and this extension are open-sourced software licensed under the MIT license.

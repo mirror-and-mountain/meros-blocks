@@ -112,31 +112,11 @@ export const isInSwiper = (clientId) => {
     return isChildOf(clientId, 'meros/swiper-slide');
 };
 
-// Determines whether the given block (id) contains a site logo block
-export function hasSiteLogo(clientId) {
-    const { getBlock } = wp.data.select('core/block-editor');
-
-    function checkBlock(block, depth = 1) {
-        if (!block || depth > 5) {
-            return false;
-        }
-
-        if (block.name === 'core/site-logo') {
-            return true;
-        }
-
-        for (const inner of block.innerBlocks ?? []) {
-            const result = checkBlock(inner, depth + 1);
-            if (result !== false) {
-                return result;
-            }
-        }
-
-        return false;
-    }
-
-    const rootBlock = getBlock(clientId);
-    return checkBlock(rootBlock, 1);
+export function hasSiteLogo(getBlocks, clientId) {
+    // Controlled blocks such as template parts omit their children from the parent block object.
+    return getBlocks(clientId).some((block) =>
+        block.name === 'core/site-logo' || hasSiteLogo(getBlocks, block.clientId)
+    );
 }
 
 // Helper to determine whether the block is compatible with any fx

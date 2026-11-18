@@ -1,10 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import { previewFx, updateFx, hasSiteLogo } from '../utils.js';
 import { getFxAttrs } from '../hooks/fxAttributes.js';
 import { Enable, Color, SiteLogo } from './FX.js';
 
-export default function HeaderFX({ attributes, setAttributes, clientId, setPreview }) {
+export default function HeaderFX({ name, attributes, setAttributes, clientId, setPreview }) {
     const {
         enabled,
         headerAnimateBgColor,
@@ -17,6 +19,11 @@ export default function HeaderFX({ attributes, setAttributes, clientId, setPrevi
     const stickyFx = attributes.merosStickyElement || {};
     const defaultValues = getFxAttrs('Header');
     const preview = previewFx.headerPreviewFx[clientId] || false;
+    const isTemplatePart = name === 'core/template-part';
+    const showLogoControl = useSelect(
+        (select) => enabled && (isTemplatePart || hasSiteLogo(select(blockEditorStore).getBlocks, clientId)),
+        [clientId, enabled, isTemplatePart]
+    );
 
     const update = (patch) => {
         updateFx(
@@ -82,12 +89,10 @@ export default function HeaderFX({ attributes, setAttributes, clientId, setPrevi
                         showTiming={false}
                     />
 
-                    {hasSiteLogo(clientId) && (
+                    {showLogoControl && (
                         <SiteLogo
                             width={headerAnimateLogoWidth}
-                            defaultValues={{
-                                headerAnimateLogoWidth: 1
-                            }}
+                            defaultValues={{ headerAnimateLogoWidth: 1 }}
                             update={update}
                         />
                     )}
