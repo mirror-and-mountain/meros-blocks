@@ -182,6 +182,7 @@ class Orchestrator extends ComponentsOrchestrator {
                         $field->label(__('Select post', 'meros-blocks'));
                         $field->postType('any');
                         $field->key('url');
+                        $field->allowAdd(true);
                     });
                     
                     $repeater->field('text', [
