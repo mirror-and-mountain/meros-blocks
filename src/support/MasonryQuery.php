@@ -23,6 +23,7 @@ final class MasonryQuery {
         return $attributes + [
             'masonry_varied' => ['type' => 'boolean', 'default' => false],
             'masonry_prioritise_sticky' => ['type' => 'boolean', 'default' => false],
+            'masonry_sticky_shared_rows' => ['type' => 'boolean', 'default' => false],
             'masonry_vary_columns' => ['type' => 'boolean', 'default' => false],
             'masonry_column_variation' => ['type' => 'string', 'default' => 'subtle', 'enum' => ['subtle', 'broad']],
         ];
@@ -143,7 +144,10 @@ final class MasonryQuery {
             'style' => implode(';', $styles) . ';',
         ];
         if (($attributes['masonry_varied'] ?? false) === true) $wrapper['data-meros-masonry-varied'] = 'true';
-        if (($attributes['masonry_prioritise_sticky'] ?? false) === true) $wrapper['data-meros-masonry-sticky'] = 'true';
+        if (($attributes['masonry_prioritise_sticky'] ?? false) === true) {
+            $wrapper['data-meros-masonry-sticky'] = 'true';
+            if (($attributes['masonry_sticky_shared_rows'] ?? false) === true) $wrapper['data-meros-masonry-sticky-shared'] = 'true';
+        }
         if (($attributes['masonry_vary_columns'] ?? false) === true) {
             $wrapper['data-meros-masonry-vary-columns'] = 'true';
             $wrapper['data-meros-masonry-column-variation'] = ($attributes['masonry_column_variation'] ?? '') === 'broad' ? 'broad' : 'subtle';

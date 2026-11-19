@@ -86,6 +86,25 @@ test('native inspector ranges store numbers and preview styles preserve core sup
     assert.equal(unrelated.props.wrapperProps, undefined);
 });
 
+test('sticky row sharing is conditional and preserves the priority toggle', () => {
+    let update;
+    const render = (attributes) => filters['editor.BlockEdit']('Block')({
+        name: 'meros-blocks/masonry-query', attributes, isSelected: true, setAttributes: (value) => update = value,
+    });
+    const isSharedControl = (node) => node.type === 'ToggleControl' && node.props.label === 'Allow sticky posts to share rows';
+    assert.equal(find(render({ masonry_sticky_shared_rows: true }), isSharedControl), undefined);
+    const control = find(render({ masonry_prioritise_sticky: true }), isSharedControl);
+    assert.equal(control.props.checked, false);
+    control.props.onChange(true);
+    assert.equal(update.masonry_sticky_shared_rows, true);
+    const attributes = { masonry_prioritise_sticky: true, masonry_sticky_shared_rows: true };
+    const enabled = preview({ name: 'meros-blocks/masonry-query', attributes });
+    assert.equal(enabled.props.wrapperProps['data-meros-masonry-sticky'], 'true');
+    assert.equal(enabled.props.wrapperProps['data-meros-masonry-sticky-shared'], 'true');
+    const inactive = preview({ name: 'meros-blocks/masonry-query', attributes: { ...attributes, masonry_prioritise_sticky: false } });
+    assert.equal(inactive.props.wrapperProps['data-meros-masonry-sticky-shared'], undefined);
+});
+
 test('experimental column variation exposes device maximums and defaults to subtle', () => {
     let update;
     const render = (attributes) => filters['editor.BlockEdit']('Block')({
@@ -363,6 +382,50 @@ test('browser geometry, responsive repacking, native query replacement and isola
                     return Math.abs(box.width / box.height - 1.5) < 0.01;
                 })), 'Disabling variation must restore original image proportions');
             } finally { await page.close(); }
+        });
+
+        await t.test('shared sticky rows use normal card and column variation and can return to full-width rows', async () => {
+            for (const variable of [false, true]) {
+                const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
+                try {
+                    await page.setContent(`<style>ul,figure,p{padding:0;margin:0;list-style:none}img{display:block}</style>${fixture()}`);
+                    await page.locator('#grid').evaluate((root, variable) => {
+                        root.dataset.merosMasonryVaried = 'true';
+                        if (variable) root.dataset.merosMasonryVaryColumns = 'true';
+                        root.style.setProperty('--meros-masonry-columns-desktop', '4');
+                        [...root.querySelectorAll('li')].forEach((card, index) => {
+                            card.classList.add(`post-${index + 1}`);
+                            if (index < 2) card.classList.add('meros-masonry-sticky');
+                            card.innerHTML = `<figure class="wp-block-post-featured-image"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'/%3E"></figure><p>Post ${index}</p>`;
+                        });
+                    }, variable);
+                    await page.addStyleTag({ content: css });
+                    await page.addScriptTag({ content: script });
+                    await page.locator('#grid img').evaluateAll((images) => Promise.all(images.map((image) => image.decode())));
+                    async function snapshot() {
+                        await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+                        return page.locator('#grid li').evaluateAll((cards) => cards.map((card) => {
+                            const { x, y, width, height } = card.getBoundingClientRect();
+                            return { id: card.dataset.id, x, y, width, height, ratio: card.style.getPropertyValue('--meros-masonry-image-ratio') };
+                        }));
+                    }
+                    const normal = await snapshot();
+                    await page.locator('#grid').evaluate((root) => {
+                        root.dataset.merosMasonrySticky = 'true';
+                        root.dataset.merosMasonryStickyShared = 'true';
+                    });
+                    const shared = await snapshot();
+                    assert.deepEqual(shared, normal, 'Shared sticky posts must receive exactly the normal size, image and column variation');
+                    assert.equal(shared[0].y, shared[1].y, 'Sticky posts must be allowed on the same row');
+                    assert.ok(shared.slice(0, 2).every((card) => card.width < 1100));
+                    await page.locator('#grid').evaluate((root) => delete root.dataset.merosMasonryStickyShared);
+                    const full = await snapshot();
+                    assert.ok(full.slice(0, 2).every((card) => Math.abs(card.width - 1100) < 0.1 && card.ratio === '16 / 9'));
+                    assert.ok(full[1].y >= full[0].y + full[0].height + 23.99, 'Disabling sharing must restore separate full-width rows');
+                    await page.locator('#grid').evaluate((root) => root.dataset.merosMasonryStickyShared = 'true');
+                    assert.deepEqual(await snapshot(), normal, 'Re-enabling sharing must restore the same stable layout');
+                } finally { await page.close(); }
+            }
         });
 
         await t.test('experimental column bands respect maxima, preview devices, gaps, sticky rows and stable intensity', async () => {

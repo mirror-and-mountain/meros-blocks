@@ -79,6 +79,11 @@ namespace {
 
     $enabled = json_decode(MasonryQuery::wrapper(['masonry_varied' => true, 'masonry_prioritise_sticky' => true]), true, flags: JSON_THROW_ON_ERROR);
     expect($enabled['data-meros-masonry-varied'] === 'true' && $enabled['data-meros-masonry-sticky'] === 'true', 'Feature toggles must reach the frontend without changing numeric controls.');
+    expect(!isset($enabled['data-meros-masonry-sticky-shared']), 'Existing sticky layouts must retain full-width rows by default.');
+    $shared = json_decode(MasonryQuery::wrapper(['masonry_prioritise_sticky' => true, 'masonry_sticky_shared_rows' => true]), true, flags: JSON_THROW_ON_ERROR);
+    expect($shared['data-meros-masonry-sticky'] === 'true' && $shared['data-meros-masonry-sticky-shared'] === 'true', 'Shared rows must retain sticky priority while enabling normal packing.');
+    $inactiveShared = json_decode(MasonryQuery::wrapper(['masonry_sticky_shared_rows' => true]), true, flags: JSON_THROW_ON_ERROR);
+    expect(!isset($inactiveShared['data-meros-masonry-sticky-shared']), 'Shared rows must only apply when sticky priority is enabled.');
     $density = json_decode(MasonryQuery::wrapper(['masonry_vary_columns' => true, 'masonry_column_variation' => 'broad']), true, flags: JSON_THROW_ON_ERROR);
     expect($density['data-meros-masonry-vary-columns'] === 'true' && $density['data-meros-masonry-column-variation'] === 'broad', 'The frontend must receive the selected density mode.');
     $invalidDensity = json_decode(MasonryQuery::wrapper(['masonry_vary_columns' => true, 'masonry_column_variation' => 'bad"value']), true, flags: JSON_THROW_ON_ERROR);

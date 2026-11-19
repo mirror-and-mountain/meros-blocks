@@ -184,7 +184,7 @@ export function observeMasonry(root) {
                 const original = items.get(card);
                 if (!variable) restorePlacement(card, original);
                 const varied = root.dataset.merosMasonryVaried === 'true';
-                const featured = root.dataset.merosMasonrySticky === 'true' && card.classList.contains('meros-masonry-sticky');
+                const featured = root.dataset.merosMasonrySticky === 'true' && root.dataset.merosMasonryStickyShared !== 'true' && card.classList.contains('meros-masonry-sticky');
                 const details = variation(card);
                 const { wide, ratio } = details;
                 entries.push({ card, featured, ...details });
@@ -232,7 +232,7 @@ export function observeMasonry(root) {
     const mutations = new view.MutationObserver(schedule);
     mutations.observe(root, {
         childList: true, subtree: true, characterData: true, attributes: true,
-        attributeFilter: ['data-meros-masonry-device', 'data-meros-masonry-varied', 'data-meros-masonry-sticky', 'data-meros-masonry-vary-columns', 'data-meros-masonry-column-variation'],
+        attributeFilter: ['data-meros-masonry-device', 'data-meros-masonry-varied', 'data-meros-masonry-sticky', 'data-meros-masonry-sticky-shared', 'data-meros-masonry-vary-columns', 'data-meros-masonry-column-variation'],
     });
     view.addEventListener('resize', schedule);
     schedule();

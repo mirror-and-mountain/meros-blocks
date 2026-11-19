@@ -22,7 +22,7 @@ function MasonryPreview({ clientId, attributes }) {
     useEffect(() => {
         const root = marker.current?.ownerDocument.getElementById(`block-${clientId}`);
         if (root) return observeMasonry(root);
-    }, [clientId, attributes.masonry_columns_desktop, attributes.masonry_columns_tablet, attributes.masonry_columns_mobile, attributes.masonry_gap, attributes.masonry_varied, attributes.masonry_prioritise_sticky, attributes.masonry_vary_columns, attributes.masonry_column_variation]);
+    }, [clientId, attributes.masonry_columns_desktop, attributes.masonry_columns_tablet, attributes.masonry_columns_mobile, attributes.masonry_gap, attributes.masonry_varied, attributes.masonry_prioritise_sticky, attributes.masonry_sticky_shared_rows, attributes.masonry_vary_columns, attributes.masonry_column_variation]);
     return <span hidden ref={marker} />;
 }
 
@@ -75,11 +75,20 @@ addFilter('editor.BlockEdit', 'meros/masonry-query-controls', (BlockEdit) => (pr
                         />
                         <ToggleControl
                             label={__('Prioritise sticky posts', 'meros-blocks')}
-                            help={__('In custom queries, matching sticky posts appear first, each in a full-width row. Post counts and filters still apply.', 'meros-blocks')}
+                            help={__('In custom queries, matching sticky posts appear first. Post counts and filters still apply.', 'meros-blocks')}
                             checked={props.attributes.masonry_prioritise_sticky === true}
                             onChange={(value) => props.setAttributes({ masonry_prioritise_sticky: value })}
                             __nextHasNoMarginBottom
                         />
+                        {props.attributes.masonry_prioritise_sticky === true && (
+                            <ToggleControl
+                                label={__('Allow sticky posts to share rows', 'meros-blocks')}
+                                help={__('Use the normal card layout, including size and column variation. When off, each sticky post occupies a full-width row.', 'meros-blocks')}
+                                checked={props.attributes.masonry_sticky_shared_rows === true}
+                                onChange={(value) => props.setAttributes({ masonry_sticky_shared_rows: value })}
+                                __nextHasNoMarginBottom
+                            />
+                        )}
                         <InheritedStickyNotice clientId={props.clientId} enabled={props.attributes.masonry_prioritise_sticky} />
                         <ToggleControl
                             label={__('Vary column count (experimental)', 'meros-blocks')}
@@ -136,6 +145,7 @@ function MasonryWrapper({ BlockListBlock, ...props }) {
                 'data-meros-masonry-device': device,
                 'data-meros-masonry-varied': props.attributes.masonry_varied === true ? 'true' : undefined,
                 'data-meros-masonry-sticky': props.attributes.masonry_prioritise_sticky === true ? 'true' : undefined,
+                'data-meros-masonry-sticky-shared': props.attributes.masonry_prioritise_sticky === true && props.attributes.masonry_sticky_shared_rows === true ? 'true' : undefined,
                 'data-meros-masonry-vary-columns': props.attributes.masonry_vary_columns === true ? 'true' : undefined,
                 'data-meros-masonry-column-variation': props.attributes.masonry_column_variation === 'broad' ? 'broad' : 'subtle',
                 style,

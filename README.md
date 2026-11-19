@@ -29,7 +29,10 @@ experimental label. It works alongside varied card sizes and full-width sticky
 rows, and is off by default.
 
 Enable **Prioritise sticky posts** to put matching WordPress sticky posts first,
-each occupying a full-width row. Sticky posts still count towards posts per page,
+each occupying a full-width row by default. Enable **Allow sticky posts to share
+rows** beneath it to lay them out like other cards, including any card-size and
+column-count variation. Their priority ordering is unchanged.
+Sticky posts still count towards posts per page,
 respect all query filters/exclusions, and are not repeated on subsequent pages.
 The query's chosen ordering applies within the sticky and non-sticky groups.
 This ordering is available for custom post queries; inherited template queries
