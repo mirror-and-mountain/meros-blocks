@@ -6,6 +6,7 @@ use MM\Meros\App\Components\Fields\Repeater;
 use MM\Meros\App\Components\Fields\PostsLookup;
 
 use MM\Meros\Blocks\Support\MegaMenuStyles;
+use MM\Meros\Blocks\Support\MasonryQuery;
 
 use MM\Meros\Contracts\Orchestrators\ComponentsOrchestrator;
 use MM\Meros\Contracts\Features\Components\DynamicBlock;
@@ -14,6 +15,22 @@ class Orchestrator extends ComponentsOrchestrator {
 
     protected function configure(): void {
         $this->configureDynamicMegaMenu();
+        $this->configureMasonryQuery();
+    }
+
+    private function configureMasonryQuery(): void {
+        MasonryQuery::boot();
+        $views = $this->getHandle() . '::masonry-query';
+        $this->dynamicBlocks()->make(function (DynamicBlock $block) use ($views) {
+            $block->name('masonry-query');
+            $block->title(__('Masonry Query', 'meros-blocks'));
+            $block->description(__('Display a native Query Loop as a responsive masonry grid.', 'meros-blocks'));
+            $block->category('design');
+            $block->icon('screenoptions');
+            $block->allowedBlocks(['core/query']);
+            MasonryQuery::register($block);
+            $block->renderCallback(fn (array $args): string => view("{$views}.grid", $args)->render());
+        });
     }
 
     /**

@@ -1,0 +1,55 @@
+.meros-masonry-query [data-meros-masonry-grid] {
+    --meros-masonry-columns: var(--meros-masonry-columns-mobile, 1);
+    display: grid !important;
+    grid-template-columns: repeat(var(--meros-masonry-columns), minmax(0, 1fr)) !important;
+    grid-auto-rows: 1px;
+    grid-auto-flow: row;
+    align-items: start;
+    column-gap: var(--meros-masonry-gap, 24px) !important;
+    row-gap: 0 !important;
+
+    > .wp-block-post {
+        align-self: start;
+        width: auto !important;
+        min-width: 0;
+        margin: 0 !important;
+    }
+}
+
+.meros-masonry-query [data-meros-masonry-image] img {
+    width: 100%;
+    height: auto !important;
+    aspect-ratio: var(--meros-masonry-image-ratio) !important;
+    object-fit: cover !important;
+}
+
+.meros-masonry-query [data-meros-masonry-grid][data-meros-masonry-variable-columns] {
+    display: block !important;
+    position: relative !important;
+
+    > .wp-block-post {
+        position: absolute !important;
+        box-sizing: border-box;
+        width: var(--meros-masonry-card-width, 100%) !important;
+        top: var(--meros-masonry-card-top, 0px);
+        inset-inline-start: var(--meros-masonry-card-inset, 0px);
+    }
+}
+
+@media (min-width: 640px) {
+    .meros-masonry-query [data-meros-masonry-grid] {
+        --meros-masonry-columns: var(--meros-masonry-columns-tablet, 2);
+    }
+}
+
+@media (min-width: 1024px) {
+    .meros-masonry-query [data-meros-masonry-grid] {
+        --meros-masonry-columns: var(--meros-masonry-columns-desktop, 3);
+    }
+}
+
+@each $device, $key, $columns in (Desktop desktop 3, Tablet tablet 2, Mobile mobile 1) {
+    .meros-masonry-query[data-meros-masonry-device="#{$device}"] [data-meros-masonry-grid] {
+        --meros-masonry-columns: var(--meros-masonry-columns-#{$key}, #{$columns});
+    }
+}

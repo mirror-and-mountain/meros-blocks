@@ -2,6 +2,51 @@
 
 ## MEROS Blocks
 
+### Masonry Query
+
+Insert **Masonry Query** for a masonry-style post grid built around WordPress's
+native **Query Loop**. Select the outer block's **Masonry layout** panel to set
+desktop, tablet and mobile columns (1–6) and the card gap in pixels. Defaults
+are 3/2/1 columns and a 24px gap. Frontend breakpoints use the viewport width:
+desktop from 1024px, tablet from 640px, and mobile below 640px.
+In the editor, columns follow WordPress's selected Desktop/Tablet/Mobile preview,
+not the canvas width remaining after opening sidebars.
+
+Enable **Vary card sizes** to mix single- and double-column cards with different
+featured-image proportions. Sizes are derived from post IDs, so each post keeps
+its variation between visits and in the editor. Images are cropped, never the
+post's text. Wide cards reduce to one column on single-column layouts; disabling
+the option restores native image proportions.
+
+**Vary column count (experimental)** mixes column densities between groups of
+posts. When enabled, the device controls become **Desktop/Tablet/Mobile max
+columns**, reusing the existing values. **Subtle** (the default) alternates the
+maximum and one fewer column, with a minimum of one; **Broader** varies from one
+to the maximum. The choice is stable for the same posts, not shuffled on reload.
+Masonry packing continues within each group, while density changes start below
+the preceding group. This can leave uneven gaps or odd layouts, hence the
+experimental label. It works alongside varied card sizes and full-width sticky
+rows, and is off by default.
+
+Enable **Prioritise sticky posts** to put matching WordPress sticky posts first,
+each occupying a full-width row. Sticky posts still count towards posts per page,
+respect all query filters/exclusions, and are not repeated on subsequent pages.
+The query's chosen ordering applies within the sticky and non-sticky groups.
+This ordering is available for custom post queries; inherited template queries
+keep their native ordering. The two options are independent and off by default.
+
+Select the inner **Query Loop** to choose post types, filters, ordering and
+posts per page. Edit its **Post Template** to design every card with native
+blocks; the starter includes a linked featured image, linked title and excerpt.
+The wrapper controls columns and gaps instead of the Post Template's layout
+settings. Pagination and the editable **No Results** message remain native.
+Each Query Loop receives its own WordPress query ID.
+
+The same JS-assisted layout runs in the editor and on the front end, repacking
+when cards, images, fonts or the available width change. Cards fill the next
+available column without rearranging their DOM, reading or keyboard order.
+Without JavaScript, the native Query Loop layout remains usable.
+
 ### Dynamic mega menu
 
 Links to the current page are marked with `aria-current="page"` on the front

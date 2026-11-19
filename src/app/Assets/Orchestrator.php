@@ -9,5 +9,6 @@ class Orchestrator extends AssetsOrchestrator {
     protected function configure(): void {
         $this->assets()->group(FX::class)->make()->enqueue();
         $this->assets()->group(MegaMenu::class)->make()->enqueue();
+        $this->assets()->group(MasonryQuery::class)->make()->enqueue();
     }
 }
