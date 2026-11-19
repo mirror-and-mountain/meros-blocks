@@ -7,7 +7,7 @@
 Links to the current page are marked with `aria-current="page"` on the front
 end, in both desktop and mobile menus. Set **Group link current** and **Panel
 link current** under **Styles → Mega menu colours**, and their corresponding
-**current decoration** controls under **Mega menu typography**. With no override,
+**current decoration** controls under **Link decorations**. With no override,
 theme and existing menu styles apply, with underline as a fallback. Matches
 ignore fragments and trailing slashes but respect the domain, path, and query
 parameters. Only the matching destination is highlighted, not its ancestor
@@ -79,8 +79,9 @@ The page behind the drawer cannot scroll while it is open. Turn off
 The editor mirrors the navigation row or sidebar; select a group or one of its
 children to show that group's panel. All menu styling controls are available on
 **Mega Menu** as defaults and on **Mega Menu Group** as overrides. Clear a group
-override (or choose **Default**) to inherit the menu setting. Columns no longer
-have menu styling controls or apply old column-level overrides.
+override (or choose **Default**) to inherit the menu setting. Columns have
+native typography controls for their own content, but inherit colours from the group
+or menu and do not apply old column-level colour overrides.
 
 Under **Styles → Mega menu colours**, configure:
 
@@ -97,15 +98,28 @@ Panels default to white with black text. Unconfigured links use the
 theme's link styles, with the panel text colour and dark grey underlined
 hover/focus as fallbacks.
 
-Under **Styles → Mega menu typography**, configure **Group size**,
-**Column heading size**, and **Panel link size** using theme font size presets.
-Each also has its own decoration control: **Default**, **None**, **Underline**,
-or **Strikethrough**. Group decoration applies to both linked and unlinked
-labels. **Group link current decoration** and **Panel link current decoration**
-override the normal decoration for matching current-page links.
-With no overrides, theme typography applies, with headings slightly larger
-than body text as a fallback. These controls do not style core blocks inserted
-inside a column.
+Under **Styles → Typography**, WordPress's native controls set the menu's base
+font family, size, appearance (weight/style), line height, letter spacing, and
+letter case. Their availability follows the theme's typography settings; some
+are available through the Typography panel's options menu. Groups can set their
+own base typography or inherit the menu's. Columns have the same native
+Typography controls, so panel content can use a different font family or
+appearance from the group labels/links. No baseline is set by default.
+
+Font configuration uses only those native controls at each layer: menu, group,
+and column. Reset a native typography setting to inherit from the parent or
+theme. Old custom group/heading/link size attributes and heading-decoration
+overrides no longer apply, so they cannot mask native font settings. Headings
+retain their slightly larger theme-overridable fallback size.
+
+Under **Styles → Link decorations**, choose **Default**, **None**, **Underline**,
+or **Strikethrough**. Menu and Group blocks offer **Group decoration** (linked
+and unlinked labels), **Panel link decoration**, and separate current-page
+decorations for both kinds of link. Columns offer only panel-link and
+panel-link current-page decorations. Clear a decoration override to inherit the
+parent setting. These link controls do not style core blocks inserted inside a
+column; those blocks can inherit native typography unless they have their own
+styling.
 
 Compatible saved menu/group styles are retained: old shared group colours and
 current-page styles populate the corresponding separate controls. Editing a

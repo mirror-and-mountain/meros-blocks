@@ -195,6 +195,7 @@ class Orchestrator extends ComponentsOrchestrator {
                 },
             ]);
 
+            MegaMenuStyles::register($block, 'column');
             $block->renderCallback(fn (array $args): string => view("{$views}.column", $args)->render());
         });
 

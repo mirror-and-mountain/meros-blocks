@@ -412,13 +412,8 @@ $column-headings: '.meros-dynamic-mega-menu__column-title';
 
 @each $role, $selector in (
     'group': $group-labels,
-    'column-heading': $column-headings,
     'panel-link': $panel-links
 ) {
-    [data-meros-menu-font-size-#{$role}] :is(#{$selector}) {
-        font-size: var(--meros-menu-#{$role}-font-size);
-    }
-
     [data-meros-menu-decoration-#{$role}] :is(#{$selector}) {
         text-decoration-line: var(--meros-menu-#{$role}-decoration);
     }
