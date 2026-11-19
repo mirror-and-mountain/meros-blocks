@@ -42,7 +42,7 @@
         </ul>
     @endif
 @elseif($title !== '' || $links !== [] || trim($content) !== '')
-    <div {!! \MM\Meros\Blocks\Support\MegaMenuStyles::wrapper('meros-dynamic-mega-menu__column', $attributes) !!}>
+    <div {!! get_block_wrapper_attributes(['class' => 'meros-dynamic-mega-menu__column']) !!}>
         @if($title !== '')
             <p class="meros-dynamic-mega-menu__column-title">{{ $title }}</p>
         @endif

@@ -77,9 +77,7 @@ class Orchestrator extends ComponentsOrchestrator {
                 ],
             ]);
 
-            MegaMenuStyles::colours($block, 'menu');
-            MegaMenuStyles::fontSizes($block);
-            MegaMenuStyles::textDecorations($block, true);
+            MegaMenuStyles::register($block);
             $block->attribute('menu_mobile_collapse', [
                 'type' => 'boolean',
                 'default' => true,
@@ -149,8 +147,7 @@ class Orchestrator extends ComponentsOrchestrator {
                 'control' => true,
             ]);
 
-            MegaMenuStyles::colours($block, 'group');
-            MegaMenuStyles::textDecorations($block);
+            MegaMenuStyles::register($block);
             $block->renderCallback(fn (array $args): string => view("{$views}.group", $args)->render());
         });
 
@@ -198,9 +195,6 @@ class Orchestrator extends ComponentsOrchestrator {
                 },
             ]);
 
-            MegaMenuStyles::colours($block, 'column');
-            MegaMenuStyles::fontSizes($block);
-            MegaMenuStyles::textDecorations($block);
             $block->renderCallback(fn (array $args): string => view("{$views}.column", $args)->render());
         });
 

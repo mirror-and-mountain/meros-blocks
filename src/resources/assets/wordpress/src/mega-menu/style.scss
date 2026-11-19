@@ -390,59 +390,52 @@ html:has(.meros-dynamic-mega-menu__drawer[open]) body {
     text-decoration: underline;
 }
 
-[data-meros-menu-color-group-label] .meros-dynamic-mega-menu__trigger {
-    color: var(--meros-menu-group-label);
-}
-
-[data-meros-menu-color-column-heading] .meros-dynamic-mega-menu__column-title {
-    color: var(--meros-menu-column-heading);
-}
-
-[data-meros-menu-color-link] :is(.meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview) {
-    color: var(--meros-menu-link);
-}
-
-:is([data-meros-menu-color-link-hover], [data-meros-menu-color-link])
-    :is(.meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview):is(:hover, :focus-visible) {
-    color: var(--meros-menu-link-hover, #444);
-}
-
-[data-meros-menu-font-size-column-heading] .meros-dynamic-mega-menu__column-title {
-    font-size: var(--meros-menu-column-heading-font-size, var(--meros-mega-menu-column-title-size, 1.125em));
-}
-
-[data-meros-menu-font-size-link] .meros-dynamic-mega-menu__links li > a {
-    font-size: var(--meros-menu-link-font-size, inherit);
-}
-
-[data-meros-menu-decoration-text] :is(
-    .meros-dynamic-mega-menu__summary-label,
-    p.meros-dynamic-mega-menu__group-preview,
-    .meros-dynamic-mega-menu__column-title
-) {
-    text-decoration-line: var(--meros-menu-text-decoration);
-}
-
-[data-meros-menu-decoration-link] :is(
-    a.meros-dynamic-mega-menu__trigger,
-    .meros-dynamic-mega-menu__links li > a,
-    .meros-dynamic-mega-menu__overview
-) {
-    text-decoration-line: var(--meros-menu-link-decoration);
-}
-
 :where(.meros-dynamic-mega-menu .meros-menu-current-page) {
     text-decoration-line: underline;
 }
 
-.meros-dynamic-mega-menu[data-meros-menu-color-current] .meros-menu-current-page:is(a, summary),
-.meros-dynamic-mega-menu[data-meros-menu-color-current] a.meros-menu-current-page:is(:hover, :focus-visible) {
-    color: var(--meros-menu-current);
+$group-labels: '.meros-dynamic-mega-menu__trigger';
+$group-links: 'a.meros-dynamic-mega-menu__trigger, .meros-dynamic-mega-menu__trigger[data-meros-menu-url]';
+$panel-links: '.meros-dynamic-mega-menu__links li > a, .meros-dynamic-mega-menu__overview';
+$column-headings: '.meros-dynamic-mega-menu__column-title';
+
+@each $role, $selector in (
+    'group': '.meros-dynamic-mega-menu__trigger:not(a, [data-meros-menu-url])',
+    'group-link': $group-links,
+    'column-heading': $column-headings,
+    'panel-link': $panel-links
+) {
+    [data-meros-menu-color-#{$role}] :is(#{$selector}) {
+        color: var(--meros-menu-#{$role});
+    }
 }
 
-.meros-dynamic-mega-menu[data-meros-menu-decoration-current] .meros-menu-current-page:is(a, summary),
-.meros-dynamic-mega-menu[data-meros-menu-decoration-current] a.meros-menu-current-page:is(:hover, :focus-visible) {
-    text-decoration-line: var(--meros-menu-current-decoration);
+@each $role, $selector in (
+    'group': $group-labels,
+    'column-heading': $column-headings,
+    'panel-link': $panel-links
+) {
+    [data-meros-menu-font-size-#{$role}] :is(#{$selector}) {
+        font-size: var(--meros-menu-#{$role}-font-size);
+    }
+
+    [data-meros-menu-decoration-#{$role}] :is(#{$selector}) {
+        text-decoration-line: var(--meros-menu-#{$role}-decoration);
+    }
+}
+
+@each $role, $selector in ('group-link': $group-links, 'panel-link': $panel-links) {
+    [data-meros-menu-color-#{$role}-hover] :is(#{$selector}):is(:hover, :focus-visible) {
+        color: var(--meros-menu-#{$role}-hover);
+    }
+
+    [data-meros-menu-color-#{$role}-current] :is(#{$selector}).meros-menu-current-page {
+        color: var(--meros-menu-#{$role}-current);
+    }
+
+    [data-meros-menu-decoration-#{$role}-current] :is(#{$selector}).meros-menu-current-page {
+        text-decoration-line: var(--meros-menu-#{$role}-current-decoration);
+    }
 }
 
 .meros-mega-menu-editor--menu {

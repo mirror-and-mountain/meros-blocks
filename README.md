@@ -5,9 +5,9 @@
 ### Dynamic mega menu
 
 Links to the current page are marked with `aria-current="page"` on the front
-end, in both desktop and mobile menus. Set **Styles → Mega menu colours →
-Current page links** and **Styles → Mega menu typography → Current page link
-decoration** on the Mega Menu block to override their styling. With no override,
+end, in both desktop and mobile menus. Set **Group link current** and **Panel
+link current** under **Styles → Mega menu colours**, and their corresponding
+**current decoration** controls under **Mega menu typography**. With no override,
 theme and existing menu styles apply, with underline as a fallback. Matches
 ignore fragments and trailing slashes but respect the domain, path, and query
 parameters. Only the matching destination is highlighted, not its ancestor
@@ -76,24 +76,41 @@ The page behind the drawer cannot scroll while it is open. Turn off
 **Collapse on mobile** to keep the menu inline at all widths.
 
 The editor mirrors the navigation row or sidebar; select a group or one of its
-children to show that group's panel. Use **Styles → Mega menu colours** for
-menu-wide colours, optionally overridden on groups and columns. Clear an
-override to inherit the parent or default styling. The **Group label** colour
-applies to the label and its chevron, whether or not the label is itself a
-link. Panels default to white with black text. Unconfigured links use the
+children to show that group's panel. All menu styling controls are available on
+**Mega Menu** as defaults and on **Mega Menu Group** as overrides. Clear a group
+override (or choose **Default**) to inherit the menu setting. Columns no longer
+have menu styling controls or apply old column-level overrides.
+
+Under **Styles → Mega menu colours**, configure:
+
+- **Panel background**
+- **Group label** (unlinked labels only)
+- **Group link**, **Group link hover**, **Group link current**
+- **Column heading**
+- **Panel link**, **Panel link hover**, **Panel link current**
+
+Group colours also apply to their chevrons. **Current** means a link to the
+current page, not keyboard focus. Hover colours also apply on keyboard focus;
+an explicitly configured current-page colour takes precedence over hover/focus.
+Panels default to white with black text. Unconfigured links use the
 theme's link styles, with the panel text colour and dark grey underlined
 hover/focus as fallbacks.
 
-Use **Styles → Mega menu typography** on the menu to set column heading and
-link sizes from the theme's font size presets. A column can override either
-size independently. Choose **Default** to clear an override. With no
-overrides, text uses the theme's typography, with column headings slightly
-larger than body text unless the theme styles them directly.
-The same panel offers **Text decoration** for non-linked group labels and
-column headings, and **Link decoration** for menu links. Choose **Default**,
-**None**, **Underline**, or **Strikethrough**. Groups and columns can override
-the menu setting; **Default** leaves parent or theme styles in place. These
-controls do not change the styles of blocks inserted inside a column.
+Under **Styles → Mega menu typography**, configure **Group size**,
+**Column heading size**, and **Panel link size** using theme font size presets.
+Each also has its own decoration control: **Default**, **None**, **Underline**,
+or **Strikethrough**. Group decoration applies to both linked and unlinked
+labels. **Group link current decoration** and **Panel link current decoration**
+override the normal decoration for matching current-page links.
+With no overrides, theme typography applies, with headings slightly larger
+than body text as a fallback. These controls do not style core blocks inserted
+inside a column.
+
+Compatible saved menu/group styles are retained: old shared group colours and
+current-page styles populate the corresponding separate controls. Editing a
+style replaces these legacy values so each new control can be cleared or
+changed independently. Legacy panel text colour remains readable but is no
+longer offered as a control.
 
 The dynamic blocks render [Blade views](src/resources/views/mega-menu) through
 Acorn. Their [styles and scripts](src/resources/assets/wordpress/src/mega-menu)

@@ -7,9 +7,9 @@
 
 @if($block === null)
     @if($url !== '' && !$hideChevron)
-        <a class="meros-dynamic-mega-menu__trigger meros-dynamic-mega-menu__group-preview">{{ $label }}</a>
+        <a class="meros-dynamic-mega-menu__trigger meros-dynamic-mega-menu__group-preview" data-meros-menu-url="{!! $url !!}">{{ $label }}</a>
     @else
-        <p class="meros-dynamic-mega-menu__trigger meros-dynamic-mega-menu__group-preview{{ $hideChevron ? ' meros-dynamic-mega-menu__trigger--no-chevron' : '' }}">{{ $label }}</p>
+        <p class="meros-dynamic-mega-menu__trigger meros-dynamic-mega-menu__group-preview{{ $hideChevron ? ' meros-dynamic-mega-menu__trigger--no-chevron' : '' }}" @if($url !== '') data-meros-menu-url="{!! $url !!}" @endif>{{ $label }}</p>
     @endif
 @elseif(trim($content) !== '')
     <li {!! \MM\Meros\Blocks\Support\MegaMenuStyles::wrapper('meros-dynamic-mega-menu__group', $attributes) !!}>
