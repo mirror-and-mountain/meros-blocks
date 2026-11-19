@@ -124,16 +124,12 @@ document.addEventListener('pointerover', (event) => {
     if (open?.querySelector(slideSelector).contains(document.activeElement)) return;
 
     cancelSwitch(menu);
-    if (open && usesFloatingPanel(menu)) {
-        switchTimers.set(menu, setTimeout(() => {
-            switchTimers.delete(menu);
-            if (!menu.isConnected || !menu.matches(hoverMenuSelector) || !menu.contains(group) ||
-                menu.querySelector(openSelector)?.querySelector(slideSelector).contains(document.activeElement)) return;
-            openDisclosure(menu, disclosure);
-        }, 100));
-    } else {
+    switchTimers.set(menu, setTimeout(() => {
+        switchTimers.delete(menu);
+        if (!menu.isConnected || !menu.matches(hoverMenuSelector) || !menu.contains(group) ||
+            menu.querySelector(openSelector)?.querySelector(slideSelector).contains(document.activeElement)) return;
         openDisclosure(menu, disclosure);
-    }
+    }, 200));
 });
 
 document.addEventListener('pointerout', (event) => {
@@ -204,6 +200,9 @@ document.addEventListener('keydown', (event) => {
     if (event.target.closest?.('[data-mobile-active]')) return;
 
     const menu = event.target.closest?.(desktopMenuSelector);
+    for (const pendingMenu of menu ? [menu] : document.querySelectorAll(hoverMenuSelector)) {
+        cancelSwitch(pendingMenu);
+    }
     const disclosures = menu ? menu.querySelectorAll(openSelector) : document.querySelectorAll(`${hoverMenuSelector} ${openSelector}`);
     for (const disclosure of disclosures) {
         event.preventDefault();

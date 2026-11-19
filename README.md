@@ -54,8 +54,9 @@ slide open a full-width panel with side-by-side columns. In a header block,
 the panel opens below the whole header, not just below the navigation row.
 The contents fade in near the end of the opening slide. In Click mode,
 moving across the header keeps the current panel open. In Hover or click
-mode, pause briefly over another group to swap its content without closing
-and reopening the panel.
+mode, hover for 200ms to open a panel or swap to another group's content without
+closing and reopening the panel. Moving away before the delay ends cancels the
+pending opening; clicks remain immediate.
 On small screens and in sidebars, panels expand in place and columns stack.
 The desktop panel closes shortly after the pointer leaves both the header
 and panel (or leaves the group in a sidebar), unless focus is inside the
