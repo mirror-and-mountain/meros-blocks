@@ -29,6 +29,9 @@ final class MegaMenuStyles {
         if ($part === 'column') {
             $colours = array_intersect_key($colours, array_flip(['column-heading', 'link', 'link-hover']));
         }
+        if ($part === 'menu') {
+            $colours['current'] = __('Current page links', 'meros-blocks');
+        }
 
         foreach ($colours as $role => $label) {
             $block->attribute('menu_color_' . str_replace('-', '_', $role), [
@@ -52,11 +55,15 @@ final class MegaMenuStyles {
         }
     }
 
-    public static function textDecorations(DynamicBlock $block): void {
-        foreach ([
+    public static function textDecorations(DynamicBlock $block, bool $currentPage = false): void {
+        $roles = [
             'text' => __('Text decoration', 'meros-blocks'),
             'link' => __('Link decoration', 'meros-blocks'),
-        ] as $role => $label) {
+        ];
+        if ($currentPage) {
+            $roles['current'] = __('Current page link decoration', 'meros-blocks');
+        }
+        foreach ($roles as $role => $label) {
             $block->attribute('menu_decoration_' . $role, [
                 'type' => 'string',
                 'default' => '',
@@ -87,7 +94,7 @@ final class MegaMenuStyles {
             $styles[] = "--meros-menu-animation-duration:{$duration}ms";
         }
 
-        foreach (['group-label', 'panel-background', 'panel-text', 'column-heading', 'link', 'link-hover'] as $role) {
+        foreach (['group-label', 'panel-background', 'panel-text', 'column-heading', 'link', 'link-hover', 'current'] as $role) {
             $value = $attributes['menu_color_' . str_replace('-', '_', $role)] ?? '';
             if (!is_string($value) || !preg_match('/\A(?:#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})|[a-z]+|(?:rgba?|hsla?)\([0-9.,% +\/-]+\))\z/i', $value)) {
                 continue;
@@ -105,7 +112,7 @@ final class MegaMenuStyles {
             }
         }
 
-        foreach (['text', 'link'] as $role) {
+        foreach (['text', 'link', 'current'] as $role) {
             $value = $attributes['menu_decoration_' . $role] ?? '';
             if (in_array($value, ['none', 'underline', 'line-through'], true)) {
                 $styles[] = "--meros-menu-{$role}-decoration:{$value}";

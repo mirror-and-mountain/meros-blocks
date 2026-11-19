@@ -17,7 +17,7 @@
             <a class="meros-dynamic-mega-menu__group-link meros-dynamic-mega-menu__trigger" href="{!! $url !!}" @if($newTab) target="_blank" rel="noopener" @endif>{{ $label }}</a>
         @endif
         <details class="meros-dynamic-mega-menu__disclosure">
-            <summary class="meros-dynamic-mega-menu__trigger{{ $hideChevron ? ' meros-dynamic-mega-menu__trigger--no-chevron' : '' }}" @if($url !== '' && !$hideChevron) aria-label="{{ sprintf(__('Toggle %s submenu', 'meros-blocks'), $label) }}" @endif>
+            <summary class="meros-dynamic-mega-menu__trigger{{ $hideChevron ? ' meros-dynamic-mega-menu__trigger--no-chevron' : '' }}" @if($url !== '') data-meros-menu-url="{!! $url !!}" @endif @if($url !== '' && !$hideChevron) aria-label="{{ sprintf(__('Toggle %s submenu', 'meros-blocks'), $label) }}" @endif>
                 <span class="meros-dynamic-mega-menu__summary-label">{{ $label }}</span>
             </summary>
             <div class="meros-dynamic-mega-menu__slide">

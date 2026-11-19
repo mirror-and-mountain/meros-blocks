@@ -79,7 +79,7 @@ class Orchestrator extends ComponentsOrchestrator {
 
             MegaMenuStyles::colours($block, 'menu');
             MegaMenuStyles::fontSizes($block);
-            MegaMenuStyles::textDecorations($block);
+            MegaMenuStyles::textDecorations($block, true);
             $block->attribute('menu_mobile_collapse', [
                 'type' => 'boolean',
                 'default' => true,

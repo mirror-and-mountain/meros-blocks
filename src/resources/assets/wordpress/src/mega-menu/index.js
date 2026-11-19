@@ -1,5 +1,6 @@
 import './style.scss';
 import './mobile';
+import './current-page';
 
 const menuSelector = '.meros-dynamic-mega-menu';
 const desktopMenuSelector = `${menuSelector}:not([data-mobile-active])`;

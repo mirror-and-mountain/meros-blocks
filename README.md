@@ -4,6 +4,17 @@
 
 ### Dynamic mega menu
 
+Links to the current page are marked with `aria-current="page"` on the front
+end, in both desktop and mobile menus. Set **Styles → Mega menu colours →
+Current page links** and **Styles → Mega menu typography → Current page link
+decoration** on the Mega Menu block to override their styling. With no override,
+theme and existing menu styles apply, with underline as a fallback. Matches
+ignore fragments and trailing slashes but respect the domain, path, and query
+parameters. Only the matching destination is highlighted, not its ancestor
+group. A linked group's submenu label is highlighted too, including when its
+desktop chevron is hidden. The editor's previews do not represent a visitor's
+current page.
+
 Insert **Mega Menu** to start with one **Mega Menu Group** containing one
 **Mega Menu Column**. Each additional group starts with one column too.
 Use **Edit Column Links** in the inspector to select posts and reorder links.
