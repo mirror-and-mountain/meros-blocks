@@ -19,6 +19,17 @@ function highlightCurrentPage() {
                 else if (element.getAttribute('aria-current') === 'page') element.removeAttribute('aria-current');
             }
         }
+        for (const group of menu.querySelectorAll('.meros-dynamic-mega-menu__group')) {
+            if (group.closest('.meros-dynamic-mega-menu') !== menu) continue;
+            const currentPanelLink = [...group.querySelectorAll('.meros-dynamic-mega-menu__panel a.meros-menu-current-page')]
+                .some((link) => link.closest('.meros-dynamic-mega-menu__group') === group);
+            for (const trigger of group.querySelectorAll('.meros-dynamic-mega-menu__trigger')) {
+                if (trigger.closest('.meros-dynamic-mega-menu__group') !== group
+                    || trigger.closest('.meros-dynamic-mega-menu__panel')?.closest('.meros-dynamic-mega-menu__group') === group) continue;
+                const destination = trigger.getAttribute('href') ?? trigger.dataset.merosMenuUrl;
+                trigger.classList.toggle('meros-menu-current-page', currentPanelLink || pageUrl(destination) === current);
+            }
+        }
     }
 }
 

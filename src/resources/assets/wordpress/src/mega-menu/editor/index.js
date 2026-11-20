@@ -79,7 +79,7 @@ function LinkDecorationControls({ controls, attributes, update, inherited, colum
             {inherited && <p>{__('Default inherits the parent setting.', 'meros-blocks')}</p>}
             <p>{column
                 ? __('Current decoration applies to links to the current page.', 'meros-blocks')
-                : __('Group decoration applies to linked and unlinked labels. Current decoration applies to links to the current page.', 'meros-blocks')}</p>
+                : __('Group decoration applies to linked and unlinked labels. Group current decoration also applies when a panel link is the current page.', 'meros-blocks')}</p>
             {controls.map(([key, definition]) => (
                 <SelectControl
                     key={key}
@@ -129,7 +129,7 @@ addFilter('editor.BlockEdit', 'meros/dynamic-mega-menu-styles', (BlockEdit) => (
                                 enableAlpha: false,
                             }))}
                         >
-                            <p>{__('Group label is for unlinked labels. Current is for links to the current page, not keyboard focus. Hover also applies on keyboard focus.', 'meros-blocks')}</p>
+                            <p>{__('Group label is for unlinked labels. Group link current also highlights the parent label of a current panel link. Current is not keyboard focus; hover also applies on keyboard focus.', 'meros-blocks')}</p>
                             {inherited && <p>{__('Clear a colour to inherit the menu style.', 'meros-blocks')}</p>}
                         </PanelColorSettings>
                     )}

@@ -423,7 +423,9 @@ $column-headings: '.meros-dynamic-mega-menu__column-title';
     [data-meros-menu-color-#{$role}-hover] :is(#{$selector}):is(:hover, :focus-visible) {
         color: var(--meros-menu-#{$role}-hover);
     }
+}
 
+@each $role, $selector in ('group-link': $group-labels, 'panel-link': $panel-links) {
     [data-meros-menu-color-#{$role}-current] :is(#{$selector}).meros-menu-current-page {
         color: var(--meros-menu-#{$role}-current);
     }
@@ -431,6 +433,10 @@ $column-headings: '.meros-dynamic-mega-menu__column-title';
     [data-meros-menu-decoration-#{$role}-current] :is(#{$selector}).meros-menu-current-page {
         text-decoration-line: var(--meros-menu-#{$role}-current-decoration);
     }
+}
+
+.meros-dynamic-mega-menu__trigger.meros-menu-current-page > .meros-dynamic-mega-menu__summary-label {
+    text-decoration-line: inherit;
 }
 
 .meros-mega-menu-editor--menu {

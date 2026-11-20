@@ -101,8 +101,12 @@ link current** under **Styles → Mega menu colours**, and their corresponding
 **current decoration** controls under **Link decorations**. With no override,
 theme and existing menu styles apply, with underline as a fallback. Matches
 ignore fragments and trailing slashes but respect the domain, path, and query
-parameters. Only the matching destination is highlighted, not its ancestor
-group. A linked group's submenu label is highlighted too, including when its
+parameters. A current panel link also highlights its parent group label using
+the group's **Group link current** colour and **current decoration**, independently
+of the panel link's current styles. This includes unlinked group labels.
+Only the matching destination gets `aria-current="page"`; an ancestor label is
+highlighted without claiming to link to the current page.
+A linked group's submenu label is highlighted too, including when its
 desktop chevron is hidden. The editor's previews do not represent a visitor's
 current page.
 
