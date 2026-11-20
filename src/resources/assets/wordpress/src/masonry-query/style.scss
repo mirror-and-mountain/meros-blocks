@@ -16,7 +16,7 @@
     }
 }
 
-.meros-masonry-query [data-meros-masonry-image] img:not(.meros-masonry-img-ignore) {
+.meros-masonry-query [data-meros-masonry-image]:not(.meros-masonry-img-ignore) img {
     width: 100%;
     height: auto !important;
     aspect-ratio: var(--meros-masonry-image-ratio) !important;
