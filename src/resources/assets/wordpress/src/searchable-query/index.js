@@ -116,7 +116,7 @@ function observeQuery(root) {
             || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         const url = new URL(link.href, location.href);
         if (url.origin !== location.origin) return;
-        const page = Number(url.searchParams.get(root.dataset.merosLiveQueryPageKey) || '1');
+        const page = Number(link.dataset.merosLiveQueryPage ?? url.searchParams.get(root.dataset.merosLiveQueryPageKey) ?? '1');
         if (!Number.isInteger(page) || page < 1 || page > 10000) return;
         event.preventDefault();
         search(page);

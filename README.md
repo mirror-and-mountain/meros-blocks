@@ -11,8 +11,13 @@ wrapper block.
 
 For an existing layout, select its **Query Loop** and enable **Live search →
 Live title search**. Place a native **Search** block inside that query, optionally
-inside a Group/Row with pagination, but outside its Post Template. Switch off
-**Inherit query from template**: live search supports custom queries only.
+inside a Group/Row with pagination, but outside its Post Template.
+Both custom queries and **Inherit query from template** are supported. On an
+archive template, keep inheritance enabled to search only within the current
+category, taxonomy, post-type, author or date archive, using its native page size
+and ordering. The archive's main query arguments are captured server-side when
+the page renders; AJAX restores that scope for native inherited cards and
+pagination, including pretty-permalink pagination links.
 The editor continues to show native editable query cards; live searching runs
 on the front end.
 
@@ -27,15 +32,17 @@ independent and the input retains focus while results update.
 AJAX uses server-held query configuration, not client-supplied filters or block
 templates. Only published posts are returned. Native sticky injection is disabled
 to prevent out-of-scope matches; explicit sticky-only/exclude settings and
-Masonry Query's sticky priority still apply. Configuration is cached for seven
-days; if the cache is cleared or expires, a visible message requests a reload.
+Masonry Query's sticky priority still apply. Inherited queries preserve the
+archive's native sticky behavior when the search is empty; a nonempty title
+search disables sticky injection so it cannot add unrelated matches.
+Configuration is cached for seven days; if the cache is cleared or expires, a
+visible message requests a reload.
 While fetching, a spinner and loading message appear next to the first Search
 block. Use **Live search → Spinner position** to place them **Above search box**
 (the default) or **Below search box**, including when Search is inside a Row.
-The spinner
-respects reduced-motion preferences. Loading/completion are announced to
-assistive technology, and failed requests
-leave the previous results intact with a visible error. Without JavaScript, the
+The spinner respects reduced-motion preferences. Loading/completion are announced
+to assistive technology, and failed requests leave the previous results intact
+with a visible error. Without JavaScript, the
 Search and pagination blocks retain their native WordPress behavior.
 
 ### Masonry Query

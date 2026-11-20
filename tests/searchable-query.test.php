@@ -22,8 +22,21 @@ class WP_Error {
 }
 class WP_Query {
     public ?object $post = null;
-    public function __construct(private array $args) {}
-    public function get(string $key): mixed { return $this->args[$key] ?? null; }
+    public array $query_vars;
+    public function __construct(array $args = []) { $this->query_vars = $args; }
+    public function get(string $key): mixed { return $this->query_vars[$key] ?? null; }
+    public function query(array $args): void {
+        $GLOBALS['archive_was_main'] = $GLOBALS['wp_the_query'] === $this && $GLOBALS['wp_query'] === $this;
+        if (!empty($GLOBALS['fail_query'])) throw new RuntimeException('Archive query failed');
+        $this->query_vars = $args;
+        $this->post = (object) ['ID' => 501];
+    }
+}
+class WP_Block_Type_Registry {
+    public static function get_instance(): self { return new self(); }
+    public function get_registered(string $name): object {
+        return (object) ['attributes' => ['query' => ['default' => ['inherit' => true, 'perPage' => null, 'pages' => 0, 'offset' => 0, 'postType' => 'post', 'order' => 'desc', 'orderBy' => 'date']]]];
+    }
 }
 class WP_REST_Request implements ArrayAccess {
     public function __construct(private array $args) {}
@@ -35,7 +48,7 @@ class WP_REST_Request implements ArrayAccess {
 class WP_Block {
     public function __construct(public array $parsed_block, public array $context = []) {}
     public function render(): string {
-        $GLOBALS['rendered'] = ['block' => $this->parsed_block, 'context' => $this->context, 'get' => $_GET, 'uri' => $_SERVER['REQUEST_URI'], 'resetPostId' => $GLOBALS['wp_query']->post->ID];
+        $GLOBALS['rendered'] = ['block' => $this->parsed_block, 'context' => $this->context, 'get' => $_GET, 'uri' => $_SERVER['REQUEST_URI'], 'resetPostId' => $GLOBALS['wp_query']->post->ID, 'query' => $GLOBALS['wp_query']->query_vars];
         if (!empty($GLOBALS['fail_render'])) throw new RuntimeException('Render failed');
         return '<div>Native results</div>';
     }
@@ -65,8 +78,17 @@ expect(!isset($prepared['innerBlocks'][1]['innerBlocks'][0]['attrs']['merosLiveQ
 expect($prepared['innerBlocks'][3] === $query['innerBlocks'][3], 'Nested queries must retain their own independent configuration.');
 expect(SearchableQuery::markup('Card contents', block('core/null', ['merosLiveQuerySlot' => '1']), new WP_Block([])) === 'Card contents', 'Native Post Template clones must not gain per-card result slots.');
 expect(SearchableQuery::markup('', block('core/post-template', ['merosLiveQuerySlot' => '1']), new WP_Block([])) === '<template data-meros-live-query-slot="1"></template><template data-meros-live-query-end="1"></template>', 'Even empty native results must retain anchors for subsequent searches without adding layout wrappers.');
-expect(SearchableQuery::prepare(block('core/query', ['merosLiveSearch' => true])) === block('core/query', ['merosLiveSearch' => true]), 'Missing query settings must retain inherited native defaults.');
-expect(SearchableQuery::prepare(block('core/query', ['merosLiveSearch' => true, 'query' => ['inherit' => true]])) === block('core/query', ['merosLiveSearch' => true, 'query' => ['inherit' => true]]), 'Inherited queries must not be opted in.');
+$inheritedDefault = SearchableQuery::prepare(block('core/query', ['merosLiveSearch' => true]));
+expect($inheritedDefault['attrs']['query']['inherit'] === true && $inheritedDefault['attrs']['query']['perPage'] === null && $inheritedDefault['attrs']['query']['pages'] === 0, 'Adding runtime search context must preserve inherited native defaults.');
+$inheritedPrepared = SearchableQuery::prepare(block('core/query', ['merosLiveSearch' => true, 'query' => ['inherit' => true]], [block('core/search'), block('core/post-template')]));
+expect($inheritedPrepared['attrs']['query']['inherit'] === true && $inheritedPrepared['innerBlocks'][0]['attrs']['merosLiveQuerySearch'] === true, 'Inherited queries must be wired without converting their saved query to a custom query.');
+expect(SearchableQuery::prepare(block('core/query', ['query' => ['inherit' => true]])) === block('core/query', ['query' => ['inherit' => true]]), 'Ordinary inherited queries must remain untouched.');
+$wp_rewrite = (object) ['pagination_base' => 'page'];
+expect(SearchableQuery::archivePage('https://example.test/category/books/page/3/') === 3, 'Pretty archive pagination must resolve the selected page.');
+expect(SearchableQuery::archivePage('https://example.test/?cat=3&amp;paged=2') === 2, 'Plain archive pagination must preserve its page number.');
+expect(SearchableQuery::archivePage('https://example.test/category/books/') === 1, 'Archive page-one links must reset to page one.');
+$wp_rewrite->pagination_base = 'seite';
+expect(SearchableQuery::archivePage('https://example.test/genre/history/seite/4/') === 4, 'Custom pagination rewrite bases must be respected.');
 
 $args = ['post_type' => 'book', 'tax_query' => [['taxonomy' => 'genre', 'terms' => [3]]], 'offset' => 3, 'posts_per_page' => 2, 'orderby' => 'title', 'post__not_in' => [7], 's' => 'existing constraint'];
 $context = new WP_Block([], ['query' => ['meros_live_search' => true, 'meros_live_search_title' => 'Title']]);
@@ -100,6 +122,7 @@ $_GET = ['original' => 'value'];
 $_SERVER['REQUEST_URI'] = '/wp-json/meros-blocks/v1/query-search';
 $post = (object) ['ID' => 10];
 $wp_query = new WP_Query([]);
+$wp_the_query = $wp_query;
 $originalQuery = $wp_query;
 $result = SearchableQuery::search(new WP_REST_Request(['token' => $token, 'search' => '<b>Alpha</b>', 'page' => 2]));
 expect($result['html'] === '<div>Native results</div>', 'The endpoint must return native-rendered HTML.');
@@ -117,6 +140,35 @@ try {
 }
 expect($_GET === ['original' => 'value'] && $post->ID === 10, 'Request state must also be restored after rendering failures.');
 expect($wp_query === $originalQuery, 'Native global query context must be restored on success and failure.');
+$fail_render = false;
+$archiveArgs = [
+    'post_type' => 'book', 'tax_query' => [['taxonomy' => 'genre', 'terms' => [3]]],
+    'author' => 9, 'date_query' => [['year' => 2025]], 'post__not_in' => [7],
+    'posts_per_page' => 2, 'order' => 'ASC', 'orderby' => 'title', 's' => 'configured',
+    'paged' => 3, 'ignore_sticky_posts' => false,
+];
+$archiveSnapshot = [
+    'block' => block('core/query', ['merosLiveSearch' => true, 'queryId' => 4, 'query' => ['inherit' => true]], [block('core/post-template')]),
+    'context' => [], 'url' => 'https://example.test/genre/history/', 'archiveQuery' => $archiveArgs,
+];
+$archiveToken = SearchableQuery::remember($archiveSnapshot);
+SearchableQuery::search(new WP_REST_Request(['token' => $archiveToken, 'search' => 'Alpha', 'page' => 2, 'post_type' => 'post']));
+expect($rendered['block']['attrs']['query']['inherit'] === true, 'Archive searches must continue using the native inherited render path.');
+expect($archive_was_main, 'Inherited rendering and main-query filters must see the captured archive as the active main query.');
+expect(array_diff_key($rendered['query'], array_flip(['paged', 'post_status', 'meros_live_search_title', 'ignore_sticky_posts', 'suppress_filters'])) === array_diff_key($archiveArgs, array_flip(['paged', 'ignore_sticky_posts'])), 'Search must retain the captured post type, taxonomy, author, date, exclusions, ordering and page size rather than accepting client filters.');
+expect($rendered['query']['paged'] === 2 && $rendered['query']['meros_live_search_title'] === 'Alpha' && $rendered['query']['ignore_sticky_posts'] === true, 'Archive pagination must apply within the title-filtered results without sticky injection.');
+expect($rendered['get'] === ['paged' => 2], 'Archive requests must use the native main-query pagination key.');
+SearchableQuery::search(new WP_REST_Request(['token' => $archiveToken, 'search' => '', 'page' => 1]));
+expect($rendered['query']['paged'] === 1 && $rendered['query']['meros_live_search_title'] === '' && $rendered['query']['ignore_sticky_posts'] === false, 'Clearing an archive search must restore its original constraints and sticky behavior at page one.');
+expect($wp_query === $originalQuery && $wp_the_query === $originalQuery && $post->ID === 10, 'Archive rendering must restore both main query globals and post context.');
+$fail_query = true;
+try {
+    SearchableQuery::search(new WP_REST_Request(['token' => $archiveToken, 'search' => 'Alpha', 'page' => 1]));
+    throw new RuntimeException('Expected archive querying to fail.');
+} catch (RuntimeException $error) {
+    expect($error->getMessage() === 'Archive query failed', 'Archive query failures must propagate.');
+}
+expect($wp_query === $originalQuery && $wp_the_query === $originalQuery && $_GET === ['original' => 'value'] && $post->ID === 10, 'Archive query failures must restore all request globals.');
 $transients = [];
 expect(SearchableQuery::recall($token)->data['status'] === 410, 'Missing or expired server configuration must report a reload-required error.');
 echo "Searchable Query PHP tests passed.\n";

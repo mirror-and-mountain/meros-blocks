@@ -70,8 +70,8 @@ addFilter('editor.BlockEdit', 'meros/searchable-query-controls', (BlockEdit) => 
                             />
                         )}
                         {inherited && props.attributes.merosLiveSearch === true && (
-                            <Notice status="warning" isDismissible={false}>
-                                {__('Switch off “Inherit query from template” in the Query Loop settings to enable live search.', 'meros-blocks')}
+                            <Notice status="info" isDismissible={false}>
+                                {__('Search stays within the current archive or template query, including its post type, taxonomy, author and date filters.', 'meros-blocks')}
                             </Notice>
                         )}
                     </PanelBody>

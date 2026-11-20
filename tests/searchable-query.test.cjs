@@ -31,7 +31,7 @@ function find(node, type) {
     if (node.type === type) return node;
     return (Array.isArray(node) ? node : node.props?.children ?? []).map((child) => find(child, type)).find(Boolean);
 }
-test('native variation and existing-query toggle retain native configuration and warn about inheritance', () => {
+test('native variation and existing-query toggle retain native configuration and explain archive scoping', () => {
     assert.equal(variation.attributes.namespace, 'meros-blocks/searchable-query');
     assert.equal(variation.attributes.query.inherit, false);
     assert.equal(variation.innerBlocks[0][0], 'core/search');
@@ -47,6 +47,8 @@ test('native variation and existing-query toggle retain native configuration and
     const render = filters['editor.BlockEdit']('Block');
     const tree = render({ name: 'core/query', attributes, isSelected: true, setAttributes: (value) => update = value });
     assert.ok(find(tree, 'Notice'));
+    assert.equal(find(tree, 'Notice').props.status, 'info');
+    assert.ok(find(tree, 'Notice').props.children[0].includes('current archive'));
     find(tree, 'ToggleControl').props.onChange(true);
     assert.equal(update.merosLiveSearch, true);
     assert.equal(update.enhancedPagination, false);
@@ -106,6 +108,37 @@ test('spinner renders above or below the search box inside a row without affecti
             assert.ok(position === 'above' ? boxes.first && boxes.bottom <= boxes.inputTop : boxes.last && boxes.top >= boxes.inputBottom, 'The visible indicator must be on the selected side of the search box');
             assert.equal(await page.locator(`#${position} .row > nav`).count(), 1, 'The indicator must stay inside the Search block, not become a new Row item');
         }
+    } finally { await browser.close(); }
+});
+
+test('inherited archive pagination sends the annotated pretty-link page and retains the search term', async () => {
+    const edge = '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge';
+    const browser = await chromium.launch(fs.existsSync(edge) ? { executablePath: edge } : {});
+    const page = await browser.newPage();
+    try {
+        const html = fixture('archive').replace('data-meros-live-query-page-key="query-12-page"', 'data-meros-live-query-page-key="paged"')
+            .replace('href="https://query.test/home/?query-12-page=2"', 'href="https://query.test/genre/books/page/2/" data-meros-live-query-page="2"')
+            .replace('href="https://query.test/home/"', 'href="https://query.test/genre/books/" data-meros-live-query-page="1"');
+        await page.route('https://query.test/**', (route) => route.fulfill({ contentType: 'text/html', body: html }));
+        await page.goto('https://query.test/genre/books/');
+        await page.evaluate(() => {
+            window.requests = [];
+            window.fetch = (url, options) => {
+                window.requests.push(JSON.parse(options.body));
+                return new Promise(() => {});
+            };
+        });
+        await page.addScriptTag({ content: script });
+        await page.locator('#archive form[data-meros-live-query-search] input').fill('Alpha');
+        await page.locator('#archive form[data-meros-live-query-search] button').click();
+        await page.waitForFunction(() => window.requests.length === 1);
+        await page.locator('#archive .wp-block-query-pagination a').first().click();
+        await page.waitForFunction(() => window.requests.length === 2);
+        assert.deepEqual(await page.evaluate(() => window.requests[1]), { token: 'archive-token', search: 'Alpha', page: 2 }, 'Pretty archive links must not silently reset to page one');
+        await page.locator('#archive .wp-block-query-pagination a').last().click();
+        await page.waitForFunction(() => window.requests.length === 3);
+        assert.equal(await page.evaluate(() => window.requests[2].page), 1);
+        assert.equal(page.url(), 'https://query.test/genre/books/');
     } finally { await browser.close(); }
 });
 

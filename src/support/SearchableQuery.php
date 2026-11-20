@@ -33,8 +33,9 @@ final class SearchableQuery {
     }
 
     public static function prepare(array $block): array {
-        if (($block['blockName'] ?? '') !== 'core/query' || ($block['attrs']['merosLiveSearch'] ?? false) !== true
-            || ($block['attrs']['query']['inherit'] ?? true)) return $block;
+        if (($block['blockName'] ?? '') !== 'core/query' || ($block['attrs']['merosLiveSearch'] ?? false) !== true) return $block;
+        $defaults = \WP_Block_Type_Registry::get_instance()->get_registered('core/query')->attributes['query']['default'];
+        $block['attrs']['query'] = array_replace($defaults, $block['attrs']['query'] ?? []);
         $block['attrs']['enhancedPagination'] = false;
         $block['attrs']['query']['meros_live_search'] = true;
         if (isset($block['attrs']['merosLiveSearchTerm'])) {
@@ -77,6 +78,15 @@ final class SearchableQuery {
     }
 
     public static function markup(string $html, array $parsed, \WP_Block $block): string {
+        if (in_array($parsed['blockName'], ['core/query-pagination-previous', 'core/query-pagination-next', 'core/query-pagination-numbers'], true)
+            && !empty($block->context['query']['meros_live_search']) && !empty($block->context['query']['inherit'])) {
+            $links = new \WP_HTML_Tag_Processor($html);
+            while ($links->next_tag('A')) {
+                $href = $links->get_attribute('href');
+                if (is_string($href)) $links->set_attribute('data-meros-live-query-page', self::archivePage($href));
+            }
+            $html = $links->get_updated_html();
+        }
         if (isset($parsed['attrs']['merosLiveQuerySlot'])
             && in_array($parsed['blockName'], ['core/post-template', 'core/query-pagination', 'core/query-no-results'], true)) {
             $slot = esc_attr($parsed['attrs']['merosLiveQuerySlot']);
@@ -93,10 +103,12 @@ final class SearchableQuery {
         if (!$tags->next_tag()) return $html;
         $tags->set_attribute('data-meros-live-query', '');
         $tags->set_attribute('data-meros-live-query-spinner-position', ($parsed['attrs']['merosLiveSearchSpinnerPosition'] ?? '') === 'below' ? 'below' : 'above');
-        $tags->set_attribute('data-meros-live-query-page-key', isset($parsed['attrs']['queryId']) ? 'query-' . $parsed['attrs']['queryId'] . '-page' : 'query-page');
+        $inherited = !empty($parsed['attrs']['query']['inherit']);
+        $tags->set_attribute('data-meros-live-query-page-key', $inherited ? 'paged' : (isset($parsed['attrs']['queryId']) ? 'query-' . $parsed['attrs']['queryId'] . '-page' : 'query-page'));
         if (!isset($parsed['attrs']['merosLiveSearchTerm'])) {
             $context = array_intersect_key($block->context, array_flip(['postId', 'postType', 'templateSlug']));
             $snapshot = ['block' => $parsed, 'context' => $context, 'url' => get_pagenum_link(1, false)];
+            if ($inherited) $snapshot['archiveQuery'] = $GLOBALS['wp_query']->query_vars;
             $tags->set_attribute('data-meros-live-query-token', self::remember($snapshot));
             $tags->set_attribute('data-meros-live-query-endpoint', rest_url(self::ROUTE));
             $tags->set_attribute('data-meros-live-query-loading', __('Searching…', 'meros-blocks'));
@@ -104,6 +116,16 @@ final class SearchableQuery {
             $tags->set_attribute('data-meros-live-query-error', __('Search failed. Please try again or reload the page.', 'meros-blocks'));
         }
         return $tags->get_updated_html();
+    }
+
+    public static function archivePage(string $url): int {
+        $parts = wp_parse_url(html_entity_decode($url, ENT_QUOTES, 'UTF-8'));
+        parse_str($parts['query'] ?? '', $query);
+        if (isset($query['paged']) && is_scalar($query['paged'])) return max(1, (int) $query['paged']);
+        global $wp_rewrite;
+        $base = preg_quote($wp_rewrite->pagination_base, '~');
+        if (preg_match("~/(?:{$base})/([0-9]+)/?$~", $parts['path'] ?? '', $matches)) return max(1, (int) $matches[1]);
+        return 1;
     }
 
     public static function remember(array $snapshot): string {
@@ -128,28 +150,50 @@ final class SearchableQuery {
         if ($snapshot instanceof \WP_Error) return $snapshot;
         $parsed = $snapshot['block'];
         $parsed['attrs']['merosLiveSearchTerm'] = sanitize_text_field($request['search']);
-        $key = isset($parsed['attrs']['queryId']) ? 'query-' . $parsed['attrs']['queryId'] . '-page' : 'query-page';
+        $inherited = $parsed['attrs']['query']['inherit'] ?? true;
+        if ($inherited && !isset($snapshot['archiveQuery'])) {
+            return new \WP_Error('meros_query_invalid', __('Missing archive search configuration. Reload the page.', 'meros-blocks'), ['status' => 403]);
+        }
+        $key = $inherited ? 'paged' : (isset($parsed['attrs']['queryId']) ? 'query-' . $parsed['attrs']['queryId'] . '-page' : 'query-page');
         $previousGet = $_GET;
         $previousUri = $_SERVER['REQUEST_URI'] ?? '';
         $previousPost = $GLOBALS['post'] ?? null;
         $previousQuery = $GLOBALS['wp_query'];
+        $previousMainQuery = $GLOBALS['wp_the_query'];
         $url = wp_parse_url($snapshot['url']);
         parse_str($url['query'] ?? '', $query);
-        $_GET = $query;
-        $_GET[$key] = $request['page'];
-        $_SERVER['REQUEST_URI'] = ($url['path'] ?? '/') . '?' . http_build_query($_GET);
-        $GLOBALS['post'] = isset($snapshot['context']['postId']) ? get_post($snapshot['context']['postId']) : null;
-        // Native cards/pagination reset postdata between renders. Keep exclude-current and bindings anchored to the page.
-        $GLOBALS['wp_query'] = clone $previousQuery;
-        $GLOBALS['wp_query']->post = $GLOBALS['post'];
-        if ($GLOBALS['post']) setup_postdata($GLOBALS['post']);
         try {
+            $_GET = $query;
+            $_GET[$key] = $request['page'];
+            $_SERVER['REQUEST_URI'] = ($url['path'] ?? '/') . '?' . http_build_query($_GET);
+            if ($inherited) {
+                $args = $snapshot['archiveQuery'];
+                $args['paged'] = $request['page'];
+                $args['post_status'] = 'publish';
+                $args['meros_live_search_title'] = $parsed['attrs']['merosLiveSearchTerm'];
+                if ($args['meros_live_search_title'] !== '') {
+                    $args['ignore_sticky_posts'] = true;
+                    $args['suppress_filters'] = false;
+                }
+                // Give native inherited cards and pagination a real main query with the captured archive constraints.
+                $archive = new \WP_Query();
+                $GLOBALS['wp_query'] = $GLOBALS['wp_the_query'] = $archive;
+                $archive->query($args);
+                $GLOBALS['post'] = $archive->post;
+            } else {
+                $GLOBALS['post'] = isset($snapshot['context']['postId']) ? get_post($snapshot['context']['postId']) : null;
+                // Native cards/pagination reset postdata between renders. Keep exclude-current anchored to the page.
+                $GLOBALS['wp_query'] = clone $previousQuery;
+                $GLOBALS['wp_query']->post = $GLOBALS['post'];
+            }
+            if ($GLOBALS['post']) setup_postdata($GLOBALS['post']);
             $html = (new \WP_Block(self::prepare($parsed), $snapshot['context']))->render();
         } finally {
             $_GET = $previousGet;
             $_SERVER['REQUEST_URI'] = $previousUri;
             $GLOBALS['post'] = $previousPost;
             $GLOBALS['wp_query'] = $previousQuery;
+            $GLOBALS['wp_the_query'] = $previousMainQuery;
             if ($previousPost) setup_postdata($previousPost);
         }
         return ['html' => $html];
