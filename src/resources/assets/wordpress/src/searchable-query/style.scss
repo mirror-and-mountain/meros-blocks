@@ -1,0 +1,44 @@
+[data-meros-live-query] {
+    template[data-meros-live-query-slot],
+    template[data-meros-live-query-end] {
+        display: none !important;
+    }
+
+    [data-meros-live-query-status]:not([data-error]):not([data-loading]) {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    [data-meros-live-query-status][data-loading] {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+
+        &::before {
+            content: '';
+            flex-shrink: 0;
+            width: 1em;
+            height: 1em;
+            border: 2px solid currentColor;
+            border-inline-end-color: transparent;
+            border-radius: 50%;
+            animation: meros-query-loading-spin 0.75s linear infinite;
+        }
+    }
+}
+
+@keyframes meros-query-loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-meros-live-query] [data-meros-live-query-status][data-loading]::before {
+        animation: none;
+    }
+}

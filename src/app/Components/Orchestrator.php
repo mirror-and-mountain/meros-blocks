@@ -7,6 +7,7 @@ use MM\Meros\App\Components\Fields\PostsLookup;
 
 use MM\Meros\Blocks\Support\MegaMenuStyles;
 use MM\Meros\Blocks\Support\MasonryQuery;
+use MM\Meros\Blocks\Support\SearchableQuery;
 
 use MM\Meros\Contracts\Orchestrators\ComponentsOrchestrator;
 use MM\Meros\Contracts\Features\Components\DynamicBlock;
@@ -16,6 +17,7 @@ class Orchestrator extends ComponentsOrchestrator {
     protected function configure(): void {
         $this->configureDynamicMegaMenu();
         $this->configureMasonryQuery();
+        SearchableQuery::boot();
     }
 
     private function configureMasonryQuery(): void {

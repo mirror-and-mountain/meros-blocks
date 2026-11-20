@@ -2,6 +2,39 @@
 
 ## MEROS Blocks
 
+### Searchable Query
+
+Insert **Searchable Query** to start with a native **Query Loop**, **Search**,
+editable **Post Template**, pagination and no-results message. It can be inserted
+inside **Masonry Query**, since it is a variation of `core/query`, not a separate
+wrapper block.
+
+For an existing layout, select its **Query Loop** and enable **Live search →
+Live title search**. Place a native **Search** block inside that query, optionally
+inside a Group/Row with pagination, but outside its Post Template. Switch off
+**Inherit query from template**: live search supports custom queries only.
+The editor continues to show native editable query cards; live searching runs
+on the front end.
+
+Typing waits 300ms before searching; submitting searches immediately. Search is
+a case-insensitive title substring match (subject to the database collation).
+Post type, taxonomies, author, exclusions, existing search constraints, offsets,
+ordering and page size remain those of the containing Query Loop. Clearing
+the field restores that configured query. Search changes reset to page one;
+native pagination loads AJAX results for the current search. Each query remains
+independent and the input retains focus while results update.
+
+AJAX uses server-held query configuration, not client-supplied filters or block
+templates. Only published posts are returned. Native sticky injection is disabled
+to prevent out-of-scope matches; explicit sticky-only/exclude settings and
+Masonry Query's sticky priority still apply. Configuration is cached for seven
+days; if the cache is cleared or expires, a visible message requests a reload.
+While fetching, a spinner and loading message appear above the query. The spinner
+respects reduced-motion preferences. Loading/completion are announced to
+assistive technology, and failed requests
+leave the previous results intact with a visible error. Without JavaScript, the
+Search and pagination blocks retain their native WordPress behavior.
+
 ### Masonry Query
 
 Insert **Masonry Query** for a masonry-style post grid built around WordPress's

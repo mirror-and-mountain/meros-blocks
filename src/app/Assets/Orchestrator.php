@@ -10,5 +10,6 @@ class Orchestrator extends AssetsOrchestrator {
         $this->assets()->group(FX::class)->make()->enqueue();
         $this->assets()->group(MegaMenu::class)->make()->enqueue();
         $this->assets()->group(MasonryQuery::class)->make()->enqueue();
+        $this->assets()->group(SearchableQuery::class)->make()->enqueue();
     }
 }
