@@ -11,7 +11,8 @@ function observeQuery(root) {
     status.setAttribute('data-meros-live-query-status', '');
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
-    root.prepend(status);
+    if (root.dataset.merosLiveQuerySpinnerPosition === 'below') forms[0].append(status);
+    else forms[0].prepend(status);
     let timer;
     let controller;
     let revision = 0;

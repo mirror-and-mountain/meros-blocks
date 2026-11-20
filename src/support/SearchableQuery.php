@@ -9,6 +9,7 @@ final class SearchableQuery {
         add_filter('register_block_type_args', static function (array $args, string $name): array {
             if ($name === 'core/query') {
                 $args['attributes']['merosLiveSearch'] = ['type' => 'boolean', 'default' => false];
+                $args['attributes']['merosLiveSearchSpinnerPosition'] = ['type' => 'string', 'default' => 'above', 'enum' => ['above', 'below']];
                 $args['uses_context'] = array_values(array_unique([...($args['uses_context'] ?? []), 'postId']));
             }
             return $args;
@@ -91,6 +92,7 @@ final class SearchableQuery {
         $tags = new \WP_HTML_Tag_Processor($html);
         if (!$tags->next_tag()) return $html;
         $tags->set_attribute('data-meros-live-query', '');
+        $tags->set_attribute('data-meros-live-query-spinner-position', ($parsed['attrs']['merosLiveSearchSpinnerPosition'] ?? '') === 'below' ? 'below' : 'above');
         $tags->set_attribute('data-meros-live-query-page-key', isset($parsed['attrs']['queryId']) ? 'query-' . $parsed['attrs']['queryId'] . '-page' : 'query-page');
         if (!isset($parsed['attrs']['merosLiveSearchTerm'])) {
             $context = array_intersect_key($block->context, array_flip(['postId', 'postType', 'templateSlug']));

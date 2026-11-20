@@ -16,7 +16,7 @@ const context = {
         if (name === '@wordpress/blocks') return { registerBlockVariation: (name, definition) => variation = { name, ...definition } };
         if (name === '@wordpress/i18n') return { __: (text) => text };
         if (name === '@wordpress/block-editor') return { InspectorControls: 'InspectorControls' };
-        if (name === '@wordpress/components') return { PanelBody: 'PanelBody', ToggleControl: 'ToggleControl', Notice: 'Notice' };
+        if (name === '@wordpress/components') return { PanelBody: 'PanelBody', ToggleControl: 'ToggleControl', SelectControl: 'SelectControl', Notice: 'Notice' };
         return {};
     },
 };
@@ -51,6 +51,12 @@ test('native variation and existing-query toggle retain native configuration and
     assert.equal(update.merosLiveSearch, true);
     assert.equal(update.enhancedPagination, false);
     assert.equal(update.query, undefined, 'Toggling must never replace the chosen native query settings');
+    const position = find(tree, 'SelectControl');
+    assert.equal(position.props.value, 'above');
+    position.props.onChange('below');
+    assert.equal(update.merosLiveSearchSpinnerPosition, 'below');
+    assert.equal(update.query, undefined, 'Moving the spinner must not alter query filters');
+    assert.equal(find(render({ name: 'core/query', attributes: { merosLiveSearch: false }, isSelected: true }), 'SelectControl'), undefined);
     assert.equal(find(render({ name: 'core/query', attributes: { ...attributes, query: { inherit: false } }, isSelected: true }), 'Notice'), undefined);
     assert.equal(find(render({ name: 'core/search', attributes: {} }), 'ToggleControl'), undefined);
 });
@@ -76,6 +82,32 @@ function fixture(id) {
         <form class="per-card-search"><input name="s"></form>
     </div>`;
 }
+
+test('spinner renders above or below the search box inside a row without affecting its siblings', async () => {
+    const edge = '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge';
+    const browser = await chromium.launch(fs.existsSync(edge) ? { executablePath: edge } : {});
+    const page = await browser.newPage();
+    try {
+        await page.setContent(['above', 'below'].map((position) => `<div id="${position}" data-meros-live-query data-meros-live-query-spinner-position="${position}" data-meros-live-query-loading="Searching">
+            <div class="row" style="display:flex"><form data-meros-live-query-search><input name="s"><button>Search</button></form><nav>Pagination</nav></div>
+        </div>`).join(''));
+        await page.evaluate(() => { window.fetch = () => new Promise(() => {}); });
+        await page.addStyleTag({ content: css });
+        await page.addScriptTag({ content: script });
+        for (const position of ['above', 'below']) {
+            await page.locator(`#${position} input`).fill('Test');
+            await page.waitForFunction((id) => document.querySelector(`#${id} [data-loading]`), position);
+            const boxes = await page.locator(`#${position} form`).evaluate((form) => {
+                const status = form.querySelector('[data-meros-live-query-status]');
+                const loading = status.getBoundingClientRect();
+                const input = form.querySelector('input').getBoundingClientRect();
+                return { first: status === form.firstElementChild, last: status === form.lastElementChild, top: loading.top, bottom: loading.bottom, inputTop: input.top, inputBottom: input.bottom };
+            });
+            assert.ok(position === 'above' ? boxes.first && boxes.bottom <= boxes.inputTop : boxes.last && boxes.top >= boxes.inputBottom, 'The visible indicator must be on the selected side of the search box');
+            assert.equal(await page.locator(`#${position} .row > nav`).count(), 1, 'The indicator must stay inside the Search block, not become a new Row item');
+        }
+    } finally { await browser.close(); }
+});
 
 test('browser live search debouncing, race handling, pagination, errors and masonry replacement', async () => {
     const edge = '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge';

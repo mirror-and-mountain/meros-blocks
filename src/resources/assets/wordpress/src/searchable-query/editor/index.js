@@ -1,12 +1,16 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { registerBlockVariation } from '@wordpress/blocks';
-import { Notice, PanelBody, ToggleControl } from '@wordpress/components';
+import { Notice, PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 import { addFilter } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 
 addFilter('blocks.registerBlockType', 'meros/searchable-query-attribute', (settings, name) => name === 'core/query' ? {
     ...settings,
-    attributes: { ...settings.attributes, merosLiveSearch: { type: 'boolean', default: false } },
+    attributes: {
+        ...settings.attributes,
+        merosLiveSearch: { type: 'boolean', default: false },
+        merosLiveSearchSpinnerPosition: { type: 'string', default: 'above', enum: ['above', 'below'] },
+    },
 } : settings);
 
 registerBlockVariation('core/query', {
@@ -52,6 +56,19 @@ addFilter('editor.BlockEdit', 'meros/searchable-query-controls', (BlockEdit) => 
                             help={__('On the front end, a Search block inside this query updates its results as visitors type. Add one anywhere outside the Post Template. Query filters and ordering still apply.', 'meros-blocks')}
                             __nextHasNoMarginBottom
                         />
+                        {props.attributes.merosLiveSearch === true && (
+                            <SelectControl
+                                label={__('Spinner position', 'meros-blocks')}
+                                value={props.attributes.merosLiveSearchSpinnerPosition ?? 'above'}
+                                options={[
+                                    { label: __('Above search box', 'meros-blocks'), value: 'above' },
+                                    { label: __('Below search box', 'meros-blocks'), value: 'below' },
+                                ]}
+                                onChange={(position) => props.setAttributes({ merosLiveSearchSpinnerPosition: position })}
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
+                            />
+                        )}
                         {inherited && props.attributes.merosLiveSearch === true && (
                             <Notice status="warning" isDismissible={false}>
                                 {__('Switch off “Inherit query from template” in the Query Loop settings to enable live search.', 'meros-blocks')}

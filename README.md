@@ -29,7 +29,10 @@ templates. Only published posts are returned. Native sticky injection is disable
 to prevent out-of-scope matches; explicit sticky-only/exclude settings and
 Masonry Query's sticky priority still apply. Configuration is cached for seven
 days; if the cache is cleared or expires, a visible message requests a reload.
-While fetching, a spinner and loading message appear above the query. The spinner
+While fetching, a spinner and loading message appear next to the first Search
+block. Use **Live search → Spinner position** to place them **Above search box**
+(the default) or **Below search box**, including when Search is inside a Row.
+The spinner
 respects reduced-motion preferences. Loading/completion are announced to
 assistive technology, and failed requests
 leave the previous results intact with a visible error. Without JavaScript, the
