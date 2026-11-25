@@ -7,6 +7,8 @@ use MM\Meros\Contracts\Features\Components\DynamicBlock;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * Verifies that mega menu styles preserve native typography and accept only supported column decorations.
+ *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */

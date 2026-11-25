@@ -12,6 +12,8 @@ use WP_Query;
 use WP_REST_Request;
 
 /**
+ * Tests Searchable Query wiring, pagination, title search, token validation and request context restoration.
+ *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */

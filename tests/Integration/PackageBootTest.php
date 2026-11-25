@@ -6,6 +6,9 @@ use MM\Meros\Blocks\MerosBlocks;
 use MM\Meros\Facades\Components\DynamicBlocks;
 use MM\Meros\Testing\PackageTestCase;
 
+/**
+ * Verifies that the enabled Blocks package registers its blocks with WordPress.
+ */
 final class PackageBootTest extends PackageTestCase
 {
     protected function packageClass(): string { return MerosBlocks::class; }

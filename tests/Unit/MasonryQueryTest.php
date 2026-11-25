@@ -10,6 +10,8 @@ use WP_Block;
 use WP_Query;
 
 /**
+ * Tests Masonry Query markup, layout controls, query scoping and sticky-post pagination.
+ *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
